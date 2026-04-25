@@ -107,10 +107,10 @@ export function Pill({
     silver: "bg-moss-soft text-ink border-ink/10",
     outline: "bg-transparent text-ink border-ink/30",
     yellow: "bg-gold/20 text-ink border-gold/40",
-    mint: "bg-pop-mint text-ink border-ink/15",
+    mint: "bg-[#E6F4DD] text-forest border-jungle/30",
     ink: "bg-ink-black text-porcelain border-ink-black",
     forest: "bg-forest text-porcelain border-forest",
-    ghost: "bg-porcelain/10 text-porcelain border-porcelain/20",
+    ghost: "bg-ink-black/5 text-ink/70 border-ink-black/10",
   } as const;
   return (
     <span
