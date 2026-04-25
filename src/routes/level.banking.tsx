@@ -18,7 +18,7 @@ import {
 import { TopBar } from "@/components/concierge/TopBar";
 import { CCard, Pill, ProgressBar } from "@/components/concierge/CCard";
 import { CButton } from "@/components/concierge/CButton";
-import { Cleo } from "@/components/concierge/Cleo";
+import { Cleo, CleoBubble } from "@/components/concierge/Cleo";
 import { useApp } from "@/lib/store";
 import { celebrate } from "@/lib/celebrate";
 
@@ -139,78 +139,100 @@ function BankingLevel() {
 function IntroStep({ onNext }: { onNext: () => void }) {
   return (
     <>
-      <TopBar title="Level 1 — Banking 🏦" />
-      <div className="px-6 pt-2 space-y-5">
+      <TopBar title="Level 1 · Banking 🏦" />
+      <div className="px-5 pt-2 pb-4 space-y-4">
+        {/* Hero */}
         <div
-          className="h-[180px] rounded-[20px] relative overflow-hidden flex items-end p-5"
+          className="h-[170px] rounded-[24px] relative overflow-hidden flex items-end p-5 border-2 border-ink shadow-[0_5px_0_rgba(31,34,54,0.85)]"
           style={{
             background:
-              "linear-gradient(135deg, #EF8354 0%, #4F5D75 100%)",
+              "linear-gradient(135deg, #A1CDF4 0%, #A9AFD1 100%)",
           }}
         >
           <svg viewBox="0 0 200 120" className="absolute inset-0 w-full h-full opacity-90">
-            {/* Haussmann-ish bank facade */}
-            <rect x="40" y="40" width="120" height="70" fill="none" stroke="white" strokeWidth="2.5" />
-            <polygon points="30,40 100,15 170,40" fill="none" stroke="white" strokeWidth="2.5" />
-            <rect x="55" y="55" width="14" height="22" fill="none" stroke="white" strokeWidth="2" />
-            <rect x="78" y="55" width="14" height="22" fill="none" stroke="white" strokeWidth="2" />
-            <rect x="108" y="55" width="14" height="22" fill="none" stroke="white" strokeWidth="2" />
-            <rect x="131" y="55" width="14" height="22" fill="none" stroke="white" strokeWidth="2" />
-            <rect x="92" y="80" width="16" height="30" fill="none" stroke="white" strokeWidth="2" />
-            <text x="100" y="35" textAnchor="middle" fontSize="10" fill="white" fontWeight="700">
+            <rect x="40" y="40" width="120" height="70" fill="none" stroke="#1F2236" strokeWidth="3" />
+            <polygon points="30,40 100,15 170,40" fill="none" stroke="#1F2236" strokeWidth="3" />
+            <rect x="55" y="55" width="14" height="22" fill="none" stroke="#1F2236" strokeWidth="2" />
+            <rect x="78" y="55" width="14" height="22" fill="none" stroke="#1F2236" strokeWidth="2" />
+            <rect x="108" y="55" width="14" height="22" fill="none" stroke="#1F2236" strokeWidth="2" />
+            <rect x="131" y="55" width="14" height="22" fill="none" stroke="#1F2236" strokeWidth="2" />
+            <rect x="92" y="80" width="16" height="30" fill="#FFD23F" stroke="#1F2236" strokeWidth="2" />
+            <text x="100" y="35" textAnchor="middle" fontSize="11" fill="#1F2236" fontWeight="800">
               🏦 BANQUE
             </text>
-            <ellipse cx="100" cy="14" rx="14" ry="5" fill="white" opacity="0.9" />
           </svg>
+          <div className="absolute top-4 left-4">
+            <Pill variant="yellow">+50 XP for finishing</Pill>
+          </div>
+          <div className="absolute -bottom-2 right-2">
+            <Cleo pose="guiding" mood="happy" size={84} />
+          </div>
         </div>
 
-        <h2 className="text-white text-[22px] font-bold">
-          Banking in France — here's the deal 🇫🇷
+        <h2 className="text-ink text-[26px] font-extrabold leading-tight tracking-tight">
+          French banking, decoded ✨
         </h2>
+        <p className="text-ink/70 text-[14px] font-semibold leading-snug">
+          4 quick lessons. By the end, you'll have a French account opened — and bragging rights.
+        </p>
+
+        <CleoBubble
+          side="left"
+          pose="guiding"
+          tone="default"
+          text={
+            <>
+              First lesson: French banks come in <b>two flavors</b>. Let me break it down 👇
+            </>
+          }
+        />
 
         <CCard delay={0.05}>
           <CardHeader icon={<Building2 size={20} />} title="Two types of banks" />
-          <p className="text-white/90 text-[14px] leading-relaxed">
-            In France you've got two flavors:<br />
-            <b>Traditional banks</b> (BNP, Société Générale, Crédit Agricole) — branches, advisors, and
-            sometimes Saturday hours.<br />
-            <b>Neobanks</b> (Revolut, N26, Nickel) — 100% online, often free, and you can open one in
-            your pajamas. 🛋️
+          <p className="text-ink/85 text-[14px] leading-relaxed font-medium">
+            <b>🏛️ Traditional banks</b> (BNP, SocGen, Crédit Agricole) — physical branches,
+            real-life advisors, sometimes Saturday hours.
+            <br />
+            <br />
+            <b>📱 Neobanks</b> (Revolut, N26, Nickel) — fully online, often free, and you can
+            sign up in your pajamas. 🛋️
           </p>
         </CCard>
 
-        <CCard delay={0.1}>
-          <CardHeader icon={<FileText size={20} />} title="Documents to open an account" />
-          <p className="text-white/90 text-[14px] leading-relaxed">
-            Almost every bank will ask for:<br />
-            ✓ Your passport or ID<br />
-            ✓ Proof of address in France (utility bill, rental contract, or letter from employer)<br />
-            ✓ Sometimes: proof of income or enrollment (for students)
+        <CCard delay={0.1} tone="yellow">
+          <CardHeader icon={<FileText size={20} />} title="Paperwork starter pack" />
+          <p className="text-ink text-[14px] leading-relaxed font-semibold">
+            Almost every bank wants:
+            <br />
+            ✓ Passport or ID 🛂
+            <br />
+            ✓ Proof of address in France 📄
+            <br />
+            ✓ Sometimes proof of income or enrollment 💼
           </p>
         </CCard>
 
         <CCard delay={0.15}>
-          <CardHeader icon={<Snail size={20} />} title="One thing to know upfront" />
-          <p className="text-white/90 text-[14px] leading-relaxed">
-            French banks are... not fast. A traditional bank account can take 5–15 business days. A
-            neobank? Sometimes 10 minutes. Plan accordingly — especially if you need to receive a
-            salary.
+          <CardHeader icon={<Snail size={20} />} title="Patience required 🐢" />
+          <p className="text-ink/85 text-[14px] leading-relaxed font-medium">
+            Traditional banks move at their own pace — <b>5 to 15 business days</b>. Neobanks?
+            Sometimes <b>10 minutes</b>. Plan accordingly, especially for that first paycheck.
           </p>
         </CCard>
 
         <CCard delay={0.2}>
-          <CardHeader icon={<Euro size={20} />} title="What does it cost?" />
-          <p className="text-white/90 text-[14px] leading-relaxed">
-            Traditional banks: €2–10/month. Neobanks: often €0 for basic, €7–15/month for premium.{" "}
-            <span className="text-coral font-semibold">
-              Pro tip: some banks waive the fee if you receive your salary there.
+          <CardHeader icon={<Euro size={20} />} title="What's it gonna cost?" />
+          <p className="text-ink/85 text-[14px] leading-relaxed font-medium">
+            Traditional: <b>€2–10/month</b>. Neobanks: often <b>€0</b> for basic.{" "}
+            <span className="text-ink font-extrabold bg-pop-yellow px-1.5 py-0.5 rounded">
+              💡 Pro tip: many waive the fee if your salary lands there.
             </span>
           </p>
         </CCard>
 
         <div className="pt-2">
-          <CButton onClick={onNext}>
-            Got it — show me my options <ArrowRight size={18} />
+          <CButton onClick={onNext} size="lg">
+            Show me my matches! <ArrowRight size={18} />
           </CButton>
         </div>
       </div>
@@ -220,11 +242,11 @@ function IntroStep({ onNext }: { onNext: () => void }) {
 
 function CardHeader({ icon, title }: { icon: React.ReactNode; title: string }) {
   return (
-    <div className="flex items-center gap-2 mb-2 text-coral">
-      <span className="h-9 w-9 rounded-full bg-coral/20 flex items-center justify-center">
+    <div className="flex items-center gap-2 mb-2">
+      <span className="h-10 w-10 rounded-full bg-ink text-pop-yellow flex items-center justify-center border-2 border-ink">
         {icon}
       </span>
-      <h3 className="text-white text-[16px] font-bold">{title}</h3>
+      <h3 className="text-ink text-[17px] font-extrabold">{title}</h3>
     </div>
   );
 }
