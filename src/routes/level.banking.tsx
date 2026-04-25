@@ -52,9 +52,7 @@ function BankingLevel() {
             <RecommendStep
               comparing={comparing}
               onCompareToggle={(b) =>
-                setComparing((prev) =>
-                  prev.includes(b) ? prev.filter((x) => x !== b) : [...prev, b].slice(-2),
-                )
+                setComparing((prev) => (prev.includes(b) ? prev.filter((x) => x !== b) : [...prev, b].slice(-2)))
               }
               onCompare={() => setCompareOpen(true)}
               onChoose={(bank) => {
@@ -145,8 +143,7 @@ function IntroStep({ onNext }: { onNext: () => void }) {
         <div
           className="h-[180px] rounded-[28px] relative overflow-hidden flex items-end p-5 border border-jungle/30 shadow-deep"
           style={{
-            background:
-              "linear-gradient(160deg, #0F2818 0%, #1a4422 60%, #248232 100%)",
+            background: "linear-gradient(160deg, #0F2818 0%, #1a4422 60%, #248232 100%)",
           }}
         >
           <div className="absolute inset-0 bg-gradient-jungle-glow opacity-70 pointer-events-none" />
@@ -164,18 +161,14 @@ function IntroStep({ onNext }: { onNext: () => void }) {
           </div>
           <div className="relative z-10 flex-1">
             <p className="text-jungle text-[10px] font-bold uppercase tracking-[2px] mb-1">Chapter 1</p>
-            <h2 className="text-porcelain text-[24px] font-display font-bold leading-tight">
-              Banking, decoded.
-            </h2>
+            <h2 className="text-porcelain text-[24px] font-display font-bold leading-tight">Banking, decoded.</h2>
           </div>
           <div className="absolute -bottom-2 right-2">
             <Cleo pose="guiding" mood="happy" size={92} />
           </div>
         </div>
 
-        <h2 className="text-ink text-[26px] font-extrabold leading-tight tracking-tight">
-          French banking, decoded ✨
-        </h2>
+        <h2 className="text-ink text-[26px] font-extrabold leading-tight tracking-tight">French banking, decoded ✨</h2>
         <p className="text-ink/70 text-[14px] font-semibold leading-snug">
           4 quick lessons. By the end, you'll have a French account opened — and bragging rights.
         </p>
@@ -194,12 +187,12 @@ function IntroStep({ onNext }: { onNext: () => void }) {
         <CCard delay={0.05}>
           <CardHeader icon={<Building2 size={20} />} title="Two types of banks" />
           <p className="text-ink/85 text-[14px] leading-relaxed font-medium">
-            <b>🏛️ Traditional banks</b> (BNP, SocGen, Crédit Agricole) — physical branches,
-            real-life advisors, sometimes Saturday hours.
+            <b> Traditional banks</b> (BNP, SocGen, Crédit Agricole) — physical branches, real-life advisors, sometimes
+            Saturday hours.
             <br />
             <br />
-            <b>📱 Neobanks</b> (Revolut, N26, Nickel) — fully online, often free, and you can
-            sign up in your pajamas. 🛋️
+            <b>📱 Neobanks</b> (Revolut, N26, Nickel) — fully online, often free, and you can sign up in your pajamas.
+            🛋️
           </p>
         </CCard>
 
@@ -211,16 +204,15 @@ function IntroStep({ onNext }: { onNext: () => void }) {
             ✓ Passport or ID 🛂
             <br />
             ✓ Proof of address in France 📄
-            <br />
-            ✓ Sometimes proof of income or enrollment 💼
+            <br />✓ Sometimes proof of income or enrollment 💼
           </p>
         </CCard>
 
         <CCard delay={0.15}>
           <CardHeader icon={<Snail size={20} />} title="Patience required 🐢" />
           <p className="text-ink/85 text-[14px] leading-relaxed font-medium">
-            Traditional banks move at their own pace — <b>5 to 15 business days</b>. Neobanks?
-            Sometimes <b>10 minutes</b>. Plan accordingly, especially for that first paycheck.
+            Traditional banks move at their own pace — <b>5 to 15 business days</b>. Neobanks? Sometimes{" "}
+            <b>10 minutes</b>. Plan accordingly, especially for that first paycheck.
           </p>
         </CCard>
 
@@ -369,12 +361,7 @@ function ProgressDots({ filled, total }: { filled: number; total: number }) {
   return (
     <div className="flex gap-1">
       {Array.from({ length: total }).map((_, i) => (
-        <span
-          key={i}
-          className={`h-1.5 rounded-full transition-all ${
-            i < filled ? "bg-coral w-6" : "bg-white w-3"
-          }`}
-        />
+        <span key={i} className={`h-1.5 rounded-full transition-all ${i < filled ? "bg-coral w-6" : "bg-white w-3"}`} />
       ))}
     </div>
   );
@@ -414,9 +401,7 @@ function BankCard({
         </div>
         <div>
           <h3 className="text-ink text-[18px] font-bold">{bank.name}</h3>
-          <span className="text-ink/60 text-[11px] bg-white/10 px-2 py-0.5 rounded-full">
-            {bank.type}
-          </span>
+          <span className="text-ink/60 text-[11px] bg-white/10 px-2 py-0.5 rounded-full">{bank.type}</span>
         </div>
       </div>
 
@@ -458,9 +443,7 @@ function BankCard({
             {docList.map((d) => (
               <li
                 key={d.key}
-                className={`text-[13px] flex items-center gap-2 ${
-                  d.have ? "text-coral" : "text-ink/60"
-                }`}
+                className={`text-[13px] flex items-center gap-2 ${d.have ? "text-coral" : "text-ink/60"}`}
               >
                 <span>{d.have ? "✓" : "○"}</span> {d.label}
               </li>
@@ -471,10 +454,7 @@ function BankCard({
 
       <div className="mt-3 flex flex-wrap gap-1.5">
         {bank.highlights.map((h) => (
-          <span
-            key={h}
-            className="text-[11px] text-coral border border-coral/50 rounded-full px-2 py-0.5"
-          >
+          <span key={h} className="text-[11px] text-coral border border-coral/50 rounded-full px-2 py-0.5">
             {h}
           </span>
         ))}
@@ -490,15 +470,7 @@ function BankCard({
   );
 }
 
-function Metric({
-  icon,
-  label,
-  value,
-}: {
-  icon: React.ReactNode;
-  label: string;
-  value: string;
-}) {
+function Metric({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) {
   return (
     <div className="bg-white/40 rounded-lg py-2 px-2 text-center">
       <div className="text-ink/60 flex items-center justify-center mb-0.5">{icon}</div>
@@ -570,20 +542,10 @@ function CompareModal({
 
         <div className="rounded-2xl overflow-hidden">
           {rows.map((row, i) => (
-            <div
-              key={row.key}
-              className={`grid grid-cols-3 px-3 py-3 ${
-                i % 2 === 0 ? "bg-white" : "bg-white"
-              }`}
-            >
-              <div className="text-ink/60 text-[12px] font-semibold col-span-1">
-                {row.label}
-              </div>
+            <div key={row.key} className={`grid grid-cols-3 px-3 py-3 ${i % 2 === 0 ? "bg-white" : "bg-white"}`}>
+              <div className="text-ink/60 text-[12px] font-semibold col-span-1">{row.label}</div>
               {items.map((b) => (
-                <div
-                  key={b.name}
-                  className="text-ink text-[13px] font-medium text-center col-span-1"
-                >
+                <div key={b.name} className="text-ink text-[13px] font-medium text-center col-span-1">
                   {String(b[row.key])}
                 </div>
               ))}
@@ -626,8 +588,8 @@ function ApplyStep({ bank, onSubmitted }: { bank: string; onSubmitted: () => voi
         <div>
           <h2 className="text-ink text-[22px] font-bold">Let's open your account 🎯</h2>
           <p className="text-ink/60 text-[13px] mt-1">
-            You chose <span className="text-coral font-semibold">{bank}</span>. Here's exactly what
-            to do — we'll walk you through every step.
+            You chose <span className="text-coral font-semibold">{bank}</span>. Here's exactly what to do — we'll walk
+            you through every step.
           </p>
         </div>
 
@@ -665,9 +627,7 @@ function ApplyStep({ bank, onSubmitted }: { bank: string; onSubmitted: () => voi
         >
           <div className="flex items-center gap-3">
             <Cleo pose="guiding" size={56} />
-            <p className="text-ink text-[14px] font-semibold flex-1">
-              Ready? This takes about 10 minutes.
-            </p>
+            <p className="text-ink text-[14px] font-semibold flex-1">Ready? This takes about 10 minutes.</p>
           </div>
           <div className="mt-4">
             <CButton variant="white" onClick={onSubmitted}>
@@ -695,10 +655,7 @@ function DocChecklist() {
       {items.map((d) => {
         const have = onboarding.documents[d.key];
         return (
-          <li
-            key={d.key}
-            className="flex items-center justify-between bg-white/30 rounded-xl px-3 py-2.5"
-          >
+          <li key={d.key} className="flex items-center justify-between bg-white/30 rounded-xl px-3 py-2.5">
             <span className="text-ink text-[14px]">{d.label}</span>
             <span
               className={`h-5 w-5 rounded-full flex items-center justify-center ${
@@ -716,13 +673,7 @@ function DocChecklist() {
 
 /* ───────── 5E TRACK ───────── */
 
-function TrackStep({
-  bank,
-  onAccountReady,
-}: {
-  bank: string;
-  onAccountReady: () => void;
-}) {
+function TrackStep({ bank, onAccountReady }: { bank: string; onAccountReady: () => void }) {
   const [phase, setPhase] = useState(1);
   useEffect(() => {
     const t1 = setTimeout(() => setPhase(2), 2200);
@@ -758,9 +709,7 @@ function TrackStep({
                 <div key={s} className="flex-1 flex flex-col items-center relative">
                   {i > 0 && (
                     <div
-                      className={`absolute right-1/2 top-3 h-0.5 w-full ${
-                        i <= phase ? "bg-coral" : "bg-silver/30"
-                      }`}
+                      className={`absolute right-1/2 top-3 h-0.5 w-full ${i <= phase ? "bg-coral" : "bg-silver/30"}`}
                     />
                   )}
                   <div
@@ -774,9 +723,11 @@ function TrackStep({
                   >
                     {done ? <Check size={12} strokeWidth={3} /> : ""}
                   </div>
-                  <p className={`mt-1.5 text-[10px] font-semibold text-center ${
-                    done || current ? "text-ink" : "text-ink/60"
-                  }`}>
+                  <p
+                    className={`mt-1.5 text-[10px] font-semibold text-center ${
+                      done || current ? "text-ink" : "text-ink/60"
+                    }`}
+                  >
                     {s}
                   </p>
                 </div>
@@ -800,9 +751,7 @@ function TrackStep({
         <CCard className="flex items-center justify-between">
           <div>
             <p className="text-ink text-[14px] font-bold">Get notified when it's done 🔔</p>
-            <p className="text-ink/60 text-[12px] mt-0.5">
-              We'll send you a push the moment your account is ready.
-            </p>
+            <p className="text-ink/60 text-[12px] mt-0.5">We'll send you a push the moment your account is ready.</p>
           </div>
           <Bell size={20} className="text-coral" />
         </CCard>
@@ -810,16 +759,11 @@ function TrackStep({
         <CCard>
           <div className="flex items-center gap-3 mb-3">
             <Cleo pose="thinking" size={48} />
-            <p className="text-ink text-[14px] font-semibold">
-              While your account is opening...
-            </p>
+            <p className="text-ink text-[14px] font-semibold">While your account is opening...</p>
           </div>
           <div className="flex flex-col gap-2">
             {["→ Explore Level 2: Taxes", "→ Learn about CAF benefits"].map((t) => (
-              <span
-                key={t}
-                className="text-coral text-[13px] bg-coral/10 px-3 py-2 rounded-full font-semibold"
-              >
+              <span key={t} className="text-coral text-[13px] bg-coral/10 px-3 py-2 rounded-full font-semibold">
                 {t}
               </span>
             ))}
