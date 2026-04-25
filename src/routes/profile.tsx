@@ -5,7 +5,7 @@ import { BottomNav } from "@/components/concierge/BottomNav";
 import { useApp } from "@/lib/store";
 
 export const Route = createFileRoute("/profile")({
-  component: Profile;
+  component: Profile,
 });
 
 function Profile() {
