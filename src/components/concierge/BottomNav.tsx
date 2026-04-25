@@ -17,10 +17,14 @@ export function BottomNav() {
       className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[430px] z-40"
       style={{ paddingBottom: "max(10px, env(safe-area-inset-bottom))" }}
     >
-      <div className="mx-3 mb-2 glass-dark rounded-[24px] shadow-deep relative overflow-hidden">
-        {/* subtle inner top sheen */}
-        <span className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-jungle/40 to-transparent" />
-        <div className="flex items-stretch justify-around px-2 py-2.5 relative">
+      <div
+        className="mx-3 mb-2 rounded-[26px] relative overflow-hidden bg-white/95 backdrop-blur-xl border border-ink-black/8"
+        style={{
+          boxShadow:
+            "0 1px 0 rgba(255,255,255,0.9) inset, 0 -1px 0 rgba(4,15,15,0.04) inset, 0 14px 30px -10px rgba(36,130,50,0.18), 0 4px 14px -4px rgba(4,15,15,0.10)",
+        }}
+      >
+        <div className="flex items-stretch justify-around px-2 py-2 relative">
           {items.map(({ to, label, Icon }) => {
             const active =
               pathname === to || (to === "/home" && pathname.startsWith("/level"));
@@ -28,25 +32,25 @@ export function BottomNav() {
               <Link
                 key={to}
                 to={to}
-                className="flex flex-col items-center gap-1 px-2 py-1 flex-1 transition-transform active:scale-95 relative"
+                className="flex flex-col items-center gap-0.5 px-2 py-1.5 flex-1 transition-transform active:scale-95 relative"
               >
                 {active && (
                   <motion.div
                     layoutId="navActive"
-                    className="absolute inset-0 bg-jungle/15 rounded-2xl border border-jungle/30"
+                    className="absolute inset-0 bg-gradient-to-b from-[#DDF1D6] to-[#C7E8B8] rounded-2xl border border-jungle/30"
                     transition={{ type: "spring", stiffness: 380, damping: 30 }}
                   />
                 )}
                 <div className="relative h-7 w-7 flex items-center justify-center">
                   <Icon
                     size={20}
-                    className={active ? "text-jungle" : "text-porcelain/65"}
-                    strokeWidth={active ? 2.4 : 2}
+                    className={active ? "text-forest" : "text-ink/50"}
+                    strokeWidth={active ? 2.6 : 2.2}
                   />
                 </div>
                 <span
                   className={`text-[10px] font-bold tracking-wide relative ${
-                    active ? "text-porcelain" : "text-porcelain/55"
+                    active ? "text-forest" : "text-ink/55"
                   }`}
                 >
                   {label}

@@ -85,13 +85,13 @@ function IntroStep({ onNext }: { onNext: () => void }) {
           </svg>
         </div>
 
-        <h2 className="text-white text-[22px] font-bold">
+        <h2 className="text-ink text-[22px] font-bold">
           Taxes in France — don't panic, we've got you 😮‍💨
         </h2>
 
         <CCard delay={0.05}>
           <CardHeader icon={<Calendar size={20} />} title="The French tax year" />
-          <p className="text-white/90 text-[14px] leading-relaxed">
+          <p className="text-ink/90 text-[14px] leading-relaxed">
             In France, the tax year runs January to December. You declare in spring — usually April
             to June — for the previous year's income. Miss it? You get fined. So we'll remind you. A
             lot.
@@ -100,7 +100,7 @@ function IntroStep({ onNext }: { onNext: () => void }) {
 
         <CCard delay={0.1}>
           <CardHeader icon={<Coins size={20} />} title="How much do you pay?" />
-          <p className="text-white/90 text-[14px] leading-relaxed mb-3">
+          <p className="text-ink/90 text-[14px] leading-relaxed mb-3">
             France uses progressive tax brackets:
           </p>
           <div className="space-y-2">
@@ -111,8 +111,8 @@ function IntroStep({ onNext }: { onNext: () => void }) {
               { range: "Above €82,341", rate: 45 },
             ].map((b) => (
               <div key={b.range} className="flex items-center gap-3">
-                <span className="text-white text-[12px] flex-1">{b.range}</span>
-                <div className="w-24 h-2 bg-jet/40 rounded-full overflow-hidden">
+                <span className="text-ink text-[12px] flex-1">{b.range}</span>
+                <div className="w-24 h-2 bg-white/40 rounded-full overflow-hidden">
                   <motion.div
                     initial={{ width: 0 }}
                     animate={{ width: `${(b.rate / 45) * 100}%` }}
@@ -129,7 +129,7 @@ function IntroStep({ onNext }: { onNext: () => void }) {
         <CCard delay={0.15}>
           <CardHeader icon={<FileSignature size={20} />} title="First year in France: paper time" />
           <Pill className="mb-2">Important for you</Pill>
-          <p className="text-white/90 text-[14px] leading-relaxed">
+          <p className="text-ink/90 text-[14px] leading-relaxed">
             Your first year in France, you declare on paper. Yes, paper. It's a French tradition at
             this point. From year 2 onwards you can file online at impots.gouv.fr.
           </p>
@@ -137,7 +137,7 @@ function IntroStep({ onNext }: { onNext: () => void }) {
 
         <CCard delay={0.2}>
           <CardHeader icon={<Home size={20} />} title="Other taxes to know" />
-          <p className="text-white/90 text-[14px] leading-relaxed">
+          <p className="text-ink/90 text-[14px] leading-relaxed">
             <b>CSG/CRDS:</b> ~9.7% on most income (auto from payslip)<br />
             <b>Taxe d'habitation:</b> mostly abolished for primary residences<br />
             <b>TVA (VAT):</b> 20% on most goods — paid automatically when you shop
@@ -158,7 +158,7 @@ function CardHeader({ icon, title }: { icon: React.ReactNode; title: string }) {
       <span className="h-9 w-9 rounded-full bg-coral/20 text-coral flex items-center justify-center">
         {icon}
       </span>
-      <h3 className="text-white text-[16px] font-bold">{title}</h3>
+      <h3 className="text-ink text-[16px] font-bold">{title}</h3>
     </div>
   );
 }
@@ -170,8 +170,8 @@ function PlanStep({ onNext }: { onNext: () => void }) {
       <TopBar title="Level 2 — Taxes" />
       <div className="px-6 space-y-5">
         <div>
-          <h2 className="text-white text-[22px] font-bold">Your tax situation, specifically</h2>
-          <p className="text-silver text-[13px] mt-1">
+          <h2 className="text-ink text-[22px] font-bold">Your tax situation, specifically</h2>
+          <p className="text-ink/60 text-[13px] mt-1">
             Based on your profile — here's exactly what applies to you.
           </p>
         </div>
@@ -181,15 +181,15 @@ function PlanStep({ onNext }: { onNext: () => void }) {
           style={{ background: "linear-gradient(135deg, #EF8354 0%, #4F5D75 100%)" }}
         >
           <div className="text-2xl mb-2">👤</div>
-          <p className="text-white text-[15px] font-bold leading-snug">
+          <p className="text-ink text-[15px] font-bold leading-snug">
             You: {onboarding.fromCountry} national, salaried in France, arrived 4 months ago, income
             €2,200/month net.
           </p>
         </div>
 
         <CCard delay={0.05}>
-          <h3 className="text-white text-[16px] font-bold mb-2">Your status</h3>
-          <p className="text-white/90 text-[14px]">
+          <h3 className="text-ink text-[16px] font-bold mb-2">Your status</h3>
+          <p className="text-ink/90 text-[14px]">
             As a French tax resident (over 3 months), you must declare your worldwide income.
           </p>
           <div className="mt-3"><Pill>Applies to you</Pill></div>
@@ -197,25 +197,25 @@ function PlanStep({ onNext }: { onNext: () => void }) {
 
         <div className="border-l-4 border-coral pl-4">
           <CCard delay={0.1} className="border border-coral/40">
-            <h3 className="text-white text-[16px] font-bold mb-2">This year's process</h3>
-            <p className="text-white/90 text-[14px] leading-relaxed">
+            <h3 className="text-ink text-[16px] font-bold mb-2">This year's process</h3>
+            <p className="text-ink/90 text-[14px] leading-relaxed">
               Since this is your first year in France:<br />
               → File a <b>paper declaration</b><br />
               → Download form 2042 from impots.gouv.fr<br />
               → Mail it to your local tax office (Centre des Finances Publiques)<br />
               → Deadline: <span className="text-coral font-bold">late May</span>
             </p>
-            <p className="mt-3 text-silver text-[12px]">Next year: you can do everything online 🎉</p>
+            <p className="mt-3 text-ink/60 text-[12px]">Next year: you can do everything online 🎉</p>
           </CCard>
         </div>
 
         <CCard delay={0.15}>
-          <h3 className="text-white text-[16px] font-bold mb-2">Your estimated tax</h3>
-          <p className="text-white/90 text-[14px]">
+          <h3 className="text-ink text-[16px] font-bold mb-2">Your estimated tax</h3>
+          <p className="text-ink/90 text-[14px]">
             Based on your income of <b>~€26,400/year</b>, you likely fall in the 0–11% bracket.
           </p>
           <p className="text-coral text-[20px] font-extrabold mt-2">€500 – €1,400 / year</p>
-          <p className="text-silver text-[11px] mt-2 leading-snug">
+          <p className="text-ink/60 text-[11px] mt-2 leading-snug">
             Estimate only — not financial advice. Actual amount depends on deductions, family
             situation, and other income.
           </p>
@@ -242,11 +242,11 @@ function PackStep({ done, onComplete }: { done: boolean; onComplete: () => void 
     <>
       <TopBar title="Level 2 — Taxes" />
       <div className="px-6 space-y-5">
-        <h2 className="text-white text-[22px] font-bold">Your tax to-do pack 📦</h2>
-        <p className="text-silver text-[13px]">Everything you need, in the right order.</p>
+        <h2 className="text-ink text-[22px] font-bold">Your tax to-do pack 📦</h2>
+        <p className="text-ink/60 text-[13px]">Everything you need, in the right order.</p>
 
         <CCard delay={0.05}>
-          <h3 className="text-white text-[14px] font-bold mb-3 uppercase tracking-wide text-coral">
+          <h3 className="text-ink text-[14px] font-bold mb-3 uppercase tracking-wide text-coral">
             Timeline
           </h3>
           <div className="flex items-center justify-between">
@@ -260,10 +260,10 @@ function PackStep({ done, onComplete }: { done: boolean; onComplete: () => void 
                     i === 2 ? "bg-coral animate-pulse-ring" : "bg-silver/40"
                   }`}
                 />
-                <p className={`mt-2 text-[12px] font-bold ${i === 2 ? "text-coral" : "text-silver"}`}>
+                <p className={`mt-2 text-[12px] font-bold ${i === 2 ? "text-coral" : "text-ink/60"}`}>
                   {m}
                 </p>
-                {i === 2 && <p className="text-[10px] text-white">Deadline</p>}
+                {i === 2 && <p className="text-[10px] text-ink">Deadline</p>}
               </div>
             ))}
           </div>
@@ -272,19 +272,19 @@ function PackStep({ done, onComplete }: { done: boolean; onComplete: () => void 
         <CCard delay={0.1}>
           <div className="flex items-center gap-2 mb-3">
             <span className="text-2xl">📄</span>
-            <h3 className="text-white text-[16px] font-bold">Documents to gather</h3>
+            <h3 className="text-ink text-[16px] font-bold">Documents to gather</h3>
           </div>
           <ul className="space-y-2">
             {docs.map((d) => (
-              <li key={d.label} className="flex items-center gap-3 bg-jet/30 rounded-xl px-3 py-2.5">
+              <li key={d.label} className="flex items-center gap-3 bg-white/30 rounded-xl px-3 py-2.5">
                 <span
                   className={`h-5 w-5 rounded-full flex items-center justify-center ${
                     d.have ? "bg-coral" : "border border-silver"
                   }`}
                 >
-                  {d.have && <Check size={12} className="text-white" strokeWidth={3} />}
+                  {d.have && <Check size={12} className="text-ink" strokeWidth={3} />}
                 </span>
-                <span className="text-white text-[13px]">{d.label}</span>
+                <span className="text-ink text-[13px]">{d.label}</span>
               </li>
             ))}
           </ul>
@@ -305,11 +305,11 @@ function PackStep({ done, onComplete }: { done: boolean; onComplete: () => void 
               <MapPin size={20} />
             </div>
             <div>
-              <p className="text-white text-[14px] font-bold">Centre des Finances Publiques</p>
-              <p className="text-silver text-[12px]">Paris 15e — Open Mon–Fri 8:30–17:00</p>
+              <p className="text-ink text-[14px] font-bold">Centre des Finances Publiques</p>
+              <p className="text-ink/60 text-[12px]">Paris 15e — Open Mon–Fri 8:30–17:00</p>
             </div>
           </div>
-          <div className="mt-3 h-24 rounded-xl relative overflow-hidden bg-jet/40">
+          <div className="mt-3 h-24 rounded-xl relative overflow-hidden bg-white/40">
             <svg viewBox="0 0 200 80" className="w-full h-full">
               <rect width="200" height="80" fill="#2D3142" />
               <path d="M0 40 L60 38 L120 50 L200 42" stroke="#4F5D75" strokeWidth="1" fill="none" />

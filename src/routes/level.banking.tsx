@@ -111,7 +111,7 @@ function BankingLevel() {
           initial={{ y: 100 }}
           animate={{ y: 0 }}
           exit={{ y: 100 }}
-          className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[430px] bg-jet border-t border-slate-blue/60 px-6 py-4 z-40"
+          className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[430px] bg-white border-t border-ink-black/10/60 px-6 py-4 z-40"
           style={{ paddingBottom: "max(20px, env(safe-area-inset-bottom))" }}
         >
           <div className="flex items-center justify-between gap-3">
@@ -332,10 +332,10 @@ function RecommendStep({
       <div className="px-6 pt-1">
         <div className="flex items-center gap-2 mb-4">
           <ProgressDots filled={2} total={4} />
-          <span className="text-silver text-[12px]">Step 2 of 4</span>
+          <span className="text-ink/60 text-[12px]">Step 2 of 4</span>
         </div>
-        <h2 className="text-white text-[22px] font-bold">Your top 3 banks in France</h2>
-        <p className="text-silver text-[13px] mt-1">
+        <h2 className="text-ink text-[22px] font-bold">Your top 3 banks in France</h2>
+        <p className="text-ink/60 text-[13px] mt-1">
           Based on your profile — salaried, arriving from Ukraine, needing a quick setup.
         </p>
         <div className="mt-3 mb-5">
@@ -372,7 +372,7 @@ function ProgressDots({ filled, total }: { filled: number; total: number }) {
         <span
           key={i}
           className={`h-1.5 rounded-full transition-all ${
-            i < filled ? "bg-coral w-6" : "bg-slate-blue w-3"
+            i < filled ? "bg-coral w-6" : "bg-white w-3"
           }`}
         />
       ))}
@@ -404,7 +404,7 @@ function BankCard({
   return (
     <CCard delay={delay} className="relative">
       {bank.best && (
-        <span className="absolute top-4 right-4 bg-coral text-white px-2.5 py-1 text-[10px] font-bold rounded-full uppercase tracking-wide">
+        <span className="absolute top-4 right-4 bg-coral text-ink px-2.5 py-1 text-[10px] font-bold rounded-full uppercase tracking-wide">
           Best match
         </span>
       )}
@@ -413,8 +413,8 @@ function BankCard({
           {bank.name[0]}
         </div>
         <div>
-          <h3 className="text-white text-[18px] font-bold">{bank.name}</h3>
-          <span className="text-silver text-[11px] bg-white/10 px-2 py-0.5 rounded-full">
+          <h3 className="text-ink text-[18px] font-bold">{bank.name}</h3>
+          <span className="text-ink/60 text-[11px] bg-white/10 px-2 py-0.5 rounded-full">
             {bank.type}
           </span>
         </div>
@@ -427,12 +427,12 @@ function BankCard({
               key={i}
               size={14}
               fill={i <= Math.round(bank.rating) ? "#EF8354" : "transparent"}
-              className={i <= Math.round(bank.rating) ? "text-coral" : "text-silver/40"}
+              className={i <= Math.round(bank.rating) ? "text-coral" : "text-ink/60/40"}
             />
           ))}
         </div>
         <span className="text-coral text-[13px] font-bold">{bank.rating}/5</span>
-        <span className="text-silver text-[12px]">({bank.reviews})</span>
+        <span className="text-ink/60 text-[12px]">({bank.reviews})</span>
       </div>
 
       <div className="mt-4 grid grid-cols-3 gap-2">
@@ -459,7 +459,7 @@ function BankCard({
               <li
                 key={d.key}
                 className={`text-[13px] flex items-center gap-2 ${
-                  d.have ? "text-coral" : "text-silver"
+                  d.have ? "text-coral" : "text-ink/60"
                 }`}
               >
                 <span>{d.have ? "✓" : "○"}</span> {d.label}
@@ -500,10 +500,10 @@ function Metric({
   value: string;
 }) {
   return (
-    <div className="bg-jet/40 rounded-lg py-2 px-2 text-center">
-      <div className="text-silver flex items-center justify-center mb-0.5">{icon}</div>
-      <p className="text-white text-[13px] font-bold">{value}</p>
-      <p className="text-silver text-[10px]">{label}</p>
+    <div className="bg-white/40 rounded-lg py-2 px-2 text-center">
+      <div className="text-ink/60 flex items-center justify-center mb-0.5">{icon}</div>
+      <p className="text-ink text-[13px] font-bold">{value}</p>
+      <p className="text-ink/60 text-[10px]">{label}</p>
     </div>
   );
 }
@@ -538,32 +538,32 @@ function CompareModal({
       animate={{ y: 0 }}
       exit={{ y: "100%" }}
       transition={{ type: "spring", damping: 30, stiffness: 280 }}
-      className="fixed inset-0 z-50 bg-jet flex flex-col mobile-shell"
+      className="fixed inset-0 z-50 bg-white flex flex-col mobile-shell"
     >
       <div
         className="px-6 pt-4 pb-3 flex items-center justify-between"
         style={{ paddingTop: "max(16px, env(safe-area-inset-top))" }}
       >
-        <h3 className="text-white text-[18px] font-bold">Compare banks</h3>
-        <button onClick={onClose} className="text-white">
+        <h3 className="text-ink text-[18px] font-bold">Compare banks</h3>
+        <button onClick={onClose} className="text-ink">
           <X size={24} />
         </button>
       </div>
 
       <div className="flex-1 overflow-y-auto px-6 pb-32">
-        <div className="grid grid-cols-2 gap-3 sticky top-0 bg-jet pt-2 pb-3">
+        <div className="grid grid-cols-2 gap-3 sticky top-0 bg-white pt-2 pb-3">
           {items.map((b) => (
             <button
               key={b.name}
               onClick={() => setChosen(b.name)}
-              className={`bg-slate-blue rounded-2xl p-3 text-center border-2 transition ${
+              className={`bg-white rounded-2xl p-3 text-center border-2 transition ${
                 chosen === b.name ? "border-coral" : "border-transparent"
               }`}
             >
               <div className="h-10 w-10 mx-auto rounded-lg bg-white text-jet font-bold flex items-center justify-center">
                 {b.name[0]}
               </div>
-              <p className="mt-1 text-white text-[13px] font-bold">{b.name}</p>
+              <p className="mt-1 text-ink text-[13px] font-bold">{b.name}</p>
             </button>
           ))}
         </div>
@@ -573,16 +573,16 @@ function CompareModal({
             <div
               key={row.key}
               className={`grid grid-cols-3 px-3 py-3 ${
-                i % 2 === 0 ? "bg-slate-blue" : "bg-jet"
+                i % 2 === 0 ? "bg-white" : "bg-white"
               }`}
             >
-              <div className="text-silver text-[12px] font-semibold col-span-1">
+              <div className="text-ink/60 text-[12px] font-semibold col-span-1">
                 {row.label}
               </div>
               {items.map((b) => (
                 <div
                   key={b.name}
-                  className="text-white text-[13px] font-medium text-center col-span-1"
+                  className="text-ink text-[13px] font-medium text-center col-span-1"
                 >
                   {String(b[row.key])}
                 </div>
@@ -593,7 +593,7 @@ function CompareModal({
       </div>
 
       <div
-        className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[430px] px-6 pb-6 pt-3 bg-jet"
+        className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[430px] px-6 pb-6 pt-3 bg-white"
         style={{ paddingBottom: "max(20px, env(safe-area-inset-bottom))" }}
       >
         <CButton onClick={() => onChoose(chosen)} disabled={!chosen}>
@@ -621,18 +621,18 @@ function ApplyStep({ bank, onSubmitted }: { bank: string; onSubmitted: () => voi
       <div className="px-6 space-y-5">
         <div className="flex items-center gap-2">
           <ProgressDots filled={3} total={4} />
-          <span className="text-silver text-[12px]">Step 3 of 4</span>
+          <span className="text-ink/60 text-[12px]">Step 3 of 4</span>
         </div>
         <div>
-          <h2 className="text-white text-[22px] font-bold">Let's open your account 🎯</h2>
-          <p className="text-silver text-[13px] mt-1">
+          <h2 className="text-ink text-[22px] font-bold">Let's open your account 🎯</h2>
+          <p className="text-ink/60 text-[13px] mt-1">
             You chose <span className="text-coral font-semibold">{bank}</span>. Here's exactly what
             to do — we'll walk you through every step.
           </p>
         </div>
 
         <div className="relative pl-3">
-          <div className="absolute left-[18px] top-3 bottom-3 w-px bg-slate-blue" />
+          <div className="absolute left-[18px] top-3 bottom-3 w-px bg-white" />
           {steps.map((s, i) => (
             <motion.div
               key={i}
@@ -641,19 +641,19 @@ function ApplyStep({ bank, onSubmitted }: { bank: string; onSubmitted: () => voi
               transition={{ delay: i * 0.08 }}
               className="flex items-start gap-3 mb-3 relative"
             >
-              <div className="h-7 w-7 rounded-full bg-coral text-white text-[12px] font-bold flex items-center justify-center z-10">
+              <div className="h-7 w-7 rounded-full bg-coral text-ink text-[12px] font-bold flex items-center justify-center z-10">
                 {i + 1}
               </div>
-              <div className="flex-1 bg-slate-blue rounded-2xl p-4">
-                <p className="text-white text-[15px] font-bold">{s.t}</p>
-                <p className="text-silver text-[12px] mt-1 leading-snug">{s.d}</p>
+              <div className="flex-1 bg-white rounded-2xl p-4">
+                <p className="text-ink text-[15px] font-bold">{s.t}</p>
+                <p className="text-ink/60 text-[12px] mt-1 leading-snug">{s.d}</p>
               </div>
             </motion.div>
           ))}
         </div>
 
         <CCard delay={0.4}>
-          <h3 className="text-white text-[16px] font-bold mb-3">What to have ready 📋</h3>
+          <h3 className="text-ink text-[16px] font-bold mb-3">What to have ready 📋</h3>
           <DocChecklist />
         </CCard>
 
@@ -665,7 +665,7 @@ function ApplyStep({ bank, onSubmitted }: { bank: string; onSubmitted: () => voi
         >
           <div className="flex items-center gap-3">
             <Cleo pose="guiding" size={56} />
-            <p className="text-white text-[14px] font-semibold flex-1">
+            <p className="text-ink text-[14px] font-semibold flex-1">
               Ready? This takes about 10 minutes.
             </p>
           </div>
@@ -674,7 +674,7 @@ function ApplyStep({ bank, onSubmitted }: { bank: string; onSubmitted: () => voi
               Open {bank} app →
             </CButton>
           </div>
-          <p className="mt-2 text-white/80 text-[11px] text-center">
+          <p className="mt-2 text-ink/80 text-[11px] text-center">
             Come back here when done — we'll track your status.
           </p>
         </div>
@@ -697,15 +697,15 @@ function DocChecklist() {
         return (
           <li
             key={d.key}
-            className="flex items-center justify-between bg-jet/30 rounded-xl px-3 py-2.5"
+            className="flex items-center justify-between bg-white/30 rounded-xl px-3 py-2.5"
           >
-            <span className="text-white text-[14px]">{d.label}</span>
+            <span className="text-ink text-[14px]">{d.label}</span>
             <span
               className={`h-5 w-5 rounded-full flex items-center justify-center ${
                 have ? "bg-coral" : "border border-silver"
               }`}
             >
-              {have && <Check size={12} className="text-white" strokeWidth={3} />}
+              {have && <Check size={12} className="text-ink" strokeWidth={3} />}
             </span>
           </li>
         );
@@ -741,11 +741,11 @@ function TrackStep({
       <div className="px-6 space-y-5">
         <div className="flex items-center gap-2">
           <ProgressDots filled={4} total={4} />
-          <span className="text-silver text-[12px]">Step 4 of 4</span>
+          <span className="text-ink/60 text-[12px]">Step 4 of 4</span>
         </div>
         <div>
-          <h2 className="text-white text-[22px] font-bold">Application submitted! 🎉</h2>
-          <p className="text-silver text-[13px] mt-1">Now we wait. Here's where things stand:</p>
+          <h2 className="text-ink text-[22px] font-bold">Application submitted! 🎉</h2>
+          <p className="text-ink/60 text-[13px] mt-1">Now we wait. Here's where things stand:</p>
         </div>
 
         {/* Timeline */}
@@ -766,16 +766,16 @@ function TrackStep({
                   <div
                     className={`relative z-10 h-6 w-6 rounded-full flex items-center justify-center text-[10px] font-bold ${
                       done
-                        ? "bg-coral text-white"
+                        ? "bg-coral text-ink"
                         : current
                           ? "bg-coral/30 border-2 border-coral text-coral animate-pulse-ring"
-                          : "border border-silver/50 text-silver"
+                          : "border border-silver/50 text-ink/60"
                     }`}
                   >
                     {done ? <Check size={12} strokeWidth={3} /> : ""}
                   </div>
                   <p className={`mt-1.5 text-[10px] font-semibold text-center ${
-                    done || current ? "text-white" : "text-silver"
+                    done || current ? "text-ink" : "text-ink/60"
                   }`}>
                     {s}
                   </p>
@@ -789,18 +789,18 @@ function TrackStep({
           <div className="mb-2">
             <Pill>{phase >= 3 ? "✓ Approved" : "⏳ Under review"}</Pill>
           </div>
-          <p className="text-white text-[14px] leading-relaxed">
+          <p className="text-ink text-[14px] leading-relaxed">
             {phase >= 3
               ? `Your ${bank} account is being activated. Final touches in progress.`
               : `Your documents are being checked. This usually takes 1–3 business days for ${bank}.`}
           </p>
-          <p className="text-silver text-[11px] mt-2">Last updated: just now</p>
+          <p className="text-ink/60 text-[11px] mt-2">Last updated: just now</p>
         </CCard>
 
         <CCard className="flex items-center justify-between">
           <div>
-            <p className="text-white text-[14px] font-bold">Get notified when it's done 🔔</p>
-            <p className="text-silver text-[12px] mt-0.5">
+            <p className="text-ink text-[14px] font-bold">Get notified when it's done 🔔</p>
+            <p className="text-ink/60 text-[12px] mt-0.5">
               We'll send you a push the moment your account is ready.
             </p>
           </div>
@@ -810,7 +810,7 @@ function TrackStep({
         <CCard>
           <div className="flex items-center gap-3 mb-3">
             <Cleo pose="thinking" size={48} />
-            <p className="text-white text-[14px] font-semibold">
+            <p className="text-ink text-[14px] font-semibold">
               While your account is opening...
             </p>
           </div>
@@ -850,25 +850,25 @@ function SuccessStep({
   return (
     <div className="min-h-[100dvh] flex flex-col items-center justify-center px-6 text-center">
       <Cleo pose="celebrating" size={120} />
-      <h1 className="mt-6 text-white text-[28px] font-extrabold">Your account is open! 🏦</h1>
-      <p className="mt-2 text-silver text-[14px]">{bank} account activated</p>
+      <h1 className="mt-6 text-ink text-[28px] font-extrabold">Your account is open! 🏦</h1>
+      <p className="mt-2 text-ink/60 text-[14px]">{bank} account activated</p>
 
       <div
         className="mt-6 w-full rounded-2xl p-5"
         style={{ background: "linear-gradient(135deg, #EF8354 0%, #4F5D75 100%)" }}
       >
-        <p className="text-white text-[18px] font-bold">🎉 Quest complete!</p>
+        <p className="text-ink text-[18px] font-bold">🎉 Quest complete!</p>
         <motion.p
           initial={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ delay: 0.2 }}
-          className="text-white text-[28px] font-extrabold mt-1"
+          className="text-ink text-[28px] font-extrabold mt-1"
         >
           +150 XP earned
         </motion.p>
         <div className="mt-4">
           <ProgressBar value={4} max={4} />
-          <p className="text-white/90 text-[12px] mt-2">Level 1 — 100% complete</p>
+          <p className="text-ink/90 text-[12px] mt-2">Level 1 — 100% complete</p>
         </div>
       </div>
 
@@ -876,7 +876,7 @@ function SuccessStep({
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.6 }}
-        className="mt-4 bg-jet border border-coral/40 rounded-xl px-3 py-2 text-coral text-[13px] font-semibold"
+        className="mt-4 bg-white border border-coral/40 rounded-xl px-3 py-2 text-coral text-[13px] font-semibold"
       >
         🔓 Level 2 — Taxes unlocked!
       </motion.div>

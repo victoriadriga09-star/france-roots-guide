@@ -169,9 +169,9 @@ function QuestMap() {
   ];
 
   return (
-    <div className="mobile-shell-dark pb-32 relative">
-      {/* Ambient glow */}
-      <div className="absolute inset-0 bg-gradient-jungle-glow pointer-events-none opacity-60" />
+    <div className="mobile-shell pb-32 relative">
+      {/* Soft ambient glow */}
+      <div className="absolute inset-0 pointer-events-none opacity-60 bg-gradient-jungle-glow" />
 
       {/* Top bar */}
       <header
@@ -181,13 +181,13 @@ function QuestMap() {
         <Link to="/profile" className="flex items-center gap-3 active:scale-95 transition-transform">
           <div className="relative">
             <Cleo pose="waving" mood="happy" size={52} />
-            <span className="absolute -bottom-1 -right-1 h-4 w-4 bg-jungle rounded-full border-2 border-ink-black" />
+            <span className="absolute -bottom-1 -right-1 h-4 w-4 bg-jungle rounded-full border-2 border-white" />
           </div>
           <div>
-            <p className="text-porcelain/60 text-[10px] font-bold uppercase tracking-[2px]">
+            <p className="text-ink/55 text-[10px] font-bold uppercase tracking-[2px]">
               Bonjour
             </p>
-            <h2 className="text-porcelain text-[18px] font-display font-bold leading-tight">
+            <h2 className="text-ink text-[18px] font-display font-bold leading-tight">
               {onboarding.name}
             </h2>
           </div>
@@ -197,7 +197,7 @@ function QuestMap() {
           <StatChip Icon={Zap} value={xp} accent="gold" />
           <Link
             to="/profile"
-            className="h-9 w-9 rounded-full bg-jet-black border border-porcelain/10 flex items-center justify-center text-porcelain/70 active:scale-95"
+            className="h-9 w-9 rounded-full bg-white border border-ink-black/10 flex items-center justify-center text-ink/70 active:scale-95 shadow-soft"
           >
             <Settings size={16} />
           </Link>
@@ -206,21 +206,21 @@ function QuestMap() {
 
       {/* Level summary card */}
       <div className="px-5 mb-4 relative z-10">
-        <CCard tone="dark" delay={0.1} className="!p-4">
+        <CCard tone="default" delay={0.1} className="!p-4">
           <div className="flex items-center gap-3 mb-3">
             <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-jungle to-forest flex items-center justify-center shadow-glow-jungle">
               <Crown size={18} className="text-porcelain" />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-jungle text-[10px] font-bold uppercase tracking-[2px]">
+              <p className="text-forest text-[10px] font-bold uppercase tracking-[2px]">
                 Level 1 · Newcomer
               </p>
-              <p className="text-porcelain text-[15px] font-display font-bold">
-                {xp} <span className="text-porcelain/50">/ {xpToNext} XP</span>
+              <p className="text-ink text-[15px] font-display font-bold">
+                {xp} <span className="text-ink/40">/ {xpToNext} XP</span>
               </p>
             </div>
             <Pill variant="ghost">
-              <Trophy size={11} className="text-gold" />
+              <Trophy size={11} className="text-gold-deep" />
               {Math.round((xp / xpToNext) * 100)}%
             </Pill>
           </div>
@@ -228,7 +228,7 @@ function QuestMap() {
         </CCard>
       </div>
 
-      {/* Map background — abstract mountains/contour */}
+      {/* Map background — abstract dot grid */}
       <MapBackdrop />
 
       {/* Sections */}
@@ -247,15 +247,15 @@ function QuestMap() {
         className="flex flex-col items-center mt-8 mb-12 relative z-10"
       >
         <div className="relative">
-          <div className="absolute inset-0 rounded-3xl bg-gold/30 blur-2xl animate-glow-pulse" />
+          <div className="absolute inset-0 rounded-3xl bg-gold/40 blur-2xl animate-glow-pulse" />
           <div className="relative h-24 w-24 rounded-[28px] bg-gradient-gold border border-gold/50 flex items-center justify-center shadow-deep">
             <Trophy size={42} className="text-ink-black" strokeWidth={2.4} />
           </div>
         </div>
-        <p className="text-porcelain text-[12px] font-bold uppercase tracking-[2px] mt-3">
+        <p className="text-ink text-[12px] font-bold uppercase tracking-[2px] mt-3">
           Final Reward
         </p>
-        <p className="text-porcelain/55 text-[12px] font-medium">
+        <p className="text-ink/55 text-[12px] font-medium">
           Become a France Pro
         </p>
       </motion.div>
@@ -293,9 +293,9 @@ function SectionBlock({ section, index }: { section: Section; index: number }) {
               <path
                 key={i}
                 d={`M ${x1}% ${y1} Q ${(x1 + x2) / 2}% ${(y1 + y2) / 2 + 14} ${x2}% ${y2}`}
-                stroke={isLocked ? "rgba(252,255,252,0.12)" : "rgba(43,168,74,0.45)"}
-                strokeWidth="2.5"
-                strokeDasharray="2 8"
+                stroke={isLocked ? "rgba(4,15,15,0.12)" : "rgba(36,130,50,0.45)"}
+                strokeWidth="3"
+                strokeDasharray="2 9"
                 strokeLinecap="round"
                 fill="none"
               />
@@ -336,18 +336,18 @@ function SectionBanner({ section, index }: { section: Section; index: number }) 
       <div
         className={`relative rounded-[22px] p-4 border overflow-hidden ${
           isLocked
-            ? "bg-jet-black/60 border-porcelain/8"
-            : "bg-gradient-card-dark border-jungle/25"
+            ? "bg-white/70 border-ink-black/8"
+            : "bg-white border-jungle/25"
         } shadow-soft`}
       >
         {!isLocked && (
-          <div className="absolute -right-6 -top-6 h-24 w-24 rounded-full bg-jungle/20 blur-2xl pointer-events-none" />
+          <div className="absolute -right-6 -top-6 h-24 w-24 rounded-full bg-jungle/15 blur-2xl pointer-events-none" />
         )}
         <div className="flex items-center gap-3 relative">
           <div
             className={`h-12 w-12 rounded-2xl flex items-center justify-center border ${
               isLocked
-                ? "bg-jet-black border-porcelain/10 text-porcelain/40"
+                ? "bg-mint-tint border-ink-black/10 text-ink/40"
                 : "bg-gradient-to-br from-jungle to-forest border-jungle/40 text-porcelain shadow-glow-jungle"
             }`}
           >
@@ -356,26 +356,24 @@ function SectionBanner({ section, index }: { section: Section; index: number }) 
           <div className="flex-1 min-w-0">
             <p
               className={`text-[10px] font-bold uppercase tracking-[2px] ${
-                isLocked ? "text-porcelain/40" : "text-jungle"
+                isLocked ? "text-ink/40" : "text-forest"
               }`}
             >
               Section {section.level}
             </p>
             <p
               className={`text-[16px] font-display font-bold leading-tight truncate ${
-                isLocked ? "text-porcelain/60" : "text-porcelain"
+                isLocked ? "text-ink/55" : "text-ink"
               }`}
             >
               {section.title}
             </p>
-            <p className={`text-[11px] font-medium truncate ${isLocked ? "text-porcelain/35" : "text-porcelain/55"}`}>
+            <p className={`text-[11px] font-medium truncate ${isLocked ? "text-ink/40" : "text-ink/60"}`}>
               {section.subtitle}
             </p>
           </div>
           {isComingSoon ? (
-            <Pill variant="ghost" className="text-porcelain/70">
-              Coming soon
-            </Pill>
+            <Pill variant="ghost">Coming soon</Pill>
           ) : isLocked ? (
             <Pill variant="ghost">
               <Lock size={10} />
@@ -406,8 +404,8 @@ function StatChip({
 }) {
   const tone =
     accent === "coral"
-      ? "bg-coral/15 text-coral border-coral/30"
-      : "bg-gold/15 text-gold border-gold/30";
+      ? "bg-[#FFE6DC] text-coral border-coral/30"
+      : "bg-gold/25 text-[#7A5A12] border-gold/40";
   return (
     <motion.div
       initial={{ scale: 0 }}
@@ -424,13 +422,13 @@ function StatChip({
 function MapBackdrop() {
   return (
     <svg
-      className="absolute inset-0 w-full h-full pointer-events-none opacity-[0.18]"
+      className="absolute inset-0 w-full h-full pointer-events-none opacity-[0.35]"
       preserveAspectRatio="xMidYMid slice"
       viewBox="0 0 430 1800"
     >
       <defs>
         <pattern id="dotgrid" x="0" y="0" width="28" height="28" patternUnits="userSpaceOnUse">
-          <circle cx="2" cy="2" r="1" fill="#2BA84A" />
+          <circle cx="2" cy="2" r="1.2" fill="#2BA84A" opacity="0.45" />
         </pattern>
       </defs>
       <rect width="100%" height="100%" fill="url(#dotgrid)" />
@@ -454,28 +452,28 @@ function PathNode({
   const isBoss = node.type === "boss";
   const Icon = node.Icon;
 
-  let bgClass = "bg-gradient-card-dark";
-  let borderClass = "border-porcelain/15";
-  let iconColor = "text-porcelain/30";
-  let shadowStyle = "0 4px 0 rgba(0,0,0,0.55)";
+  let bgClass = "bg-white";
+  let borderClass = "border-ink-black/10";
+  let iconColor = "text-ink/30";
+  let shadowStyle = "0 4px 0 rgba(4,15,15,0.10)";
 
   if (locked) {
-    bgClass = "bg-jet-black/70";
-    borderClass = "border-porcelain/8";
-    iconColor = "text-porcelain/30";
-    shadowStyle = "0 4px 0 rgba(0,0,0,0.5)";
+    bgClass = "bg-white/70";
+    borderClass = "border-ink-black/8";
+    iconColor = "text-ink/30";
+    shadowStyle = "0 4px 0 rgba(4,15,15,0.08)";
   } else if (done) {
     bgClass = "bg-gradient-to-br from-jungle to-forest";
-    borderClass = "border-jungle/40";
+    borderClass = "border-forest";
     iconColor = "text-porcelain";
     shadowStyle = "0 5px 0 #1a5f24, 0 12px 24px -8px rgba(43,168,74,0.5)";
   } else if (isCurrent) {
-    bgClass = isBoss ? "bg-gradient-gold" : "bg-gradient-to-br from-[#4FE07A] to-jungle";
+    bgClass = isBoss ? "bg-gradient-gold" : "bg-gradient-to-br from-[#5DE48A] to-jungle";
     borderClass = isBoss ? "border-gold/60" : "border-jungle/60";
     iconColor = "text-ink-black";
     shadowStyle = isBoss
       ? "0 6px 0 #B7861F, 0 14px 28px -8px rgba(229,168,46,0.55)"
-      : "0 6px 0 #1a5f24, 0 14px 28px -8px rgba(43,168,74,0.6)";
+      : "0 6px 0 #1a5f24, 0 14px 28px -8px rgba(43,168,74,0.55)";
   }
 
   const size = isBoss ? 88 : 76;
@@ -505,16 +503,16 @@ function PathNode({
           transition={{ delay: delay + 0.3, type: "spring" }}
           className="absolute -top-12 z-10 pointer-events-none"
         >
-          <div className="bg-porcelain text-ink-black rounded-full px-3 py-1 text-[10px] font-bold tracking-wide shadow-soft border border-ink-black/10">
+          <div className="bg-ink-black text-porcelain rounded-full px-3 py-1 text-[10px] font-bold tracking-wide shadow-soft border border-ink-black/10 relative">
             START
-            <span className="absolute left-1/2 -translate-x-1/2 -bottom-1 w-2 h-2 bg-porcelain rotate-45 border-r border-b border-ink-black/10" />
+            <span className="absolute left-1/2 -translate-x-1/2 -bottom-1 w-2 h-2 bg-ink-black rotate-45" />
           </div>
         </motion.div>
       )}
 
       <button
         disabled={locked}
-        className={`relative ${bgClass} ${borderClass} border rounded-full flex items-center justify-center transition-transform active:translate-y-1 disabled:cursor-not-allowed`}
+        className={`relative ${bgClass} ${borderClass} border-2 rounded-full flex items-center justify-center transition-transform active:translate-y-1 disabled:cursor-not-allowed`}
         style={{
           width: size,
           height: size,
@@ -524,13 +522,13 @@ function PathNode({
         {/* top sheen */}
         {!locked && (
           <span
-            className="absolute top-1.5 left-1/2 -translate-x-1/2 w-[55%] h-[28%] rounded-full bg-white/30 blur-[1px] pointer-events-none"
+            className="absolute top-1.5 left-1/2 -translate-x-1/2 w-[55%] h-[28%] rounded-full bg-white/40 blur-[1px] pointer-events-none"
           />
         )}
         {locked ? (
           <Lock size={isBoss ? 26 : 22} className={iconColor} strokeWidth={2.2} />
         ) : (
-          <Icon size={isBoss ? 32 : 28} className={iconColor} strokeWidth={2.2} />
+          <Icon size={isBoss ? 32 : 28} className={iconColor} strokeWidth={2.4} />
         )}
 
         {isBoss && !locked && (
@@ -539,7 +537,7 @@ function PathNode({
           </span>
         )}
         {done && (
-          <span className="absolute -bottom-1 -right-1 bg-ink-black rounded-full h-7 w-7 flex items-center justify-center border-2 border-jungle">
+          <span className="absolute -bottom-1 -right-1 bg-white rounded-full h-7 w-7 flex items-center justify-center border-2 border-jungle shadow-soft">
             <Check size={14} strokeWidth={3} className="text-jungle" />
           </span>
         )}
@@ -547,7 +545,7 @@ function PathNode({
 
       <p
         className={`mt-2 text-[12px] font-bold text-center max-w-[120px] leading-tight ${
-          locked ? "text-porcelain/30" : "text-porcelain"
+          locked ? "text-ink/35" : "text-ink"
         }`}
       >
         {node.title}

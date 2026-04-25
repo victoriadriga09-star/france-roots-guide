@@ -19,12 +19,12 @@ function Profile() {
         className="px-6 pt-6 pb-2 flex flex-col items-center"
         style={{ paddingTop: "max(24px, env(safe-area-inset-top))" }}
       >
-        <div className="h-[72px] w-[72px] rounded-full bg-coral text-white text-[32px] font-extrabold flex items-center justify-center">
+        <div className="h-[72px] w-[72px] rounded-full bg-coral text-ink text-[32px] font-extrabold flex items-center justify-center">
           {initial}
         </div>
-        <h1 className="text-white text-[22px] font-bold mt-3">{onboarding.name}</h1>
+        <h1 className="text-ink text-[22px] font-bold mt-3">{onboarding.name}</h1>
         <div className="mt-2"><Pill>Level 1 — Newcomer</Pill></div>
-        <p className="text-silver text-[12px] mt-1">⚡ {xp} XP</p>
+        <p className="text-ink/60 text-[12px] mt-1">⚡ {xp} XP</p>
       </div>
 
       <div className="px-6 mt-5">
@@ -38,21 +38,21 @@ function Profile() {
       </div>
 
       <div className="px-6 mt-5">
-        <p className="text-silver text-[12px] uppercase tracking-wider font-semibold mb-2">
+        <p className="text-ink/60 text-[12px] uppercase tracking-wider font-semibold mb-2">
           Your countries
         </p>
         <CCard delay={0.1}>
           <div className="flex items-center gap-3">
             <div className="text-[28px]">{onboarding.fromCountryFlag}</div>
             <div className="flex-1">
-              <p className="text-white text-[14px] font-semibold">Home — {onboarding.fromCountry}</p>
+              <p className="text-ink text-[14px] font-semibold">Home — {onboarding.fromCountry}</p>
             </div>
             <div className="text-[28px] ring-2 ring-coral rounded-full p-1">🇫🇷</div>
             <div className="flex-1">
-              <p className="text-white text-[14px] font-semibold">Current — France</p>
+              <p className="text-ink text-[14px] font-semibold">Current — France</p>
             </div>
           </div>
-          <button className="mt-3 text-silver text-[13px] flex items-center gap-1">
+          <button className="mt-3 text-ink/60 text-[13px] flex items-center gap-1">
             <Plus size={14} /> Add country
           </button>
         </CCard>
@@ -93,21 +93,21 @@ function Stat({ n, l }: { n: React.ReactNode; l: string }) {
   return (
     <div>
       <p className="text-coral text-[20px] font-extrabold">{n}</p>
-      <p className="text-silver text-[11px] mt-0.5">{l}</p>
+      <p className="text-ink/60 text-[11px] mt-0.5">{l}</p>
     </div>
   );
 }
 
 function Row({ icon, label }: { icon: React.ReactNode; label: string }) {
   return (
-    <button className="w-full px-5 py-4 flex items-center gap-3 text-left active:bg-jet/30 transition">
+    <button className="w-full px-5 py-4 flex items-center gap-3 text-left active:bg-white/30 transition">
       <span className="text-coral">{icon}</span>
-      <span className="text-white text-[14px] flex-1">{label}</span>
-      <ChevronRight size={16} className="text-silver" />
+      <span className="text-ink text-[14px] flex-1">{label}</span>
+      <ChevronRight size={16} className="text-ink/60" />
     </button>
   );
 }
 
 function Divider() {
-  return <div className="h-px bg-jet/40 mx-5" />;
+  return <div className="h-px bg-white/40 mx-5" />;
 }

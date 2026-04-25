@@ -133,10 +133,10 @@ function BenefitsLevel() {
           </svg>
         </div>
 
-        <h2 className="text-white text-[22px] font-bold">
+        <h2 className="text-ink text-[22px] font-bold">
           France loves to give. Let's make sure you receive. 🇫🇷
         </h2>
-        <p className="text-silver text-[13px] -mt-3">
+        <p className="text-ink/60 text-[13px] -mt-3">
           Here's what you're likely entitled to — most people miss at least one of these.
         </p>
 
@@ -144,11 +144,11 @@ function BenefitsLevel() {
           className="rounded-[20px] p-5 text-center"
           style={{ background: "linear-gradient(135deg, #EF8354 0%, #d96d3f 100%)" }}
         >
-          <p className="text-white/90 text-[12px] uppercase tracking-wider font-semibold">
+          <p className="text-ink/90 text-[12px] uppercase tracking-wider font-semibold">
             💰 You may be entitled to
           </p>
-          <p className="text-white text-[36px] font-extrabold mt-1">~€2,100/year</p>
-          <p className="text-white/80 text-[12px]">Across 3 benefits based on your profile</p>
+          <p className="text-ink text-[36px] font-extrabold mt-1">~€2,100/year</p>
+          <p className="text-ink/80 text-[12px]">Across 3 benefits based on your profile</p>
         </div>
 
         <div className="space-y-3">
@@ -179,23 +179,23 @@ function BenefitCard({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3, delay }}
       whileTap={{ scale: 0.98 }}
-      className={`w-full text-left bg-slate-blue rounded-[20px] p-5 border-l-4 ${
+      className={`w-full text-left bg-white rounded-[20px] p-5 border-l-4 ${
         b.eligible ? "border-coral" : "border-silver/40"
       }`}
     >
       <div className="flex items-start gap-3">
         <span className="text-3xl">{b.emoji}</span>
         <div className="flex-1">
-          <p className="text-white text-[15px] font-bold">{b.name}</p>
+          <p className="text-ink text-[15px] font-bold">{b.name}</p>
           <p className="text-coral text-[20px] font-extrabold mt-1">{b.value}</p>
-          <p className="text-silver text-[12px] mt-1 leading-snug">{b.desc}</p>
+          <p className="text-ink/60 text-[12px] mt-1 leading-snug">{b.desc}</p>
         </div>
         <Pill variant={b.eligible ? "coral" : "silver"}>
           {b.eligible ? "✓ Eligible" : "Check"}
         </Pill>
       </div>
       <div className="mt-3 flex items-center justify-between">
-        <span className="text-silver text-[12px]">○ Not applied yet</span>
+        <span className="text-ink/60 text-[12px]">○ Not applied yet</span>
         <span className="text-coral text-[12px] font-semibold flex items-center gap-1">
           Start quest <ArrowRight size={14} />
         </span>
@@ -211,7 +211,7 @@ function BenefitDetail({ b, onClose }: { b: Benefit; onClose: () => void }) {
       animate={{ x: 0 }}
       exit={{ x: "100%" }}
       transition={{ type: "spring", damping: 30, stiffness: 280 }}
-      className="fixed inset-0 z-50 bg-jet mobile-shell overflow-y-auto pb-28"
+      className="fixed inset-0 z-50 bg-white mobile-shell overflow-y-auto pb-28"
     >
       <TopBar title={b.name} onBack={onClose} />
       <div className="px-6 space-y-5">
@@ -219,25 +219,25 @@ function BenefitDetail({ b, onClose }: { b: Benefit; onClose: () => void }) {
           className="rounded-[20px] p-5"
           style={{ background: "linear-gradient(135deg, #EF8354 0%, #4F5D75 100%)" }}
         >
-          <p className="text-white/90 text-[12px] uppercase tracking-wider">Estimated value</p>
-          <p className="text-white text-[36px] font-extrabold">{b.value}</p>
-          <p className="text-white/90 text-[13px]">Eligible based on your profile</p>
+          <p className="text-ink/90 text-[12px] uppercase tracking-wider">Estimated value</p>
+          <p className="text-ink text-[36px] font-extrabold">{b.value}</p>
+          <p className="text-ink/90 text-[13px]">Eligible based on your profile</p>
         </div>
 
         <CCard>
-          <h3 className="text-white text-[16px] font-bold mb-2">What is it?</h3>
-          <p className="text-white/90 text-[14px]">{b.desc}</p>
+          <h3 className="text-ink text-[16px] font-bold mb-2">What is it?</h3>
+          <p className="text-ink/90 text-[14px]">{b.desc}</p>
         </CCard>
 
         <CCard className="border-l-4 border-coral">
-          <h3 className="text-white text-[16px] font-bold mb-2">Why this applies to you</h3>
-          <p className="text-white/90 text-[14px]">{b.why}</p>
+          <h3 className="text-ink text-[16px] font-bold mb-2">Why this applies to you</h3>
+          <p className="text-ink/90 text-[14px]">{b.why}</p>
         </CCard>
 
         <div>
-          <h3 className="text-white text-[16px] font-bold mb-3">How to apply</h3>
+          <h3 className="text-ink text-[16px] font-bold mb-3">How to apply</h3>
           <div className="relative pl-3">
-            <div className="absolute left-[18px] top-3 bottom-3 w-px bg-slate-blue" />
+            <div className="absolute left-[18px] top-3 bottom-3 w-px bg-white" />
             {b.steps.map((s, i) => (
               <motion.div
                 key={i}
@@ -246,12 +246,12 @@ function BenefitDetail({ b, onClose }: { b: Benefit; onClose: () => void }) {
                 transition={{ delay: i * 0.07 }}
                 className="flex items-start gap-3 mb-3 relative"
               >
-                <div className="h-7 w-7 rounded-full bg-coral text-white text-[12px] font-bold flex items-center justify-center z-10">
+                <div className="h-7 w-7 rounded-full bg-coral text-ink text-[12px] font-bold flex items-center justify-center z-10">
                   {i + 1}
                 </div>
-                <div className="flex-1 bg-slate-blue rounded-2xl p-4">
-                  <p className="text-white text-[14px] font-bold">{s.t}</p>
-                  <p className="text-silver text-[12px] mt-1">{s.d}</p>
+                <div className="flex-1 bg-white rounded-2xl p-4">
+                  <p className="text-ink text-[14px] font-bold">{s.t}</p>
+                  <p className="text-ink/60 text-[12px] mt-1">{s.d}</p>
                 </div>
               </motion.div>
             ))}
@@ -259,16 +259,16 @@ function BenefitDetail({ b, onClose }: { b: Benefit; onClose: () => void }) {
         </div>
 
         <CCard>
-          <h3 className="text-white text-[15px] font-bold mb-2">What you'll need</h3>
+          <h3 className="text-ink text-[15px] font-bold mb-2">What you'll need</h3>
           <ul className="space-y-2">
             {["Proof of address", "Bank IBAN", "ID / passport"].map((d) => (
               <li
                 key={d}
-                className="flex items-center justify-between bg-jet/30 rounded-xl px-3 py-2.5"
+                className="flex items-center justify-between bg-white/30 rounded-xl px-3 py-2.5"
               >
-                <span className="text-white text-[13px]">{d}</span>
+                <span className="text-ink text-[13px]">{d}</span>
                 <span className="h-5 w-5 rounded-full bg-coral flex items-center justify-center">
-                  <Check size={12} className="text-white" strokeWidth={3} />
+                  <Check size={12} className="text-ink" strokeWidth={3} />
                 </span>
               </li>
             ))}
@@ -281,17 +281,17 @@ function BenefitDetail({ b, onClose }: { b: Benefit; onClose: () => void }) {
 
         {/* Tracking preview */}
         <CCard>
-          <h3 className="text-white text-[15px] font-bold mb-3">Tracking</h3>
+          <h3 className="text-ink text-[15px] font-bold mb-3">Tracking</h3>
           <div className="flex items-center justify-between">
             {["Applied", "Processing", "Approved", "Paid"].map((s, i) => (
               <div key={s} className="flex-1 flex flex-col items-center relative">
                 {i > 0 && <div className="absolute right-1/2 top-3 h-0.5 w-full bg-silver/30" />}
                 <div className="h-6 w-6 rounded-full border border-silver/50 z-10" />
-                <p className="mt-1 text-[10px] text-silver text-center">{s}</p>
+                <p className="mt-1 text-[10px] text-ink/60 text-center">{s}</p>
               </div>
             ))}
           </div>
-          <p className="text-silver text-[12px] mt-3">
+          <p className="text-ink/60 text-[12px] mt-3">
             CAF usually processes in 2–4 weeks. We'll notify you the moment it moves.
           </p>
         </CCard>
