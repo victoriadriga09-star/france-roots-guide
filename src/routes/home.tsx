@@ -404,8 +404,8 @@ function StatChip({
 }) {
   const tone =
     accent === "coral"
-      ? "bg-coral/15 text-coral border-coral/30"
-      : "bg-gold/15 text-gold border-gold/30";
+      ? "bg-[#FFE6DC] text-coral border-coral/30"
+      : "bg-gold/25 text-[#7A5A12] border-gold/40";
   return (
     <motion.div
       initial={{ scale: 0 }}
