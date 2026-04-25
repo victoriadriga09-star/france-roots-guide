@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import { Search, ChevronLeft, Check, Lock } from "lucide-react";
 import { CButton } from "@/components/concierge/CButton";
-import { Cleo } from "@/components/concierge/Cleo";
+import { Cleo, CleoBubble } from "@/components/concierge/Cleo";
 import { useApp } from "@/lib/store";
 
 export const Route = createFileRoute("/onboarding")({
