@@ -336,18 +336,18 @@ function SectionBanner({ section, index }: { section: Section; index: number }) 
       <div
         className={`relative rounded-[22px] p-4 border overflow-hidden ${
           isLocked
-            ? "bg-jet-black/60 border-porcelain/8"
-            : "bg-gradient-card-dark border-jungle/25"
+            ? "bg-white/70 border-ink-black/8"
+            : "bg-white border-jungle/25"
         } shadow-soft`}
       >
         {!isLocked && (
-          <div className="absolute -right-6 -top-6 h-24 w-24 rounded-full bg-jungle/20 blur-2xl pointer-events-none" />
+          <div className="absolute -right-6 -top-6 h-24 w-24 rounded-full bg-jungle/15 blur-2xl pointer-events-none" />
         )}
         <div className="flex items-center gap-3 relative">
           <div
             className={`h-12 w-12 rounded-2xl flex items-center justify-center border ${
               isLocked
-                ? "bg-jet-black border-porcelain/10 text-porcelain/40"
+                ? "bg-mint-tint border-ink-black/10 text-ink/40"
                 : "bg-gradient-to-br from-jungle to-forest border-jungle/40 text-porcelain shadow-glow-jungle"
             }`}
           >
@@ -356,26 +356,24 @@ function SectionBanner({ section, index }: { section: Section; index: number }) 
           <div className="flex-1 min-w-0">
             <p
               className={`text-[10px] font-bold uppercase tracking-[2px] ${
-                isLocked ? "text-porcelain/40" : "text-jungle"
+                isLocked ? "text-ink/40" : "text-forest"
               }`}
             >
               Section {section.level}
             </p>
             <p
               className={`text-[16px] font-display font-bold leading-tight truncate ${
-                isLocked ? "text-porcelain/60" : "text-porcelain"
+                isLocked ? "text-ink/55" : "text-ink"
               }`}
             >
               {section.title}
             </p>
-            <p className={`text-[11px] font-medium truncate ${isLocked ? "text-porcelain/35" : "text-porcelain/55"}`}>
+            <p className={`text-[11px] font-medium truncate ${isLocked ? "text-ink/40" : "text-ink/60"}`}>
               {section.subtitle}
             </p>
           </div>
           {isComingSoon ? (
-            <Pill variant="ghost" className="text-porcelain/70">
-              Coming soon
-            </Pill>
+            <Pill variant="ghost">Coming soon</Pill>
           ) : isLocked ? (
             <Pill variant="ghost">
               <Lock size={10} />
