@@ -18,7 +18,7 @@ import {
 import { TopBar } from "@/components/concierge/TopBar";
 import { CCard, Pill, ProgressBar } from "@/components/concierge/CCard";
 import { CButton } from "@/components/concierge/CButton";
-import { Cleo } from "@/components/concierge/Cleo";
+import { Cleo, CleoBubble } from "@/components/concierge/Cleo";
 import { useApp } from "@/lib/store";
 import { celebrate } from "@/lib/celebrate";
 
