@@ -452,28 +452,28 @@ function PathNode({
   const isBoss = node.type === "boss";
   const Icon = node.Icon;
 
-  let bgClass = "bg-gradient-card-dark";
-  let borderClass = "border-porcelain/15";
-  let iconColor = "text-porcelain/30";
-  let shadowStyle = "0 4px 0 rgba(0,0,0,0.55)";
+  let bgClass = "bg-white";
+  let borderClass = "border-ink-black/10";
+  let iconColor = "text-ink/30";
+  let shadowStyle = "0 4px 0 rgba(4,15,15,0.10)";
 
   if (locked) {
-    bgClass = "bg-jet-black/70";
-    borderClass = "border-porcelain/8";
-    iconColor = "text-porcelain/30";
-    shadowStyle = "0 4px 0 rgba(0,0,0,0.5)";
+    bgClass = "bg-white/70";
+    borderClass = "border-ink-black/8";
+    iconColor = "text-ink/30";
+    shadowStyle = "0 4px 0 rgba(4,15,15,0.08)";
   } else if (done) {
     bgClass = "bg-gradient-to-br from-jungle to-forest";
-    borderClass = "border-jungle/40";
+    borderClass = "border-forest";
     iconColor = "text-porcelain";
     shadowStyle = "0 5px 0 #1a5f24, 0 12px 24px -8px rgba(43,168,74,0.5)";
   } else if (isCurrent) {
-    bgClass = isBoss ? "bg-gradient-gold" : "bg-gradient-to-br from-[#4FE07A] to-jungle";
+    bgClass = isBoss ? "bg-gradient-gold" : "bg-gradient-to-br from-[#5DE48A] to-jungle";
     borderClass = isBoss ? "border-gold/60" : "border-jungle/60";
     iconColor = "text-ink-black";
     shadowStyle = isBoss
       ? "0 6px 0 #B7861F, 0 14px 28px -8px rgba(229,168,46,0.55)"
-      : "0 6px 0 #1a5f24, 0 14px 28px -8px rgba(43,168,74,0.6)";
+      : "0 6px 0 #1a5f24, 0 14px 28px -8px rgba(43,168,74,0.55)";
   }
 
   const size = isBoss ? 88 : 76;
@@ -503,16 +503,16 @@ function PathNode({
           transition={{ delay: delay + 0.3, type: "spring" }}
           className="absolute -top-12 z-10 pointer-events-none"
         >
-          <div className="bg-porcelain text-ink-black rounded-full px-3 py-1 text-[10px] font-bold tracking-wide shadow-soft border border-ink-black/10">
+          <div className="bg-ink-black text-porcelain rounded-full px-3 py-1 text-[10px] font-bold tracking-wide shadow-soft border border-ink-black/10 relative">
             START
-            <span className="absolute left-1/2 -translate-x-1/2 -bottom-1 w-2 h-2 bg-porcelain rotate-45 border-r border-b border-ink-black/10" />
+            <span className="absolute left-1/2 -translate-x-1/2 -bottom-1 w-2 h-2 bg-ink-black rotate-45" />
           </div>
         </motion.div>
       )}
 
       <button
         disabled={locked}
-        className={`relative ${bgClass} ${borderClass} border rounded-full flex items-center justify-center transition-transform active:translate-y-1 disabled:cursor-not-allowed`}
+        className={`relative ${bgClass} ${borderClass} border-2 rounded-full flex items-center justify-center transition-transform active:translate-y-1 disabled:cursor-not-allowed`}
         style={{
           width: size,
           height: size,
@@ -522,13 +522,13 @@ function PathNode({
         {/* top sheen */}
         {!locked && (
           <span
-            className="absolute top-1.5 left-1/2 -translate-x-1/2 w-[55%] h-[28%] rounded-full bg-white/30 blur-[1px] pointer-events-none"
+            className="absolute top-1.5 left-1/2 -translate-x-1/2 w-[55%] h-[28%] rounded-full bg-white/40 blur-[1px] pointer-events-none"
           />
         )}
         {locked ? (
           <Lock size={isBoss ? 26 : 22} className={iconColor} strokeWidth={2.2} />
         ) : (
-          <Icon size={isBoss ? 32 : 28} className={iconColor} strokeWidth={2.2} />
+          <Icon size={isBoss ? 32 : 28} className={iconColor} strokeWidth={2.4} />
         )}
 
         {isBoss && !locked && (
@@ -537,7 +537,7 @@ function PathNode({
           </span>
         )}
         {done && (
-          <span className="absolute -bottom-1 -right-1 bg-ink-black rounded-full h-7 w-7 flex items-center justify-center border-2 border-jungle">
+          <span className="absolute -bottom-1 -right-1 bg-white rounded-full h-7 w-7 flex items-center justify-center border-2 border-jungle shadow-soft">
             <Check size={14} strokeWidth={3} className="text-jungle" />
           </span>
         )}
@@ -545,7 +545,7 @@ function PathNode({
 
       <p
         className={`mt-2 text-[12px] font-bold text-center max-w-[120px] leading-tight ${
-          locked ? "text-porcelain/30" : "text-porcelain"
+          locked ? "text-ink/35" : "text-ink"
         }`}
       >
         {node.title}
