@@ -473,25 +473,38 @@
   }
   .animate-orbit { animation: orbit 8s linear infinite; }
 
-  /* ========== Mobile shell ========== */
+  /* ========== Mobile shell — soft mint canvas ========== */
   .mobile-shell {
     max-width: 430px;
     margin: 0 auto;
     min-height: 100dvh;
-    background: var(--porcelain);
+    background:
+      radial-gradient(120% 60% at 50% -10%, #DDF1D6 0%, rgba(221,241,214,0) 60%),
+      linear-gradient(180deg, #F2F9EE 0%, #EAF6E1 100%);
+    color: var(--ink-black);
     position: relative;
     overflow-x: hidden;
   }
 
+  /* Backwards-compat: dark variant now resolves to the same airy light shell */
   .mobile-shell-dark {
     max-width: 430px;
     margin: 0 auto;
     min-height: 100dvh;
-    background: linear-gradient(180deg, #040F0F 0%, #0c1f15 50%, #0a1a12 100%);
-    color: var(--porcelain);
+    background:
+      radial-gradient(120% 60% at 50% -10%, #DDF1D6 0%, rgba(221,241,214,0) 60%),
+      linear-gradient(180deg, #F2F9EE 0%, #EAF6E1 100%);
+    color: var(--ink-black);
     position: relative;
     overflow-x: hidden;
   }
+
+  /* Soft section background for hero blocks */
+  .bg-mint-canvas {
+    background: linear-gradient(180deg, #F2F9EE 0%, #DDF1D6 100%);
+  }
+  .bg-mint-soft { background: #EAF6E1; }
+  .bg-mint-tint { background: #F4FAEF; }
 
   /* Decorative ambient glows */
   .bg-clouds::before {
