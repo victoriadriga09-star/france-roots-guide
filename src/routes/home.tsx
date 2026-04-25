@@ -293,9 +293,9 @@ function SectionBlock({ section, index }: { section: Section; index: number }) {
               <path
                 key={i}
                 d={`M ${x1}% ${y1} Q ${(x1 + x2) / 2}% ${(y1 + y2) / 2 + 14} ${x2}% ${y2}`}
-                stroke={isLocked ? "rgba(252,255,252,0.12)" : "rgba(43,168,74,0.45)"}
-                strokeWidth="2.5"
-                strokeDasharray="2 8"
+                stroke={isLocked ? "rgba(4,15,15,0.12)" : "rgba(36,130,50,0.45)"}
+                strokeWidth="3"
+                strokeDasharray="2 9"
                 strokeLinecap="round"
                 fill="none"
               />
