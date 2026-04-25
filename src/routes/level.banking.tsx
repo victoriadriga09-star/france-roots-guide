@@ -139,33 +139,37 @@ function BankingLevel() {
 function IntroStep({ onNext }: { onNext: () => void }) {
   return (
     <>
-      <TopBar title="Level 1 · Banking 🏦" />
+      <TopBar title="Banking · Level 1" />
       <div className="px-5 pt-2 pb-4 space-y-4">
         {/* Hero */}
         <div
-          className="h-[170px] rounded-[24px] relative overflow-hidden flex items-end p-5 border-2 border-ink shadow-[0_5px_0_rgba(31,34,54,0.85)]"
+          className="h-[180px] rounded-[28px] relative overflow-hidden flex items-end p-5 border border-jungle/30 shadow-deep"
           style={{
             background:
-              "linear-gradient(135deg, #A1CDF4 0%, #A9AFD1 100%)",
+              "linear-gradient(160deg, #0F2818 0%, #1a4422 60%, #248232 100%)",
           }}
         >
-          <svg viewBox="0 0 200 120" className="absolute inset-0 w-full h-full opacity-90">
-            <rect x="40" y="40" width="120" height="70" fill="none" stroke="#1F2236" strokeWidth="3" />
-            <polygon points="30,40 100,15 170,40" fill="none" stroke="#1F2236" strokeWidth="3" />
-            <rect x="55" y="55" width="14" height="22" fill="none" stroke="#1F2236" strokeWidth="2" />
-            <rect x="78" y="55" width="14" height="22" fill="none" stroke="#1F2236" strokeWidth="2" />
-            <rect x="108" y="55" width="14" height="22" fill="none" stroke="#1F2236" strokeWidth="2" />
-            <rect x="131" y="55" width="14" height="22" fill="none" stroke="#1F2236" strokeWidth="2" />
-            <rect x="92" y="80" width="16" height="30" fill="#FFD23F" stroke="#1F2236" strokeWidth="2" />
-            <text x="100" y="35" textAnchor="middle" fontSize="11" fill="#1F2236" fontWeight="800">
-              🏦 BANQUE
-            </text>
+          <div className="absolute inset-0 bg-gradient-jungle-glow opacity-70 pointer-events-none" />
+          {/* abstract bank illustration */}
+          <svg viewBox="0 0 200 120" className="absolute inset-0 w-full h-full opacity-20">
+            <rect x="40" y="40" width="120" height="70" fill="none" stroke="#FCFFFC" strokeWidth="2" />
+            <polygon points="30,40 100,15 170,40" fill="none" stroke="#FCFFFC" strokeWidth="2" />
+            <rect x="55" y="55" width="14" height="22" fill="none" stroke="#FCFFFC" strokeWidth="1.5" />
+            <rect x="78" y="55" width="14" height="22" fill="none" stroke="#FCFFFC" strokeWidth="1.5" />
+            <rect x="108" y="55" width="14" height="22" fill="none" stroke="#FCFFFC" strokeWidth="1.5" />
+            <rect x="131" y="55" width="14" height="22" fill="none" stroke="#FCFFFC" strokeWidth="1.5" />
           </svg>
           <div className="absolute top-4 left-4">
             <Pill variant="yellow">+50 XP for finishing</Pill>
           </div>
+          <div className="relative z-10 flex-1">
+            <p className="text-jungle text-[10px] font-bold uppercase tracking-[2px] mb-1">Chapter 1</p>
+            <h2 className="text-porcelain text-[24px] font-display font-bold leading-tight">
+              Banking, decoded.
+            </h2>
+          </div>
           <div className="absolute -bottom-2 right-2">
-            <Cleo pose="guiding" mood="happy" size={84} />
+            <Cleo pose="guiding" mood="happy" size={92} />
           </div>
         </div>
 
