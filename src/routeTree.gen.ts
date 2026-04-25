@@ -13,6 +13,9 @@ import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as LoadingRouteImport } from './routes/loading'
 import { Route as HomeRouteImport } from './routes/home'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as LevelTaxesRouteImport } from './routes/level.taxes'
+import { Route as LevelBenefitsRouteImport } from './routes/level.benefits'
+import { Route as LevelBankingRouteImport } from './routes/level.banking'
 
 const OnboardingRoute = OnboardingRouteImport.update({
   id: '/onboarding',
@@ -34,18 +37,39 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LevelTaxesRoute = LevelTaxesRouteImport.update({
+  id: '/level/taxes',
+  path: '/level/taxes',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LevelBenefitsRoute = LevelBenefitsRouteImport.update({
+  id: '/level/benefits',
+  path: '/level/benefits',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LevelBankingRoute = LevelBankingRouteImport.update({
+  id: '/level/banking',
+  path: '/level/banking',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/home': typeof HomeRoute
   '/loading': typeof LoadingRoute
   '/onboarding': typeof OnboardingRoute
+  '/level/banking': typeof LevelBankingRoute
+  '/level/benefits': typeof LevelBenefitsRoute
+  '/level/taxes': typeof LevelTaxesRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/home': typeof HomeRoute
   '/loading': typeof LoadingRoute
   '/onboarding': typeof OnboardingRoute
+  '/level/banking': typeof LevelBankingRoute
+  '/level/benefits': typeof LevelBenefitsRoute
+  '/level/taxes': typeof LevelTaxesRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -53,13 +77,38 @@ export interface FileRoutesById {
   '/home': typeof HomeRoute
   '/loading': typeof LoadingRoute
   '/onboarding': typeof OnboardingRoute
+  '/level/banking': typeof LevelBankingRoute
+  '/level/benefits': typeof LevelBenefitsRoute
+  '/level/taxes': typeof LevelTaxesRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/home' | '/loading' | '/onboarding'
+  fullPaths:
+    | '/'
+    | '/home'
+    | '/loading'
+    | '/onboarding'
+    | '/level/banking'
+    | '/level/benefits'
+    | '/level/taxes'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/home' | '/loading' | '/onboarding'
-  id: '__root__' | '/' | '/home' | '/loading' | '/onboarding'
+  to:
+    | '/'
+    | '/home'
+    | '/loading'
+    | '/onboarding'
+    | '/level/banking'
+    | '/level/benefits'
+    | '/level/taxes'
+  id:
+    | '__root__'
+    | '/'
+    | '/home'
+    | '/loading'
+    | '/onboarding'
+    | '/level/banking'
+    | '/level/benefits'
+    | '/level/taxes'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -67,6 +116,9 @@ export interface RootRouteChildren {
   HomeRoute: typeof HomeRoute
   LoadingRoute: typeof LoadingRoute
   OnboardingRoute: typeof OnboardingRoute
+  LevelBankingRoute: typeof LevelBankingRoute
+  LevelBenefitsRoute: typeof LevelBenefitsRoute
+  LevelTaxesRoute: typeof LevelTaxesRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -99,6 +151,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/level/taxes': {
+      id: '/level/taxes'
+      path: '/level/taxes'
+      fullPath: '/level/taxes'
+      preLoaderRoute: typeof LevelTaxesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/level/benefits': {
+      id: '/level/benefits'
+      path: '/level/benefits'
+      fullPath: '/level/benefits'
+      preLoaderRoute: typeof LevelBenefitsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/level/banking': {
+      id: '/level/banking'
+      path: '/level/banking'
+      fullPath: '/level/banking'
+      preLoaderRoute: typeof LevelBankingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -107,7 +180,19 @@ const rootRouteChildren: RootRouteChildren = {
   HomeRoute: HomeRoute,
   LoadingRoute: LoadingRoute,
   OnboardingRoute: OnboardingRoute,
+  LevelBankingRoute: LevelBankingRoute,
+  LevelBenefitsRoute: LevelBenefitsRoute,
+  LevelTaxesRoute: LevelTaxesRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { createStart } from '@tanstack/react-start'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+  }
+}
