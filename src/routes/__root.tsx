@@ -44,6 +44,12 @@ export const Route = createRootRoute({
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
+      { name: "twitter:title", content: "Concierge — Your guide to life in France" },
+      { name: "description", content: "Concierge guides newcomers through France with gamified financial and administrative support." },
+      { property: "og:description", content: "Concierge guides newcomers through France with gamified financial and administrative support." },
+      { name: "twitter:description", content: "Concierge guides newcomers through France with gamified financial and administrative support." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/55c977ad-68c9-4034-803b-84c1e2ec4537/id-preview-51b0725c--ad938315-38ac-4f6e-b2d9-d5b7c6a5d6a6.lovable.app-1777139668819.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/55c977ad-68c9-4034-803b-84c1e2ec4537/id-preview-51b0725c--ad938315-38ac-4f6e-b2d9-d5b7c6a5d6a6.lovable.app-1777139668819.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
