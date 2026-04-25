@@ -18,6 +18,7 @@ export interface QuestState {
   bankApplied?: boolean;
   bankActive?: boolean;
   taxesFiled?: boolean;
+  benefitsClaimed?: boolean;
   benefitsApplied: string[];
 }
 

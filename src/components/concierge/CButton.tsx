@@ -11,16 +11,16 @@ interface CButtonProps extends Omit<HTMLMotionProps<"button">, "ref"> {
 }
 
 const variantClass: Record<Variant, string> = {
-  primary: "bg-gradient-lemon text-black border border-black/20 shadow-lemon",
-  secondary: "bg-transparent text-lemon border-[1.5px] border-lemon",
+  primary: "btn-cute-primary text-black",
+  secondary: "btn-cute-secondary text-lemon",
   ghost: "bg-transparent text-white hover:bg-white/5",
-  white: "bg-white text-black border border-black/12",
-  yellow: "bg-gradient-lemon text-black shadow-lemon",
-  mint: "bg-gradient-lemon text-black shadow-lemon",
+  white: "btn-cute-primary text-black",
+  yellow: "btn-cute-primary text-black",
+  mint: "btn-cute-primary text-black",
   dark: "bg-navy text-white border border-white/10",
-  outline: "bg-transparent text-lemon border-[1.5px] border-lemon",
-  lilac: "bg-gradient-lilac text-black shadow-lilac",
-  pink: "bg-gradient-pink text-black shadow-pink",
+  outline: "btn-cute-secondary text-lemon",
+  lilac: "bg-gradient-lilac text-black shadow-lilac border border-black/15",
+  pink: "bg-gradient-pink text-black shadow-pink border border-black/15",
 };
 
 const sizeClass = {
