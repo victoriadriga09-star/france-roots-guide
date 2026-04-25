@@ -31,13 +31,13 @@ export function CCard({
     : {};
 
   const toneClass = {
-    default: "bg-gradient-card-light border-ink-black/8 text-ink shadow-soft",
+    default: "bg-white border-ink-black/8 text-ink shadow-soft",
     yellow: "bg-gradient-gold border-ink-black/15 text-ink shadow-soft",
-    mint: "bg-pop-mint border-ink-black/15 text-ink shadow-soft",
-    coral: "bg-pop-coral text-white border-ink-black/20 shadow-soft",
-    ink: "bg-ink-black text-porcelain border-jungle/20 shadow-deep",
-    dark: "bg-gradient-card-dark text-porcelain border-porcelain/8 shadow-deep",
-    forest: "bg-gradient-forest text-porcelain border-ink-black/30 shadow-coral-glow",
+    mint: "bg-[#E6F4DD] border-jungle/25 text-ink shadow-soft",
+    coral: "bg-[#FFE6DC] text-ink border-ink-black/8 shadow-soft",
+    ink: "bg-white text-ink border-ink-black/8 shadow-soft",
+    dark: "bg-white text-ink border-ink-black/8 shadow-soft",
+    forest: "bg-gradient-forest text-porcelain border-ink-black/15 shadow-coral-glow",
   }[tone];
 
   return (
