@@ -68,7 +68,7 @@ function Deadlines() {
         className="px-6 pt-4 pb-3"
         style={{ paddingTop: "max(16px, env(safe-area-inset-top))" }}
       >
-        <h1 className="text-white text-[24px] font-bold">Upcoming deadlines 🗓</h1>
+        <h1 className="text-ink text-[24px] font-bold">Upcoming deadlines 🗓</h1>
       </div>
 
       <div className="px-6 mb-4 overflow-x-auto scrollbar-hide">
@@ -79,8 +79,8 @@ function Deadlines() {
               onClick={() => setFilter(f)}
               className={`px-4 py-2 rounded-full text-[13px] font-semibold transition ${
                 filter === f
-                  ? "bg-coral text-white"
-                  : "bg-slate-blue text-silver"
+                  ? "bg-coral text-ink"
+                  : "bg-white text-ink/60"
               }`}
             >
               {f}
@@ -97,7 +97,7 @@ function Deadlines() {
             className={`border-l-4 ${colors[item.urgency as keyof typeof colors]}`}
           >
             <div className="flex items-start justify-between gap-3">
-              <p className="text-white text-[15px] font-bold flex-1">{item.title}</p>
+              <p className="text-ink text-[15px] font-bold flex-1">{item.title}</p>
               <p
                 className={`text-[14px] font-extrabold whitespace-nowrap ${
                   textColors[item.urgency as keyof typeof textColors]
@@ -106,10 +106,10 @@ function Deadlines() {
                 {item.days}d
               </p>
             </div>
-            <p className="text-silver text-[12px] mt-1">{item.desc}</p>
+            <p className="text-ink/60 text-[12px] mt-1">{item.desc}</p>
             <div className="mt-3">
               {item.done ? (
-                <button className="text-silver text-[13px] font-semibold">Already done ✓</button>
+                <button className="text-ink/60 text-[13px] font-semibold">Already done ✓</button>
               ) : (
                 <button className="text-coral text-[13px] font-bold">Start quest →</button>
               )}
