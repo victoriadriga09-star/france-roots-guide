@@ -266,33 +266,38 @@ function Step3() {
   return (
     <div>
       <StepHeader
-        title="And you're heading to..."
-        subtitle="Currently we guide you through France. More countries coming soon 🌍"
+        title="Destination: France 🇫🇷"
+        subtitle="That's where I'll guide you. Other countries are in training... 🌍"
       />
-      <div className="bg-slate-blue rounded-[20px] p-5 border-2 border-coral shadow-coral-glow relative overflow-hidden">
+      <div className="bg-white border-2 border-ink rounded-[24px] p-5 relative overflow-hidden shadow-[0_5px_0_rgba(31,34,54,0.85)]">
         <svg
           viewBox="0 0 200 180"
-          className="absolute right-2 bottom-2 opacity-25"
+          className="absolute right-2 bottom-2 opacity-30"
           width="160"
           height="140"
         >
           <path
             d="M100 20 L130 35 L150 30 L165 55 L160 90 L175 105 L160 130 L140 145 L120 155 L95 160 L70 150 L50 130 L40 100 L30 75 L45 55 L65 40 L85 25 Z"
-            fill="none"
-            stroke="#EF8354"
+            fill="#A1CDF4"
+            stroke="#1F2236"
             strokeWidth="2.5"
           />
         </svg>
         <div className="relative">
           <div className="flex items-center gap-2 mb-1">
-            <span className="text-2xl">🇫🇷</span>
-            <span className="text-white text-[20px] font-bold">France</span>
+            <span className="text-3xl">🇫🇷</span>
+            <span className="text-ink text-[22px] font-extrabold">France</span>
           </div>
-          <p className="text-silver text-[13px]">Paris · Lyon · Marseille · and everywhere else</p>
+          <p className="text-ink/70 text-[13px] font-semibold">
+            Paris · Lyon · Marseille · Bordeaux · everywhere
+          </p>
         </div>
       </div>
 
-      <div className="mt-6 grid grid-cols-3 gap-3">
+      <p className="mt-6 text-ink/70 text-[12px] font-bold uppercase tracking-wider">
+        Coming soon
+      </p>
+      <div className="mt-2 grid grid-cols-3 gap-3">
         {[
           { f: "🇩🇪", n: "Germany" },
           { f: "🇳🇱", n: "Netherlands" },
@@ -300,10 +305,10 @@ function Step3() {
         ].map((c) => (
           <div
             key={c.n}
-            className="bg-slate-blue/50 rounded-[16px] p-3 flex flex-col items-center gap-1 opacity-50"
+            className="bg-white/40 border-2 border-ink/20 rounded-[16px] p-3 flex flex-col items-center gap-1"
           >
-            <span className="text-[22px]">{c.f}</span>
-            <span className="text-silver text-[11px] font-medium flex items-center gap-1">
+            <span className="text-[24px] grayscale opacity-60">{c.f}</span>
+            <span className="text-ink/60 text-[11px] font-bold flex items-center gap-1">
               {c.n} <Lock size={10} />
             </span>
           </div>
@@ -314,10 +319,10 @@ function Step3() {
 }
 
 const GOALS = [
-  { id: "banking", emoji: "🏦", t: "Banking & Finance", d: "Open accounts, manage money" },
-  { id: "admin", emoji: "📋", t: "Administrative Setup", d: "Residence, CAF, social security" },
-  { id: "taxes", emoji: "💰", t: "Taxes & Declarations", d: "Understand & file your taxes" },
-  { id: "perks", emoji: "🎁", t: "Perks & Benefits", d: "Subventions you're entitled to" },
+  { id: "banking", emoji: "🏦", t: "Banking", d: "Open a French account" },
+  { id: "admin", emoji: "📋", t: "Admin Setup", d: "Residence, CAF, sécu" },
+  { id: "taxes", emoji: "💰", t: "Taxes", d: "Declare without crying" },
+  { id: "perks", emoji: "🎁", t: "Perks", d: "Money the state owes you" },
 ];
 
 function Step4({
@@ -331,9 +336,15 @@ function Step4({
     value.includes(id) ? onChange(value.filter((x) => x !== id)) : onChange([...value, id]);
   return (
     <div>
-      <StepHeader
-        title="What do you mainly need help with?"
-        subtitle="Pick everything that applies — your path will be built around this."
+      <CleoBubble
+        side="left"
+        pose="thinking"
+        text={
+          <>
+            What's giving you the biggest headache? Tap all that apply — I'll handle the rest. 💪
+          </>
+        }
+        className="mb-5"
       />
       <div className="grid grid-cols-2 gap-3">
         {GOALS.map((g) => {
@@ -341,18 +352,18 @@ function Step4({
           return (
             <motion.button
               key={g.id}
-              whileTap={{ scale: 0.96 }}
+              whileTap={{ scale: 0.95 }}
               onClick={() => toggle(g.id)}
-              className={`relative bg-slate-blue rounded-[16px] p-4 flex flex-col items-start gap-2 text-left border-2 transition-all ${
-                sel ? "border-coral shadow-coral-glow" : "border-transparent"
+              className={`relative bg-white rounded-[20px] p-4 flex flex-col items-start gap-2 text-left border-2 transition-all shadow-[0_4px_0_rgba(31,34,54,0.85)] ${
+                sel ? "border-ink ring-4 ring-pop-mint/60 bg-pop-mint/30" : "border-ink"
               }`}
             >
-              <span className="text-[28px]">{g.emoji}</span>
-              <span className="text-white text-[14px] font-bold leading-tight">{g.t}</span>
-              <span className="text-silver text-[12px] leading-snug">{g.d}</span>
+              <span className="text-[32px]">{g.emoji}</span>
+              <span className="text-ink text-[15px] font-extrabold leading-tight">{g.t}</span>
+              <span className="text-ink/70 text-[12px] leading-snug font-semibold">{g.d}</span>
               {sel && (
-                <span className="absolute top-2 right-2 h-5 w-5 rounded-full bg-coral flex items-center justify-center">
-                  <Check size={12} strokeWidth={3} className="text-white" />
+                <span className="absolute top-2 right-2 h-6 w-6 rounded-full bg-ink flex items-center justify-center border-2 border-white">
+                  <Check size={12} strokeWidth={3} className="text-pop-mint" />
                 </span>
               )}
             </motion.button>
@@ -365,7 +376,7 @@ function Step4({
 
 const STATUSES = [
   { id: "student", emoji: "🎓", label: "Student" },
-  { id: "salaried", emoji: "💼", label: "Salaried employee" },
+  { id: "salaried", emoji: "💼", label: "Salaried" },
   { id: "freelance", emoji: "🧾", label: "Freelance" },
   { id: "jobseek", emoji: "🔍", label: "Job-seeking" },
 ];
@@ -374,8 +385,8 @@ function Step5({ value, onChange }: { value: string; onChange: (v: string) => vo
   return (
     <div>
       <StepHeader
-        title="What's your situation in France?"
-        subtitle="This changes what you're eligible for."
+        title="Your situation in France?"
+        subtitle="This unlocks the right benefits and rules."
       />
       <div className="grid grid-cols-2 gap-3">
         {STATUSES.map((s) => {
@@ -383,35 +394,35 @@ function Step5({ value, onChange }: { value: string; onChange: (v: string) => vo
           return (
             <motion.button
               key={s.id}
-              whileTap={{ scale: 0.96 }}
+              whileTap={{ scale: 0.95 }}
               onClick={() => onChange(s.id)}
-              className={`bg-slate-blue rounded-[16px] p-4 flex flex-col items-start gap-2 text-left border-2 transition-all ${
-                sel ? "border-coral shadow-coral-glow" : "border-transparent"
+              className={`bg-white rounded-[20px] p-4 flex flex-col items-start gap-2 text-left border-2 transition-all shadow-[0_4px_0_rgba(31,34,54,0.85)] ${
+                sel ? "border-ink ring-4 ring-sky/60 bg-sky/30" : "border-ink"
               }`}
             >
-              <span className="text-[28px]">{s.emoji}</span>
-              <span className="text-white text-[14px] font-bold">{s.label}</span>
+              <span className="text-[32px]">{s.emoji}</span>
+              <span className="text-ink text-[15px] font-extrabold">{s.label}</span>
             </motion.button>
           );
         })}
       </div>
-      <p className="mt-4 text-silver text-[12px] text-center">
-        Not sure? Pick the closest one — you can update later.
+      <p className="mt-4 text-ink/60 text-[12px] text-center font-semibold">
+        Not sure? Pick the closest — you can change it anytime.
       </p>
     </div>
   );
 }
 
 const TIMES = [
-  { id: "new", label: "I just arrived (under 3 months)" },
-  { id: "3-12", label: "A few months (3–12 months)" },
-  { id: "year+", label: "Over a year" },
+  { id: "new", label: "Just landed (under 3 months)", emoji: "🛬" },
+  { id: "3-12", label: "Settling in (3–12 months)", emoji: "🏡" },
+  { id: "year+", label: "Old timer (over a year)", emoji: "🥖" },
 ];
 
 function Step6({ value, onChange }: { value: string; onChange: (v: string) => void }) {
   return (
     <div>
-      <StepHeader title="How long have you been in France?" />
+      <StepHeader title="How long in France? ⏱️" />
       <div className="flex flex-col gap-3">
         {TIMES.map((t) => {
           const sel = value === t.id;
@@ -420,11 +431,12 @@ function Step6({ value, onChange }: { value: string; onChange: (v: string) => vo
               key={t.id}
               whileTap={{ scale: 0.97 }}
               onClick={() => onChange(t.id)}
-              className={`h-[56px] rounded-[14px] px-4 text-[15px] font-semibold transition-all ${
-                sel ? "bg-coral text-white" : "bg-slate-blue text-white"
+              className={`h-[64px] rounded-[18px] px-4 text-[15px] font-extrabold transition-all flex items-center gap-3 border-2 border-ink shadow-[0_4px_0_rgba(31,34,54,0.85)] ${
+                sel ? "bg-sky text-ink ring-4 ring-sky/40" : "bg-white text-ink"
               }`}
             >
-              {t.label}
+              <span className="text-[26px]">{t.emoji}</span>
+              <span className="flex-1 text-left">{t.label}</span>
             </motion.button>
           );
         })}
@@ -444,61 +456,63 @@ function Step7({
   return (
     <div>
       <StepHeader
-        title="Do you still have financial ties to your home country?"
-        subtitle="Bank account, savings, property, or money sent back home."
+        title="Still tied to home? 🏠"
+        subtitle="A bank account, savings, property, or money sent back home."
       />
       <div className="grid grid-cols-2 gap-3">
         {[
-          { v: true, label: "Yes, I do", icon: "🏦 🏠" },
-          { v: false, label: "Not really", icon: "🇫🇷" },
+          { v: true, label: "Yes, I do", icon: "🏦" },
+          { v: false, label: "Not really", icon: "✂️" },
         ].map((o) => {
           const sel = value === o.v;
           return (
             <motion.button
               key={String(o.v)}
-              whileTap={{ scale: 0.96 }}
+              whileTap={{ scale: 0.95 }}
               onClick={() => onChange(o.v)}
-              className={`bg-slate-blue rounded-[16px] p-5 flex flex-col items-center gap-3 border-2 transition-all ${
-                sel ? "border-coral shadow-coral-glow" : "border-transparent"
+              className={`bg-white rounded-[20px] p-5 flex flex-col items-center gap-3 border-2 transition-all shadow-[0_4px_0_rgba(31,34,54,0.85)] ${
+                sel ? "border-ink ring-4 ring-sky/60 bg-sky/30" : "border-ink"
               }`}
             >
-              <span className="text-[32px]">{o.icon}</span>
-              <span className="text-white text-[14px] font-bold">{o.label}</span>
+              <span className="text-[40px]">{o.icon}</span>
+              <span className="text-ink text-[15px] font-extrabold">{o.label}</span>
             </motion.button>
           );
         })}
       </div>
       <button
         onClick={() => setOpen(!open)}
-        className="mt-5 text-coral text-[13px] font-semibold"
+        className="mt-5 text-ink text-[13px] font-extrabold underline decoration-2 underline-offset-4 decoration-sky"
       >
-        {open ? "Hide" : "What counts as a tie?"}
+        {open ? "Got it ✓" : "What counts as a tie? 🤔"}
       </button>
       <AnimatePresence>
         {open && (
-          <motion.p
+          <motion.div
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            className="mt-2 text-silver text-[13px] overflow-hidden"
+            className="overflow-hidden"
           >
-            A bank account, savings account, property, pension, or regular family transfers.
-          </motion.p>
+            <p className="mt-3 bg-pop-yellow border-2 border-ink rounded-2xl px-4 py-3 text-ink text-[13px] font-semibold">
+              💡 A bank account, savings, property, pension, or regular family transfers home.
+            </p>
+          </motion.div>
         )}
       </AnimatePresence>
     </div>
   );
 }
 
-const DOCS: { key: string; label: string }[] = [
-  { key: "bank", label: "French bank account" },
-  { key: "sim", label: "French SIM card / phone number" },
-  { key: "address", label: "Proof of address (quittance de loyer)" },
-  { key: "secu", label: "Social Security number (numéro de sécu)" },
-  { key: "vitale", label: "Carte Vitale (health card)" },
-  { key: "visa", label: "Residence permit / visa" },
-  { key: "fiscal", label: "French tax number (numéro fiscal)" },
-  { key: "caf", label: "CAF number" },
+const DOCS: { key: string; label: string; emoji: string }[] = [
+  { key: "bank", label: "French bank account", emoji: "🏦" },
+  { key: "sim", label: "French SIM / phone number", emoji: "📱" },
+  { key: "address", label: "Proof of address (quittance)", emoji: "📄" },
+  { key: "secu", label: "Social Security number", emoji: "🔢" },
+  { key: "vitale", label: "Carte Vitale (health card)", emoji: "💊" },
+  { key: "visa", label: "Residence permit / visa", emoji: "🛂" },
+  { key: "fiscal", label: "French tax number", emoji: "💰" },
+  { key: "caf", label: "CAF number", emoji: "🎁" },
 ];
 
 function Step8({
@@ -508,33 +522,51 @@ function Step8({
   docs: Record<string, boolean>;
   onToggle: (k: string) => void;
 }) {
+  const count = Object.values(docs).filter(Boolean).length;
   return (
     <div>
-      <StepHeader
-        title="What documents do you already have in France?"
-        subtitle="Tick everything you've sorted — we'll skip the steps you don't need."
+      <CleoBubble
+        side="left"
+        pose="celebrating"
+        mood="wow"
+        tone="tip"
+        text={
+          <>
+            Almost there! Tick what you already have — <b>{count}/8 unlocked</b> ✨
+          </>
+        }
+        className="mb-5"
       />
       <div className="flex flex-col gap-2">
         {DOCS.map((d) => {
           const on = docs[d.key];
           return (
-            <button
+            <motion.button
               key={d.key}
+              whileTap={{ scale: 0.98 }}
               onClick={() => onToggle(d.key)}
-              className="bg-slate-blue rounded-[12px] p-4 flex items-center justify-between text-left active:scale-[0.99] transition-transform"
+              className={`rounded-[16px] p-3.5 flex items-center justify-between text-left border-2 border-ink shadow-[0_3px_0_rgba(31,34,54,0.85)] transition-colors ${
+                on ? "bg-pop-mint" : "bg-white"
+              }`}
             >
-              <span className="text-white text-[15px] flex-1 pr-3">{d.label}</span>
+              <div className="flex items-center gap-3 flex-1">
+                <span className="text-[22px]">{d.emoji}</span>
+                <span className="text-ink text-[14px] font-extrabold flex-1">{d.label}</span>
+              </div>
               <motion.span
-                animate={{ backgroundColor: on ? "#EF8354" : "#BFC0C0" }}
-                className="relative w-11 h-6 rounded-full flex-shrink-0"
+                animate={{
+                  backgroundColor: on ? "#1F2236" : "#FFFFFF",
+                  borderColor: "#1F2236",
+                }}
+                className="relative w-12 h-7 rounded-full flex-shrink-0 border-2"
               >
                 <motion.span
                   animate={{ x: on ? 22 : 2 }}
                   transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                  className="absolute top-1 h-4 w-4 rounded-full bg-white shadow"
+                  className="absolute top-0.5 h-5 w-5 rounded-full bg-pop-yellow border-2 border-ink"
                 />
               </motion.span>
-            </button>
+            </motion.button>
           );
         })}
       </div>
