@@ -228,16 +228,16 @@ function Step2({
   return (
     <div>
       <StepHeader
-        title="Where are you coming from?"
-        subtitle="We'll tailor everything to your home country's situation."
+        title="Where's home? 🌍"
+        subtitle="So I know exactly which paperwork dragons we're slaying."
       />
       <div className="relative mb-4">
-        <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-silver" />
+        <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-ink/50" />
         <input
           value={q}
           onChange={(e) => setQ(e.target.value)}
           placeholder="Search your country..."
-          className="w-full h-[48px] pl-11 pr-4 bg-slate-blue rounded-[12px] text-white placeholder:text-silver/60 outline-none border-b-2 border-transparent focus:border-coral"
+          className="w-full h-[52px] pl-11 pr-4 bg-white border-2 border-ink rounded-[16px] text-ink placeholder:text-ink/40 outline-none font-semibold text-[15px] focus:ring-4 focus:ring-sky/40 shadow-[0_4px_0_rgba(31,34,54,0.85)]"
         />
       </div>
       <div className="grid grid-cols-2 gap-3">
@@ -246,14 +246,14 @@ function Step2({
           return (
             <motion.button
               key={c.name}
-              whileTap={{ scale: 0.96 }}
+              whileTap={{ scale: 0.95 }}
               onClick={() => onChange(c.name, c.flag)}
-              className={`bg-slate-blue rounded-[16px] p-4 flex flex-col items-center gap-2 border-2 transition-all ${
-                selected ? "border-coral shadow-coral-glow" : "border-transparent"
+              className={`bg-white rounded-[20px] p-4 flex flex-col items-center gap-2 border-2 transition-all shadow-[0_4px_0_rgba(31,34,54,0.85)] ${
+                selected ? "border-ink ring-4 ring-sky/50 bg-sky/30" : "border-ink"
               }`}
             >
-              <span className="text-[28px] leading-none">{c.flag}</span>
-              <span className="text-white text-[13px] font-semibold">{c.name}</span>
+              <span className="text-[32px] leading-none">{c.flag}</span>
+              <span className="text-ink text-[14px] font-extrabold">{c.name}</span>
             </motion.button>
           );
         })}
