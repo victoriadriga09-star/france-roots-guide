@@ -422,13 +422,13 @@ function StatChip({
 function MapBackdrop() {
   return (
     <svg
-      className="absolute inset-0 w-full h-full pointer-events-none opacity-[0.18]"
+      className="absolute inset-0 w-full h-full pointer-events-none opacity-[0.35]"
       preserveAspectRatio="xMidYMid slice"
       viewBox="0 0 430 1800"
     >
       <defs>
         <pattern id="dotgrid" x="0" y="0" width="28" height="28" patternUnits="userSpaceOnUse">
-          <circle cx="2" cy="2" r="1" fill="#2BA84A" />
+          <circle cx="2" cy="2" r="1.2" fill="#2BA84A" opacity="0.45" />
         </pattern>
       </defs>
       <rect width="100%" height="100%" fill="url(#dotgrid)" />
