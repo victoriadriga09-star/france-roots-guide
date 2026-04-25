@@ -63,28 +63,28 @@ function Onboarding() {
     <div className="mobile-shell bg-clouds flex flex-col">
       {/* Top */}
       <div
-        className="px-5 pb-3 flex items-center gap-3 z-10"
+        className="px-5 pb-3 flex items-center gap-3 z-10 glass-light"
         style={{ paddingTop: "max(14px, env(safe-area-inset-top))" }}
       >
         <button
           onClick={back}
           aria-label="Back"
-          className="h-10 w-10 -ml-1 rounded-full flex items-center justify-center bg-white border-2 border-ink shadow-[0_3px_0_rgba(31,34,54,0.85)] active:translate-y-0.5 transition-all text-ink"
+          className="h-10 w-10 -ml-1 rounded-full flex items-center justify-center bg-white border border-ink-black/10 text-ink shadow-soft active:scale-95 transition-all"
         >
-          <ChevronLeft size={22} strokeWidth={2.6} />
+          <ChevronLeft size={20} strokeWidth={2.4} />
         </button>
-        <div className="flex-1 h-3 rounded-full bg-white/50 border-2 border-ink overflow-hidden">
+        <div className="flex-1 h-2.5 rounded-full bg-ink-black/10 overflow-hidden">
           <motion.div
-            className="h-full bg-pop-mint rounded-full relative"
+            className="h-full bg-gradient-to-r from-jungle to-forest rounded-full relative"
             initial={false}
             animate={{ width: `${(step / TOTAL) * 100}%` }}
-            transition={{ duration: 0.5, ease: "easeOut" }}
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
           >
-            <span className="absolute inset-x-0 top-0 h-1/2 bg-white/40 rounded-t-full" />
+            <span className="absolute inset-x-0 top-0 h-1/2 bg-white/30 rounded-t-full" />
           </motion.div>
         </div>
-        <div className="bg-pop-yellow border-2 border-ink rounded-full px-2.5 py-1 text-[11px] font-extrabold text-ink shadow-[0_3px_0_rgba(31,34,54,0.85)]">
-          {step}/{TOTAL}
+        <div className="bg-ink-black text-porcelain rounded-full px-2.5 py-1 text-[11px] font-bold">
+          {step}<span className="text-porcelain/50">/{TOTAL}</span>
         </div>
       </div>
 
@@ -155,11 +155,11 @@ function Onboarding() {
         style={{
           paddingBottom: "max(20px, env(safe-area-inset-bottom))",
           background:
-            "linear-gradient(180deg, rgba(199,210,238,0) 0%, rgba(199,210,238,0.95) 40%)",
+            "linear-gradient(180deg, rgba(252,255,252,0) 0%, rgba(252,255,252,0.96) 40%)",
         }}
       >
         <CButton onClick={next} disabled={!canContinue} size="lg">
-          {step === TOTAL ? "Build my path! 🚀" : "Continue"}
+          {step === TOTAL ? "Build my journey" : "Continue"}
         </CButton>
       </div>
     </div>

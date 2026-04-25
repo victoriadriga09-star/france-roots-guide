@@ -13,8 +13,8 @@ interface CleoProps {
 
 /**
  * Cleo — the Concierge mascot.
- * A round, friendly periwinkle creature with a gold key crown.
- * Inspired by Duolingo-style characters: chunky, expressive, and lovable.
+ * A round, expressive forest-green creature with a gold key crown.
+ * Designed with depth via gradients, soft shading, and highlights.
  */
 export function Cleo({
   pose = "default",
@@ -23,18 +23,16 @@ export function Cleo({
   className = "",
   animated = true,
 }: CleoProps) {
-  // Body color: sky blue body with periwinkle belly
-  const skin = "#A1CDF4";
-  const skinDark = "#6FA8D6";
-  const belly = "#E8F1FB";
-  const ink = "#1F2236";
-  const gold = "#FFD23F";
-  const goldDark = "#D9A800";
-  const cheek = "#FFB3A8";
+  const ink = "#040F0F";
+  const gold = "#FFD86B";
+  const goldDark = "#B7861F";
+  const cheek = "#FF9E7D";
 
   const headTilt = pose === "thinking" ? -8 : pose === "guiding" ? 4 : 0;
+  const gradId = `cleoBody-${size}-${pose}`;
+  const bellyGradId = `cleoBelly-${size}-${pose}`;
+  const goldGradId = `cleoGold-${size}-${pose}`;
 
-  // Eyes per mood
   const Eyes = () => {
     if (mood === "wink") {
       return (
@@ -63,21 +61,18 @@ export function Cleo({
         </>
       );
     }
-    // happy default
     return (
       <>
-        <ellipse cx="40" cy="50" rx="3.6" ry="4.4" fill={ink} />
-        <ellipse cx="60" cy="50" rx="3.6" ry="4.4" fill={ink} />
-        <circle cx="41" cy="48.5" r="1.3" fill="white" />
-        <circle cx="61" cy="48.5" r="1.3" fill="white" />
+        <ellipse cx="40" cy="50" rx="3.8" ry="4.6" fill={ink} />
+        <ellipse cx="60" cy="50" rx="3.8" ry="4.6" fill={ink} />
+        <circle cx="41.2" cy="48.4" r="1.4" fill="white" />
+        <circle cx="61.2" cy="48.4" r="1.4" fill="white" />
       </>
     );
   };
 
-  // Mouth per pose+mood
   const Mouth = () => {
     if (pose === "celebrating") {
-      // open smile
       return <path d="M44 62 Q50 70 56 62 Q50 66 44 62 Z" fill={ink} />;
     }
     if (mood === "wow") {
@@ -86,18 +81,17 @@ export function Cleo({
     if (pose === "thinking" || mood === "focused") {
       return <path d="M46 64 L54 64" stroke={ink} strokeWidth="2.4" strokeLinecap="round" />;
     }
-    // little smile
     return <path d="M44 62 Q50 67 56 62" stroke={ink} strokeWidth="2.4" strokeLinecap="round" fill="none" />;
   };
 
   const Arms = () => {
+    const armStroke = `url(#${gradId})`;
     if (pose === "celebrating") {
       return (
         <>
-          {/* arms up */}
           <motion.path
             d="M22 60 Q14 38 18 28"
-            stroke={skin}
+            stroke={armStroke}
             strokeWidth="9"
             strokeLinecap="round"
             fill="none"
@@ -107,7 +101,7 @@ export function Cleo({
           />
           <motion.path
             d="M78 60 Q86 38 82 28"
-            stroke={skin}
+            stroke={armStroke}
             strokeWidth="9"
             strokeLinecap="round"
             fill="none"
@@ -121,15 +115,13 @@ export function Cleo({
     if (pose === "guiding") {
       return (
         <>
-          <path d="M22 60 Q18 70 22 78" stroke={skin} strokeWidth="9" strokeLinecap="round" fill="none" />
-          {/* pointing arm */}
+          <path d="M22 60 Q18 70 22 78" stroke={armStroke} strokeWidth="9" strokeLinecap="round" fill="none" />
           <motion.g
             animate={animated ? { x: [0, 4, 0] } : undefined}
             transition={{ duration: 1.4, repeat: Infinity, ease: "easeInOut" }}
           >
-            <path d="M78 60 Q92 52 96 44" stroke={skin} strokeWidth="9" strokeLinecap="round" fill="none" />
-            <circle cx="98" cy="42" r="5" fill={skin} />
-            <circle cx="98" cy="42" r="2" fill={belly} />
+            <path d="M78 60 Q92 52 96 44" stroke={armStroke} strokeWidth="9" strokeLinecap="round" fill="none" />
+            <circle cx="98" cy="42" r="5.5" fill={armStroke} stroke={ink} strokeWidth="1.5" />
           </motion.g>
         </>
       );
@@ -137,24 +129,23 @@ export function Cleo({
     if (pose === "thinking") {
       return (
         <>
-          {/* hand to chin */}
-          <path d="M22 60 Q30 58 36 56" stroke={skin} strokeWidth="9" strokeLinecap="round" fill="none" />
-          <circle cx="38" cy="56" r="5" fill={skin} />
-          <path d="M78 60 Q82 72 78 80" stroke={skin} strokeWidth="9" strokeLinecap="round" fill="none" />
+          <path d="M22 60 Q30 58 36 56" stroke={armStroke} strokeWidth="9" strokeLinecap="round" fill="none" />
+          <circle cx="38" cy="56" r="5.5" fill={armStroke} stroke={ink} strokeWidth="1.5" />
+          <path d="M78 60 Q82 72 78 80" stroke={armStroke} strokeWidth="9" strokeLinecap="round" fill="none" />
         </>
       );
     }
     if (pose === "waving") {
       return (
         <>
-          <path d="M22 60 Q18 70 22 78" stroke={skin} strokeWidth="9" strokeLinecap="round" fill="none" />
+          <path d="M22 60 Q18 70 22 78" stroke={armStroke} strokeWidth="9" strokeLinecap="round" fill="none" />
           <motion.g
             animate={animated ? { rotate: [-12, 18, -12] } : undefined}
             transition={{ duration: 1.2, repeat: Infinity, ease: "easeInOut" }}
             style={{ transformOrigin: "78px 60px" }}
           >
-            <path d="M78 60 Q88 46 86 32" stroke={skin} strokeWidth="9" strokeLinecap="round" fill="none" />
-            <circle cx="86" cy="30" r="6" fill={skin} />
+            <path d="M78 60 Q88 46 86 32" stroke={armStroke} strokeWidth="9" strokeLinecap="round" fill="none" />
+            <circle cx="86" cy="30" r="6.5" fill={armStroke} stroke={ink} strokeWidth="1.5" />
           </motion.g>
         </>
       );
@@ -162,20 +153,19 @@ export function Cleo({
     if (pose === "sleeping") {
       return (
         <>
-          <path d="M22 60 Q14 64 12 70" stroke={skin} strokeWidth="9" strokeLinecap="round" fill="none" />
-          <path d="M78 60 Q86 64 88 70" stroke={skin} strokeWidth="9" strokeLinecap="round" fill="none" />
+          <path d="M22 60 Q14 64 12 70" stroke={armStroke} strokeWidth="9" strokeLinecap="round" fill="none" />
+          <path d="M78 60 Q86 64 88 70" stroke={armStroke} strokeWidth="9" strokeLinecap="round" fill="none" />
         </>
       );
     }
     return (
       <>
-        <path d="M22 60 Q18 70 22 80" stroke={skin} strokeWidth="9" strokeLinecap="round" fill="none" />
-        <path d="M78 60 Q82 70 78 80" stroke={skin} strokeWidth="9" strokeLinecap="round" fill="none" />
+        <path d="M22 60 Q18 70 22 80" stroke={armStroke} strokeWidth="9" strokeLinecap="round" fill="none" />
+        <path d="M78 60 Q82 70 78 80" stroke={armStroke} strokeWidth="9" strokeLinecap="round" fill="none" />
       </>
     );
   };
 
-  // outer wrapper animation
   const wrapAnim =
     animated && pose === "default"
       ? { y: [0, -4, 0] }
@@ -190,21 +180,39 @@ export function Cleo({
   return (
     <div className={className} style={{ width: size, height: size }}>
       <svg viewBox="0 0 100 110" width={size} height={size} style={{ overflow: "visible" }}>
+        <defs>
+          <radialGradient id={gradId} cx="40%" cy="35%" r="75%">
+            <stop offset="0%" stopColor="#4FE07A" />
+            <stop offset="55%" stopColor="#2BA84A" />
+            <stop offset="100%" stopColor="#1a5f24" />
+          </radialGradient>
+          <radialGradient id={bellyGradId} cx="50%" cy="40%" r="65%">
+            <stop offset="0%" stopColor="#E5F5E1" />
+            <stop offset="100%" stopColor="#B6E0B0" />
+          </radialGradient>
+          <linearGradient id={goldGradId} x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stopColor="#FFE38A" />
+            <stop offset="100%" stopColor="#D49A20" />
+          </linearGradient>
+        </defs>
+
         <motion.g animate={wrapAnim} transition={wrapTrans}>
           <g transform={`rotate(${headTilt} 50 55)`}>
             {/* Drop shadow under feet */}
-            <ellipse cx="50" cy="103" rx="22" ry="3" fill={ink} opacity="0.2" />
+            <ellipse cx="50" cy="103" rx="24" ry="3.5" fill={ink} opacity="0.22" />
 
-            {/* Body — round dumpling shape */}
-            <ellipse cx="50" cy="60" rx="32" ry="34" fill={skin} stroke={ink} strokeWidth="3" />
+            {/* Body */}
+            <ellipse cx="50" cy="60" rx="33" ry="35" fill={`url(#${gradId})`} stroke={ink} strokeWidth="2.2" />
             {/* Belly */}
-            <ellipse cx="50" cy="68" rx="20" ry="22" fill={belly} />
+            <ellipse cx="50" cy="68" rx="20" ry="22" fill={`url(#${bellyGradId})`} />
+
+            {/* Top sheen highlight */}
+            <ellipse cx="38" cy="35" rx="10" ry="6" fill="white" opacity="0.35" />
 
             {/* Cheeks */}
-            <circle cx="30" cy="60" r="4" fill={cheek} opacity="0.8" />
-            <circle cx="70" cy="60" r="4" fill={cheek} opacity="0.8" />
+            <circle cx="30" cy="62" r="4.2" fill={cheek} opacity="0.75" />
+            <circle cx="70" cy="62" r="4.2" fill={cheek} opacity="0.75" />
 
-            {/* Face */}
             <Eyes />
             <Mouth />
 
@@ -212,17 +220,16 @@ export function Cleo({
             <motion.g
               animate={animated && pose === "celebrating" ? { rotate: 360 } : undefined}
               transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-              style={{ transformOrigin: "50px 28px" }}
+              style={{ transformOrigin: "50px 24px" }}
             >
-              <KeyCrown gold={gold} goldDark={goldDark} ink={ink} />
+              <KeyCrown gradId={goldGradId} ink={ink} goldDark={goldDark} gold={gold} />
             </motion.g>
 
-            {/* Arms */}
             <Arms />
 
             {/* Feet */}
-            <ellipse cx="38" cy="96" rx="8" ry="5" fill={skinDark} stroke={ink} strokeWidth="2.5" />
-            <ellipse cx="62" cy="96" rx="8" ry="5" fill={skinDark} stroke={ink} strokeWidth="2.5" />
+            <ellipse cx="38" cy="96" rx="8.5" ry="5" fill="#1a5f24" stroke={ink} strokeWidth="2" />
+            <ellipse cx="62" cy="96" rx="8.5" ry="5" fill="#1a5f24" stroke={ink} strokeWidth="2" />
 
             {/* Sparkles when celebrating */}
             {pose === "celebrating" && animated && (
@@ -246,12 +253,11 @@ export function Cleo({
                   transition={{ duration: 1.4, repeat: Infinity, delay: 0.8 }}
                   style={{ transformOrigin: "50px 8px" }}
                 >
-                  <Sparkle x={50} y={8} color="#FF7E6B" />
+                  <Sparkle x={50} y={8} color="#4FE07A" />
                 </motion.g>
               </>
             )}
 
-            {/* Z's when sleeping */}
             {pose === "sleeping" && (
               <g>
                 <text x="78" y="32" fontSize="12" fill={ink} fontWeight="800">z</text>
@@ -265,16 +271,14 @@ export function Cleo({
   );
 }
 
-function KeyCrown({ gold, goldDark, ink }: { gold: string; goldDark: string; ink: string }) {
+function KeyCrown({ gradId, ink, goldDark, gold }: { gradId: string; ink: string; goldDark: string; gold: string }) {
   return (
     <g>
-      {/* Key bow (round) */}
-      <circle cx="50" cy="20" r="8" fill={gold} stroke={ink} strokeWidth="2.5" />
-      <circle cx="50" cy="20" r="3" fill={goldDark} />
-      {/* Key shaft going down to body */}
-      <rect x="48" y="26" width="4" height="6" fill={gold} stroke={ink} strokeWidth="2" />
-      {/* Tooth */}
-      <rect x="52" y="28" width="3" height="2" fill={gold} stroke={ink} strokeWidth="1.5" />
+      <circle cx="50" cy="20" r="8.5" fill={`url(#${gradId})`} stroke={ink} strokeWidth="2" />
+      <circle cx="50" cy="20" r="3.2" fill={goldDark} />
+      <circle cx="48" cy="18" r="1.4" fill="white" opacity="0.9" />
+      <rect x="48" y="26" width="4" height="6" fill={gold} stroke={ink} strokeWidth="1.6" />
+      <rect x="52" y="28" width="3" height="2" fill={gold} stroke={ink} strokeWidth="1.2" />
     </g>
   );
 }
@@ -285,7 +289,7 @@ function Sparkle({ x, y, color }: { x: number; y: number; color: string }) {
       <path
         d="M4 0 L5 3 L8 4 L5 5 L4 8 L3 5 L0 4 L3 3 Z"
         fill={color}
-        stroke="#1F2236"
+        stroke="#040F0F"
         strokeWidth="0.6"
       />
     </g>
@@ -293,8 +297,7 @@ function Sparkle({ x, y, color }: { x: number; y: number; color: string }) {
 }
 
 /**
- * CleoBubble — the mascot with a speech bubble guide moment.
- * Use throughout the app to inject Cleo's voice into explanatory pages.
+ * CleoBubble — mascot with a speech bubble for storytelling moments.
  */
 export function CleoBubble({
   text,
@@ -310,14 +313,15 @@ export function CleoBubble({
   mood?: CleoMood;
   size?: number;
   side?: "left" | "right";
-  tone?: "default" | "tip" | "win" | "warn";
+  tone?: "default" | "tip" | "win" | "warn" | "dark";
   className?: string;
 }) {
   const toneStyles = {
-    default: "bg-white border-ink/15",
-    tip: "bg-pop-yellow border-ink/20",
-    win: "bg-pop-mint border-ink/20",
-    warn: "bg-pop-coral text-white border-ink/30",
+    default: "bg-white border-ink/10 text-ink",
+    tip: "bg-pop-yellow border-ink/15 text-ink",
+    win: "bg-pop-mint border-ink/15 text-ink",
+    warn: "bg-pop-coral text-white border-ink/20",
+    dark: "bg-jet-black text-porcelain border-jungle/30",
   } as const;
 
   return (
@@ -332,14 +336,13 @@ export function CleoBubble({
       </div>
       <div className="relative flex-1 max-w-[78%]">
         <div
-          className={`relative rounded-[22px] px-4 py-3 border-2 ${toneStyles[tone]} shadow-[0_4px_0_rgba(31,34,54,0.18)]`}
+          className={`relative rounded-[22px] px-4 py-3 border ${toneStyles[tone]} shadow-soft`}
         >
-          <div className={`text-[14px] leading-snug font-semibold ${tone === "warn" ? "text-white" : "text-ink"}`}>
+          <div className={`text-[14px] leading-snug font-semibold`}>
             {text}
           </div>
-          {/* tail */}
           <div
-            className={`absolute bottom-3 ${side === "left" ? "-left-2" : "-right-2"} w-4 h-4 rotate-45 border-2 ${toneStyles[tone]}`}
+            className={`absolute bottom-3 ${side === "left" ? "-left-2" : "-right-2"} w-4 h-4 rotate-45 border ${toneStyles[tone]}`}
             style={{
               borderTop: "none",
               borderRight: side === "left" ? "none" : undefined,

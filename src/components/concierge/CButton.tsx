@@ -2,7 +2,7 @@ import * as React from "react";
 import { motion, type HTMLMotionProps } from "framer-motion";
 import { cn } from "@/lib/utils";
 
-type Variant = "primary" | "secondary" | "ghost" | "white" | "yellow" | "mint";
+type Variant = "primary" | "secondary" | "ghost" | "white" | "yellow" | "mint" | "dark" | "outline";
 
 interface CButtonProps extends Omit<HTMLMotionProps<"button">, "ref"> {
   variant?: Variant;
@@ -10,22 +10,21 @@ interface CButtonProps extends Omit<HTMLMotionProps<"button">, "ref"> {
   size?: "sm" | "md" | "lg";
 }
 
-/**
- * Chunky 3D button — Duolingo-style with bottom shadow that depresses on tap.
- */
 const variantClass: Record<Variant, string> = {
-  primary: "btn-3d btn-3d-sky border-2 border-ink",
-  secondary: "bg-white text-ink border-2 border-ink btn-3d",
-  ghost: "bg-transparent text-ink hover:bg-white/40",
-  white: "bg-white text-ink border-2 border-ink btn-3d",
-  yellow: "btn-3d btn-3d-yellow border-2 border-ink",
-  mint: "btn-3d btn-3d-mint border-2 border-ink",
+  primary: "btn-3d btn-3d-sky",
+  secondary: "bg-white text-ink border border-ink/12 btn-3d shadow-soft",
+  ghost: "bg-transparent text-ink hover:bg-ink-black/5",
+  white: "bg-white text-ink border border-ink/12 btn-3d shadow-soft",
+  yellow: "btn-3d btn-3d-yellow",
+  mint: "btn-3d btn-3d-mint",
+  dark: "btn-3d btn-3d-dark",
+  outline: "bg-transparent text-ink border-2 border-ink/80 btn-3d",
 };
 
 const sizeClass = {
-  sm: "h-[42px] text-[13px] px-4 rounded-[12px]",
-  md: "h-[54px] text-[15px] px-5 rounded-[16px]",
-  lg: "h-[60px] text-[17px] px-6 rounded-[18px]",
+  sm: "h-[44px] text-[13px] px-4 rounded-[14px]",
+  md: "h-[54px] text-[14px] px-5 rounded-[16px]",
+  lg: "h-[60px] text-[15px] px-6 rounded-[18px]",
 };
 
 export const CButton = React.forwardRef<HTMLButtonElement, CButtonProps>(
@@ -36,11 +35,11 @@ export const CButton = React.forwardRef<HTMLButtonElement, CButtonProps>(
     return (
       <motion.button
         ref={ref}
-        whileTap={disabled ? undefined : { scale: 0.97 }}
-        transition={{ duration: 0.1 }}
+        whileTap={disabled ? undefined : { scale: 0.98 }}
+        transition={{ duration: 0.12 }}
         disabled={disabled}
         className={cn(
-          "inline-flex items-center justify-center gap-2 font-extrabold tracking-[0.3px] uppercase",
+          "inline-flex items-center justify-center gap-2 font-bold tracking-[0.4px] uppercase font-display",
           sizeClass[size],
           fullWidth && "w-full",
           variantClass[variant],
