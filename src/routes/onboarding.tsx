@@ -1,9 +1,17 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
-import { Search, ChevronLeft, Check, Lock } from "lucide-react";
 import { CButton } from "@/components/concierge/CButton";
 import { Cleo, CleoBubble } from "@/components/concierge/Cleo";
+import { Flag, type CountryCode } from "@/components/concierge/Flags";
+import {
+  IconArrowLeft, IconArrowRight, IconCheck, IconLock, IconSearch,
+  IconBank, IconDocumentCheck, IconCalculator, IconGift,
+  IconGraduationCap, IconBriefcase, IconLightning, IconSearch as IconSearch2,
+  IconCircles, IconMapPin, IconCard, IconPhone, IconHome, IconShield,
+  IconHeartPulse, IconStamp, IconReceipt, IconPerson,
+  IconChevronDown,
+} from "@/components/concierge/Icons";
 import { useApp } from "@/lib/store";
 
 export const Route = createFileRoute("/onboarding")({
@@ -14,13 +22,13 @@ const TOTAL = 8;
 
 function Onboarding() {
   const [step, setStep] = useState(1);
-  const [direction, setDirection] = useState(1);
+  const [dir, setDir] = useState(1);
   const navigate = useNavigate();
   const { onboarding, setOnboarding, toggleDocument, completeOnboarding } = useApp();
 
   const next = () => {
     if (step < TOTAL) {
-      setDirection(1);
+      setDir(1);
       setStep(step + 1);
     } else {
       completeOnboarding();
@@ -28,548 +36,455 @@ function Onboarding() {
     }
   };
   const back = () => {
-    if (step > 1) {
-      setDirection(-1);
-      setStep(step - 1);
-    } else {
-      navigate({ to: "/" });
-    }
+    if (step > 1) { setDir(-1); setStep(step - 1); }
+    else navigate({ to: "/" });
   };
 
   const canContinue = (() => {
     switch (step) {
-      case 1:
-        return onboarding.name.trim().length > 0;
-      case 2:
-        return onboarding.fromCountry.length > 0;
-      case 3:
-        return true;
-      case 4:
-        return onboarding.goals.length > 0;
-      case 5:
-        return onboarding.status.length > 0;
-      case 6:
-        return onboarding.timeInFrance.length > 0;
-      case 7:
-        return onboarding.hasHomeTies !== null;
-      case 8:
-        return true;
-      default:
-        return false;
+      case 1: return onboarding.name.trim().length > 0;
+      case 2: return !!onboarding.fromCountry;
+      case 3: return true;
+      case 4: return onboarding.goals.length > 0;
+      case 5: return !!onboarding.status;
+      case 6: return !!onboarding.timeInFrance;
+      case 7: return onboarding.hasHomeTies !== null;
+      case 8: return true;
+      default: return false;
     }
   })();
 
   return (
-    <div className="mobile-shell bg-clouds flex flex-col">
-      {/* Top */}
+    <div className="mobile-shell relative overflow-hidden bg-black pb-24">
+      {/* Top-right lemon ambient */}
       <div
-        className="px-5 pb-3 flex items-center gap-3 z-10 glass-light"
-        style={{ paddingTop: "max(14px, env(safe-area-inset-top))" }}
-      >
-        <button
-          onClick={back}
-          aria-label="Back"
-          className="h-10 w-10 -ml-1 rounded-full flex items-center justify-center bg-white border border-ink-black/10 text-ink shadow-soft active:scale-95 transition-all"
-        >
-          <ChevronLeft size={20} strokeWidth={2.4} />
-        </button>
-        <div className="flex-1 h-2.5 rounded-full bg-ink-black/10 overflow-hidden">
-          <motion.div
-            className="h-full bg-gradient-to-r from-jungle to-forest rounded-full relative"
-            initial={false}
-            animate={{ width: `${(step / TOTAL) * 100}%` }}
-            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        className="absolute top-0 right-0 w-[300px] h-[250px] pointer-events-none"
+        style={{ background: "radial-gradient(circle, rgba(248,255,161,0.06) 0%, transparent 70%)" }}
+      />
+
+      {/* Top bar */}
+      <div className="sticky top-0 z-30 px-5 pb-3 glass-dark" style={{ paddingTop: "max(14px, env(safe-area-inset-top))" }}>
+        <div className="flex items-center gap-3 h-11">
+          <button
+            onClick={back}
+            className="h-10 w-10 -ml-1 rounded-full flex items-center justify-center bg-white-10 text-white active:scale-95"
           >
-            <span className="absolute inset-x-0 top-0 h-1/2 bg-white/30 rounded-t-full" />
-          </motion.div>
-        </div>
-        <div className="bg-ink-black text-porcelain rounded-full px-2.5 py-1 text-[11px] font-bold">
-          {step}<span className="text-porcelain/50">/{TOTAL}</span>
+            <IconArrowLeft size={20} />
+          </button>
+          <div className="flex-1 flex items-center justify-center gap-1.5">
+            {Array.from({ length: TOTAL }).map((_, i) => {
+              const done = i < step - 1;
+              const active = i === step - 1;
+              return (
+                <span
+                  key={i}
+                  className={`h-1.5 rounded-full transition-all ${
+                    active ? "w-7 bg-lemon" : done ? "w-2 bg-lemon/60" : "w-2 bg-navy"
+                  }`}
+                />
+              );
+            })}
+          </div>
+          <span className="min-w-[60px] text-right text-white-40 text-[12px] font-ui">
+            Step {step} of {TOTAL}
+          </span>
         </div>
       </div>
 
-
-      {/* Step content */}
-      <div className="flex-1 px-6 pt-3 pb-32 overflow-y-auto">
-        <AnimatePresence mode="wait" custom={direction}>
+      <div className="px-5 pt-4 relative z-10">
+        <AnimatePresence mode="wait" custom={dir}>
           <motion.div
             key={step}
-            custom={direction}
-            initial={{ opacity: 0, x: direction * 40 }}
+            custom={dir}
+            initial={{ opacity: 0, x: dir * 30 }}
             animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: direction * -40 }}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
+            exit={{ opacity: 0, x: -dir * 30 }}
+            transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
           >
-            {step === 1 && (
-              <Step1
-                value={onboarding.name}
-                onChange={(v) => setOnboarding({ name: v })}
-              />
-            )}
+            {step === 1 && <Step1Name value={onboarding.name} onChange={(v) => setOnboarding({ name: v })} />}
             {step === 2 && (
-              <Step2
+              <Step2Origin
                 value={onboarding.fromCountry}
-                onChange={(name, flag) =>
-                  setOnboarding({ fromCountry: name, fromCountryFlag: flag })
-                }
+                onSelect={(country, code) => setOnboarding({ fromCountry: country, fromCountryFlag: code })}
               />
             )}
-            {step === 3 && <Step3 />}
+            {step === 3 && <Step3Destination />}
             {step === 4 && (
-              <Step4
-                value={onboarding.goals}
-                onChange={(goals) => setOnboarding({ goals })}
+              <Step4Goals
+                selected={onboarding.goals}
+                onToggle={(k) => {
+                  const has = onboarding.goals.includes(k);
+                  setOnboarding({ goals: has ? onboarding.goals.filter((g) => g !== k) : [...onboarding.goals, k] });
+                }}
               />
             )}
             {step === 5 && (
-              <Step5
-                value={onboarding.status}
-                onChange={(status) => setOnboarding({ status })}
-              />
+              <Step5Status value={onboarding.status} onSelect={(v) => setOnboarding({ status: v })} />
             )}
             {step === 6 && (
-              <Step6
-                value={onboarding.timeInFrance}
-                onChange={(v) => setOnboarding({ timeInFrance: v })}
-              />
+              <Step6Time value={onboarding.timeInFrance} onSelect={(v) => setOnboarding({ timeInFrance: v })} />
             )}
             {step === 7 && (
-              <Step7
-                value={onboarding.hasHomeTies}
-                onChange={(v) => setOnboarding({ hasHomeTies: v })}
-              />
+              <Step7HomeTies value={onboarding.hasHomeTies} onSelect={(v) => setOnboarding({ hasHomeTies: v })} />
             )}
-            {step === 8 && (
-              <Step8
-                docs={onboarding.documents}
-                onToggle={toggleDocument}
-              />
-            )}
+            {step === 8 && <Step8Documents docs={onboarding.documents} onToggle={toggleDocument} />}
           </motion.div>
         </AnimatePresence>
       </div>
 
-      {/* Bottom CTA */}
+      {/* Cleo fixed bottom-left */}
+      <div className="fixed bottom-[110px] left-4 z-40 pointer-events-none" style={{ left: "max(16px, calc((100vw - 430px) / 2 + 16px))" }}>
+        <div className="opacity-90">
+          <Cleo pose="idle" mood="happy" size={48} />
+        </div>
+      </div>
+
+      {/* Continue CTA fixed bottom */}
       <div
-        className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[430px] px-5 pt-4 pb-6 z-20"
-        style={{
-          paddingBottom: "max(20px, env(safe-area-inset-bottom))",
-          background:
-            "linear-gradient(180deg, rgba(252,255,252,0) 0%, rgba(252,255,252,0.96) 40%)",
-        }}
+        className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[430px] px-5 pt-3 pb-5 glass-dark border-t border-lemon/10 z-30"
+        style={{ paddingBottom: "max(20px, env(safe-area-inset-bottom))" }}
       >
-        <CButton onClick={next} disabled={!canContinue} size="lg">
-          {step === TOTAL ? "Build my journey" : "Continue"}
+        <CButton onClick={next} disabled={!canContinue} variant="primary">
+          {step === TOTAL ? "Build my Concierge path" : "Continue"}
+          <IconArrowRight size={18} />
         </CButton>
       </div>
     </div>
   );
 }
 
-/* -------------------- Steps -------------------- */
+/* ---------------- Steps ---------------- */
 
-function StepHeader({ title, subtitle }: { title: string; subtitle?: string }) {
+function StepHeader({
+  bubble, h1, sub,
+}: { bubble: string; h1: string; sub?: string }) {
   return (
     <div className="mb-5">
-      <h2 className="text-ink text-[26px] font-extrabold leading-tight tracking-tight">{title}</h2>
-      {subtitle && <p className="mt-2 text-ink/70 text-[14px] leading-snug font-medium">{subtitle}</p>}
+      <CleoBubble side="left" pose="talking" mood="happy" size={56} text={bubble} className="mb-4" />
+      <h1 className="font-display font-extrabold text-white text-[28px] leading-[1.05] tracking-[-0.8px]">
+        {h1}
+      </h1>
+      {sub && <p className="mt-2 text-white-60 text-[14px] font-body">{sub}</p>}
     </div>
   );
 }
 
-function Step1({ value, onChange }: { value: string; onChange: (v: string) => void }) {
+function Step1Name({ value, onChange }: { value: string; onChange: (v: string) => void }) {
   return (
-    <div>
-      <CleoBubble
-        side="left"
-        pose="waving"
-        mood="happy"
-        text={
-          <>
-            Hey! I'm <b>Cleo</b> 🗝️ Let's start with the easy stuff — what should I call you?
-          </>
-        }
-        className="mb-6"
+    <>
+      <StepHeader
+        bubble="Hey! What should I call you?"
+        h1="What's your name?"
+        sub="Let's make this personal."
       />
-      <label className="text-ink text-[14px] font-extrabold mb-2 block uppercase tracking-wider">
-        Your first name
-      </label>
-      <input
-        autoFocus
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        placeholder="Viktoria"
-        className="w-full h-[58px] px-4 bg-white border-2 border-ink rounded-[16px] text-ink placeholder:text-ink/30 outline-none font-bold text-[16px] focus:ring-4 focus:ring-sky/40 transition-all shadow-[0_4px_0_rgba(31,34,54,0.85)]"
-      />
-    </div>
+      <div className="relative">
+        <input
+          autoFocus
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          placeholder="Your name..."
+          className="w-full h-14 px-5 rounded-[14px] bg-navy text-white text-[18px] font-body placeholder:text-white-30 outline-none border-b-2 border-transparent focus:border-lemon transition-colors"
+        />
+      </div>
+    </>
   );
 }
 
-const COUNTRIES: { name: string; flag: string }[] = [
-  { name: "Ukraine", flag: "🇺🇦" },
-  { name: "Morocco", flag: "🇲🇦" },
-  { name: "India", flag: "🇮🇳" },
-  { name: "Spain", flag: "🇪🇸" },
-  { name: "USA", flag: "🇺🇸" },
-  { name: "UK", flag: "🇬🇧" },
-  { name: "Brazil", flag: "🇧🇷" },
-  { name: "Germany", flag: "🇩🇪" },
+const COUNTRIES: { name: string; code: CountryCode }[] = [
+  { name: "Ukraine", code: "UA" },
+  { name: "Morocco", code: "MA" },
+  { name: "India", code: "IN" },
+  { name: "Spain", code: "ES" },
+  { name: "USA", code: "US" },
+  { name: "United Kingdom", code: "GB" },
+  { name: "Brazil", code: "BR" },
+  { name: "Germany", code: "DE" },
 ];
 
-function Step2({
-  value,
-  onChange,
-}: {
-  value: string;
-  onChange: (name: string, flag: string) => void;
-}) {
+function Step2Origin({ value, onSelect }: { value: string; onSelect: (n: string, c: string) => void }) {
   const [q, setQ] = useState("");
   const filtered = COUNTRIES.filter((c) => c.name.toLowerCase().includes(q.toLowerCase()));
   return (
-    <div>
-      <StepHeader
-        title="Where's home? 🌍"
-        subtitle="So I know exactly which paperwork dragons we're slaying."
-      />
+    <>
+      <StepHeader bubble="So, where's home? I need to know everything." h1="Where are you from?" />
       <div className="relative mb-4">
-        <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-ink/50" />
+        <IconSearch size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-lemon" />
         <input
           value={q}
           onChange={(e) => setQ(e.target.value)}
-          placeholder="Search your country..."
-          className="w-full h-[52px] pl-11 pr-4 bg-white border-2 border-ink rounded-[16px] text-ink placeholder:text-ink/40 outline-none font-semibold text-[15px] focus:ring-4 focus:ring-sky/40 shadow-[0_4px_0_rgba(31,34,54,0.85)]"
+          placeholder="Search countries..."
+          className="w-full h-12 pl-12 pr-4 rounded-[14px] bg-navy text-white text-[14px] placeholder:text-white-40 outline-none font-body"
         />
       </div>
       <div className="grid grid-cols-2 gap-3">
         {filtered.map((c) => {
-          const selected = value === c.name;
+          const active = value === c.name;
           return (
-            <motion.button
-              key={c.name}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => onChange(c.name, c.flag)}
-              className={`bg-white rounded-[20px] p-4 flex flex-col items-center gap-2 border-2 transition-all shadow-[0_4px_0_rgba(31,34,54,0.85)] ${
-                selected ? "border-ink ring-4 ring-sky/50 bg-sky/30" : "border-ink"
+            <button
+              key={c.code}
+              onClick={() => onSelect(c.name, c.code)}
+              className={`flex items-center gap-2.5 p-3.5 rounded-[16px] border transition-all active:scale-[0.97] ${
+                active
+                  ? "bg-gradient-lemon border-black/20 shadow-lemon scale-[1.02]"
+                  : "bg-navy border-white-10"
               }`}
             >
-              <span className="text-[32px] leading-none">{c.flag}</span>
-              <span className="text-ink text-[14px] font-extrabold">{c.name}</span>
-            </motion.button>
+              <Flag code={c.code} size={32} />
+              <span className={`text-[14px] font-bold font-body text-left ${active ? "text-black" : "text-white"}`}>
+                {c.name}
+              </span>
+            </button>
           );
         })}
       </div>
-    </div>
+    </>
   );
 }
 
-function Step3() {
+function Step3Destination() {
   return (
-    <div>
-      <StepHeader
-        title="Destination: France 🇫🇷"
-        subtitle="That's where I'll guide you. Other countries are in training... 🌍"
-      />
-      <div className="bg-white border-2 border-ink rounded-[24px] p-5 relative overflow-hidden shadow-[0_5px_0_rgba(31,34,54,0.85)]">
-        <svg
-          viewBox="0 0 200 180"
-          className="absolute right-2 bottom-2 opacity-30"
-          width="160"
-          height="140"
-        >
-          <path
-            d="M100 20 L130 35 L150 30 L165 55 L160 90 L175 105 L160 130 L140 145 L120 155 L95 160 L70 150 L50 130 L40 100 L30 75 L45 55 L65 40 L85 25 Z"
-            fill="#A1CDF4"
-            stroke="#1F2236"
-            strokeWidth="2.5"
-          />
-        </svg>
-        <div className="relative">
-          <div className="flex items-center gap-2 mb-1">
-            <span className="text-3xl">🇫🇷</span>
-            <span className="text-ink text-[22px] font-extrabold">France</span>
+    <>
+      <StepHeader bubble="France! Excellent choice. Croissants included." h1="And you're heading to..." />
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 0.1 }}
+        className="relative bg-gradient-lemon rounded-[24px] p-6 shadow-lemon-lg border border-black/15"
+      >
+        <div className="flex items-start justify-between">
+          <div>
+            <h2 className="font-display font-black text-black text-[34px] leading-none tracking-[-1px]">France</h2>
+            <p className="mt-2 text-black/60 text-[13px] font-body font-semibold">
+              Paris · Lyon · Marseille · everywhere
+            </p>
           </div>
-          <p className="text-ink/70 text-[13px] font-semibold">
-            Paris · Lyon · Marseille · Bordeaux · everywhere
-          </p>
+          <Flag code="FR" size={56} />
         </div>
-      </div>
+        <div className="mt-5 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-black text-lemon text-[11px] font-ui font-bold uppercase tracking-[1.5px]">
+          <IconCheck size={12} /> Selected
+        </div>
+      </motion.div>
 
-      <p className="mt-6 text-ink/70 text-[12px] font-bold uppercase tracking-wider">
+      <p className="mt-6 mb-3 text-white-40 text-[11px] font-ui font-bold uppercase tracking-[1.5px]">
         Coming soon
       </p>
-      <div className="mt-2 grid grid-cols-3 gap-3">
-        {[
-          { f: "🇩🇪", n: "Germany" },
-          { f: "🇳🇱", n: "Netherlands" },
-          { f: "🇧🇪", n: "Belgium" },
-        ].map((c) => (
-          <div
-            key={c.n}
-            className="bg-white/40 border-2 border-ink/20 rounded-[16px] p-3 flex flex-col items-center gap-1"
-          >
-            <span className="text-[24px] grayscale opacity-60">{c.f}</span>
-            <span className="text-ink/60 text-[11px] font-bold flex items-center gap-1">
-              {c.n} <Lock size={10} />
-            </span>
+      <div className="flex gap-3 overflow-x-auto scrollbar-hide -mx-5 px-5">
+        {(["DE", "NL", "BE"] as CountryCode[]).map((code) => (
+          <div key={code} className="shrink-0 w-32 p-3 rounded-[14px] bg-navy border border-white-10 opacity-60">
+            <div className="flex items-center justify-between mb-2">
+              <Flag code={code} size={28} />
+              <IconLock size={14} className="text-white-40" />
+            </div>
+            <p className="text-white text-[12px] font-bold font-body">
+              {code === "DE" ? "Germany" : code === "NL" ? "Netherlands" : "Belgium"}
+            </p>
           </div>
         ))}
       </div>
-    </div>
+    </>
   );
 }
 
 const GOALS = [
-  { id: "banking", emoji: "🏦", t: "Banking", d: "Open a French account" },
-  { id: "admin", emoji: "📋", t: "Admin Setup", d: "Residence, CAF, sécu" },
-  { id: "taxes", emoji: "💰", t: "Taxes", d: "Declare without crying" },
-  { id: "perks", emoji: "🎁", t: "Perks", d: "Money the state owes you" },
+  { key: "banking", title: "Banking & Finance", sub: "Accounts, cards, transfers", Icon: IconBank },
+  { key: "admin", title: "Admin Setup", sub: "Residence, social security", Icon: IconDocumentCheck },
+  { key: "taxes", title: "Taxes", sub: "Understand and file correctly", Icon: IconCalculator },
+  { key: "benefits", title: "Perks & Benefits", sub: "Money France owes you", Icon: IconGift },
 ];
 
-function Step4({
-  value,
-  onChange,
-}: {
-  value: string[];
-  onChange: (v: string[]) => void;
-}) {
-  const toggle = (id: string) =>
-    value.includes(id) ? onChange(value.filter((x) => x !== id)) : onChange([...value, id]);
+function Step4Goals({ selected, onToggle }: { selected: string[]; onToggle: (k: string) => void }) {
   return (
-    <div>
-      <CleoBubble
-        side="left"
-        pose="thinking"
-        text={
-          <>
-            What's giving you the biggest headache? Tap all that apply — I'll handle the rest. 💪
-          </>
-        }
-        className="mb-5"
-      />
+    <>
+      <StepHeader bubble="What do you need most? Pick everything — I've seen it all." h1="What do you need help with?" />
       <div className="grid grid-cols-2 gap-3">
         {GOALS.map((g) => {
-          const sel = value.includes(g.id);
+          const active = selected.includes(g.key);
           return (
-            <motion.button
-              key={g.id}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => toggle(g.id)}
-              className={`relative bg-white rounded-[20px] p-4 flex flex-col items-start gap-2 text-left border-2 transition-all shadow-[0_4px_0_rgba(31,34,54,0.85)] ${
-                sel ? "border-ink ring-4 ring-pop-mint/60 bg-pop-mint/30" : "border-ink"
+            <button
+              key={g.key}
+              onClick={() => onToggle(g.key)}
+              className={`relative p-4 rounded-[20px] border text-left transition-all active:scale-[0.97] h-[110px] ${
+                active ? "bg-gradient-lemon border-black/20 shadow-lemon" : "bg-navy border-white-10"
               }`}
             >
-              <span className="text-[32px]">{g.emoji}</span>
-              <span className="text-ink text-[15px] font-extrabold leading-tight">{g.t}</span>
-              <span className="text-ink/70 text-[12px] leading-snug font-semibold">{g.d}</span>
-              {sel && (
-                <span className="absolute top-2 right-2 h-6 w-6 rounded-full bg-ink flex items-center justify-center border-2 border-white">
-                  <Check size={12} strokeWidth={3} className="text-pop-mint" />
+              {active && (
+                <span className="absolute top-2 right-2 h-5 w-5 rounded-full bg-black flex items-center justify-center">
+                  <IconCheck size={12} className="text-lemon" />
                 </span>
               )}
-            </motion.button>
+              <g.Icon size={26} className={active ? "text-black" : "text-white"} />
+              <p className={`mt-2 text-[13px] font-bold font-display ${active ? "text-black" : "text-white"}`}>
+                {g.title}
+              </p>
+              <p className={`text-[11px] font-body mt-0.5 ${active ? "text-black/60" : "text-white-40"}`}>
+                {g.sub}
+              </p>
+            </button>
           );
         })}
       </div>
-    </div>
+    </>
   );
 }
 
 const STATUSES = [
-  { id: "student", emoji: "🎓", label: "Student" },
-  { id: "salaried", emoji: "💼", label: "Salaried" },
-  { id: "freelance", emoji: "🧾", label: "Freelance" },
-  { id: "jobseek", emoji: "🔍", label: "Job-seeking" },
+  { key: "student", label: "Student", Icon: IconGraduationCap },
+  { key: "salaried", label: "Salaried employee", Icon: IconBriefcase },
+  { key: "freelance", label: "Freelance", Icon: IconLightning },
+  { key: "jobseeker", label: "Job-seeking", Icon: IconSearch2 },
 ];
 
-function Step5({ value, onChange }: { value: string; onChange: (v: string) => void }) {
+function Step5Status({ value, onSelect }: { value: string; onSelect: (v: string) => void }) {
   return (
-    <div>
-      <StepHeader
-        title="Your situation in France?"
-        subtitle="This unlocks the right benefits and rules."
-      />
-      <div className="grid grid-cols-2 gap-3">
+    <>
+      <StepHeader bubble="And what's your situation? This changes everything." h1="Your status in France?" />
+      <div className="space-y-2.5">
         {STATUSES.map((s) => {
-          const sel = value === s.id;
+          const active = value === s.key;
           return (
-            <motion.button
-              key={s.id}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => onChange(s.id)}
-              className={`bg-white rounded-[20px] p-4 flex flex-col items-start gap-2 text-left border-2 transition-all shadow-[0_4px_0_rgba(31,34,54,0.85)] ${
-                sel ? "border-ink ring-4 ring-sky/60 bg-sky/30" : "border-ink"
+            <button
+              key={s.key}
+              onClick={() => onSelect(s.key)}
+              className={`w-full h-[64px] px-5 flex items-center gap-3 rounded-[16px] border transition-all active:scale-[0.98] ${
+                active ? "bg-gradient-lemon border-black/20 shadow-lemon" : "bg-navy border-white-10"
               }`}
             >
-              <span className="text-[32px]">{s.emoji}</span>
-              <span className="text-ink text-[15px] font-extrabold">{s.label}</span>
-            </motion.button>
+              <s.Icon size={22} className={active ? "text-black" : "text-lemon"} />
+              <span className={`text-[15px] font-bold font-display ${active ? "text-black" : "text-white"}`}>
+                {s.label}
+              </span>
+              {active && <IconCheck size={18} className="text-black ml-auto" />}
+            </button>
           );
         })}
       </div>
-      <p className="mt-4 text-ink/60 text-[12px] text-center font-semibold">
-        Not sure? Pick the closest — you can change it anytime.
-      </p>
-    </div>
+    </>
   );
 }
 
 const TIMES = [
-  { id: "new", label: "Just landed (under 3 months)", emoji: "🛬" },
-  { id: "3-12", label: "Settling in (3–12 months)", emoji: "🏡" },
-  { id: "year+", label: "Old timer (over a year)", emoji: "🥖" },
+  { key: "0-3", title: "I just arrived", sub: "under 3 months" },
+  { key: "3-12", title: "Getting my bearings", sub: "3–12 months" },
+  { key: "12+", title: "I'm practically local", sub: "over a year" },
 ];
 
-function Step6({ value, onChange }: { value: string; onChange: (v: string) => void }) {
+function Step6Time({ value, onSelect }: { value: string; onSelect: (v: string) => void }) {
   return (
-    <div>
-      <StepHeader title="How long in France? ⏱️" />
-      <div className="flex flex-col gap-3">
+    <>
+      <StepHeader bubble="How long navigating this beautiful chaos?" h1="How long in France?" />
+      <div className="space-y-3">
         {TIMES.map((t) => {
-          const sel = value === t.id;
+          const active = value === t.key;
           return (
-            <motion.button
-              key={t.id}
-              whileTap={{ scale: 0.97 }}
-              onClick={() => onChange(t.id)}
-              className={`h-[64px] rounded-[18px] px-4 text-[15px] font-extrabold transition-all flex items-center gap-3 border-2 border-ink shadow-[0_4px_0_rgba(31,34,54,0.85)] ${
-                sel ? "bg-sky text-ink ring-4 ring-sky/40" : "bg-white text-ink"
+            <button
+              key={t.key}
+              onClick={() => onSelect(t.key)}
+              className={`w-full h-[72px] px-5 flex flex-col justify-center rounded-[18px] border transition-all active:scale-[0.98] text-left ${
+                active ? "bg-gradient-lemon border-black/20 shadow-lemon" : "bg-navy border-white-10"
               }`}
             >
-              <span className="text-[26px]">{t.emoji}</span>
-              <span className="flex-1 text-left">{t.label}</span>
-            </motion.button>
+              <p className={`text-[15px] font-bold font-display ${active ? "text-black" : "text-white"}`}>{t.title}</p>
+              <p className={`text-[12px] font-body ${active ? "text-black/60" : "text-white-40"}`}>{t.sub}</p>
+            </button>
           );
         })}
       </div>
-    </div>
+    </>
   );
 }
 
-function Step7({
-  value,
-  onChange,
-}: {
-  value: boolean | null;
-  onChange: (v: boolean) => void;
-}) {
+function Step7HomeTies({ value, onSelect }: { value: boolean | null; onSelect: (v: boolean) => void }) {
   const [open, setOpen] = useState(false);
   return (
-    <div>
-      <StepHeader
-        title="Still tied to home? 🏠"
-        subtitle="A bank account, savings, property, or money sent back home."
-      />
+    <>
+      <StepHeader bubble="Still got money stuff back home? Tell me — I keep secrets. (Mostly.)" h1="Financial ties back home?" />
       <div className="grid grid-cols-2 gap-3">
-        {[
-          { v: true, label: "Yes, I do", icon: "🏦" },
-          { v: false, label: "Not really", icon: "✂️" },
-        ].map((o) => {
-          const sel = value === o.v;
-          return (
-            <motion.button
-              key={String(o.v)}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => onChange(o.v)}
-              className={`bg-white rounded-[20px] p-5 flex flex-col items-center gap-3 border-2 transition-all shadow-[0_4px_0_rgba(31,34,54,0.85)] ${
-                sel ? "border-ink ring-4 ring-sky/60 bg-sky/30" : "border-ink"
-              }`}
-            >
-              <span className="text-[40px]">{o.icon}</span>
-              <span className="text-ink text-[15px] font-extrabold">{o.label}</span>
-            </motion.button>
-          );
-        })}
+        <button
+          onClick={() => onSelect(true)}
+          className={`p-5 rounded-[20px] border min-h-[140px] text-left transition-all active:scale-[0.97] ${
+            value === true ? "bg-gradient-lemon border-black/20 shadow-lemon" : "bg-navy border-white-10"
+          }`}
+        >
+          <IconCircles size={30} className={value === true ? "text-black" : "text-lemon"} />
+          <p className={`mt-3 text-[15px] font-bold font-display ${value === true ? "text-black" : "text-white"}`}>
+            Yes, I do
+          </p>
+          <p className={`text-[12px] font-body mt-1 ${value === true ? "text-black/60" : "text-white-40"}`}>
+            Accounts, savings, property
+          </p>
+        </button>
+        <button
+          onClick={() => onSelect(false)}
+          className={`p-5 rounded-[20px] border min-h-[140px] text-left transition-all active:scale-[0.97] ${
+            value === false ? "bg-gradient-lemon border-black/20 shadow-lemon" : "bg-navy border-white-10"
+          }`}
+        >
+          <IconMapPin size={30} className={value === false ? "text-black" : "text-lemon"} />
+          <p className={`mt-3 text-[15px] font-bold font-display ${value === false ? "text-black" : "text-white"}`}>
+            Just France for now
+          </p>
+        </button>
       </div>
       <button
         onClick={() => setOpen(!open)}
-        className="mt-5 text-ink text-[13px] font-extrabold underline decoration-2 underline-offset-4 decoration-sky"
+        className="mt-4 inline-flex items-center gap-1 text-lemon text-[13px] font-bold font-body"
       >
-        {open ? "Got it ✓" : "What counts as a tie? 🤔"}
+        What counts? <IconChevronDown size={14} className={open ? "rotate-180 transition-transform" : "transition-transform"} />
       </button>
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            className="overflow-hidden"
-          >
-            <p className="mt-3 bg-pop-yellow border-2 border-ink rounded-2xl px-4 py-3 text-ink text-[13px] font-semibold">
-              💡 A bank account, savings, property, pension, or regular family transfers home.
-            </p>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
+      {open && (
+        <motion.div
+          initial={{ opacity: 0, height: 0 }}
+          animate={{ opacity: 1, height: "auto" }}
+          className="mt-2 p-4 rounded-[14px] bg-navy text-white-60 text-[13px] font-body"
+        >
+          Bank accounts, property, investments, pensions, or any income source
+          still based in your home country.
+        </motion.div>
+      )}
+    </>
   );
 }
 
-const DOCS: { key: string; label: string; emoji: string }[] = [
-  { key: "bank", label: "French bank account", emoji: "🏦" },
-  { key: "sim", label: "French SIM / phone number", emoji: "📱" },
-  { key: "address", label: "Proof of address (quittance)", emoji: "📄" },
-  { key: "secu", label: "Social Security number", emoji: "🔢" },
-  { key: "vitale", label: "Carte Vitale (health card)", emoji: "💊" },
-  { key: "visa", label: "Residence permit / visa", emoji: "🛂" },
-  { key: "fiscal", label: "French tax number", emoji: "💰" },
-  { key: "caf", label: "CAF number", emoji: "🎁" },
+const DOCS = [
+  { key: "bank", label: "French bank account", Icon: IconCard },
+  { key: "sim", label: "French phone number", Icon: IconPhone },
+  { key: "address", label: "Proof of address", Icon: IconHome },
+  { key: "secu", label: "Social Security number", Icon: IconShield },
+  { key: "vitale", label: "Carte Vitale", Icon: IconHeartPulse },
+  { key: "visa", label: "Residence permit", Icon: IconStamp },
+  { key: "fiscal", label: "French tax number", Icon: IconReceipt },
+  { key: "caf", label: "CAF number", Icon: IconPerson },
 ];
 
-function Step8({
-  docs,
-  onToggle,
-}: {
-  docs: Record<string, boolean>;
-  onToggle: (k: string) => void;
-}) {
-  const count = Object.values(docs).filter(Boolean).length;
+function Step8Documents({ docs, onToggle }: { docs: Record<string, boolean>; onToggle: (k: string) => void }) {
   return (
-    <div>
-      <CleoBubble
-        side="left"
-        pose="celebrating"
-        mood="wow"
-        tone="tip"
-        text={
-          <>
-            Almost there! Tick what you already have — <b>{count}/8 unlocked</b> ✨
-          </>
-        }
-        className="mb-5"
-      />
-      <div className="flex flex-col gap-2">
+    <>
+      <StepHeader bubble="Last one! What's already sorted? I'll skip what you don't need." h1="What do you already have?" />
+      <div className="space-y-2.5">
         {DOCS.map((d) => {
-          const on = docs[d.key];
+          const on = !!docs[d.key];
           return (
-            <motion.button
+            <button
               key={d.key}
-              whileTap={{ scale: 0.98 }}
               onClick={() => onToggle(d.key)}
-              className={`rounded-[16px] p-3.5 flex items-center justify-between text-left border-2 border-ink shadow-[0_3px_0_rgba(31,34,54,0.85)] transition-colors ${
-                on ? "bg-pop-mint" : "bg-white"
-              }`}
+              className="w-full px-4 py-3.5 flex items-center gap-3 rounded-[14px] bg-navy border border-white-10 active:scale-[0.99] transition-transform"
             >
-              <div className="flex items-center gap-3 flex-1">
-                <span className="text-[22px]">{d.emoji}</span>
-                <span className="text-ink text-[14px] font-extrabold flex-1">{d.label}</span>
-              </div>
-              <motion.span
-                animate={{
-                  backgroundColor: on ? "#1F2236" : "#FFFFFF",
-                  borderColor: "#1F2236",
-                }}
-                className="relative w-12 h-7 rounded-full flex-shrink-0 border-2"
+              <d.Icon size={20} className={on ? "text-lemon" : "text-white-60"} />
+              <span className="flex-1 text-left text-white text-[14px] font-body font-semibold">{d.label}</span>
+              <span
+                className={`w-11 h-6 rounded-full p-0.5 transition-colors ${on ? "bg-lemon" : "bg-white-15"}`}
+                style={on ? { boxShadow: "0 0 8px rgba(248,255,161,0.5)" } : undefined}
               >
                 <motion.span
-                  animate={{ x: on ? 22 : 2 }}
-                  transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                  className="absolute top-0.5 h-5 w-5 rounded-full bg-pop-yellow border-2 border-ink"
+                  layout
+                  className={`block h-5 w-5 rounded-full ${on ? "bg-black" : "bg-white-40"}`}
+                  style={{ marginLeft: on ? "auto" : 0 }}
                 />
-              </motion.span>
-            </motion.button>
+              </span>
+            </button>
           );
         })}
       </div>
-    </div>
+    </>
   );
 }
