@@ -151,11 +151,15 @@ function Onboarding() {
 
       {/* Bottom CTA */}
       <div
-        className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[430px] px-6 pt-3 pb-6 bg-gradient-to-t from-jet via-jet to-transparent"
-        style={{ paddingBottom: "max(20px, env(safe-area-inset-bottom))" }}
+        className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[430px] px-5 pt-4 pb-6 z-20"
+        style={{
+          paddingBottom: "max(20px, env(safe-area-inset-bottom))",
+          background:
+            "linear-gradient(180deg, rgba(199,210,238,0) 0%, rgba(199,210,238,0.95) 40%)",
+        }}
       >
-        <CButton onClick={next} disabled={!canContinue}>
-          {step === TOTAL ? "Build my Concierge path →" : "Continue"}
+        <CButton onClick={next} disabled={!canContinue} size="lg">
+          {step === TOTAL ? "Build my path! 🚀" : "Continue"}
         </CButton>
       </div>
     </div>
@@ -166,9 +170,9 @@ function Onboarding() {
 
 function StepHeader({ title, subtitle }: { title: string; subtitle?: string }) {
   return (
-    <div className="mb-6">
-      <h2 className="text-white text-[24px] font-bold leading-tight">{title}</h2>
-      {subtitle && <p className="mt-2 text-silver text-[14px] leading-snug">{subtitle}</p>}
+    <div className="mb-5">
+      <h2 className="text-ink text-[26px] font-extrabold leading-tight tracking-tight">{title}</h2>
+      {subtitle && <p className="mt-2 text-ink/70 text-[14px] leading-snug font-medium">{subtitle}</p>}
     </div>
   );
 }
