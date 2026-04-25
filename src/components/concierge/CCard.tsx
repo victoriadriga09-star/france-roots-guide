@@ -6,11 +6,11 @@ interface CCardProps extends React.HTMLAttributes<HTMLDivElement> {
   highlight?: boolean;
   delay?: number;
   animate?: boolean;
-  tone?: "default" | "yellow" | "mint" | "coral" | "ink";
+  tone?: "default" | "yellow" | "mint" | "coral" | "ink" | "dark" | "forest";
 }
 
 /**
- * Playful glass-y card with a chunky bottom shadow.
+ * Premium layered card — soft gradient, hairline border, deep shadow.
  */
 export function CCard({
   className,
@@ -24,28 +24,29 @@ export function CCard({
   const Comp: any = animate ? motion.div : "div";
   const motionProps = animate
     ? {
-        initial: { opacity: 0, y: 16, scale: 0.98 },
+        initial: { opacity: 0, y: 16, scale: 0.985 },
         animate: { opacity: 1, y: 0, scale: 1 },
-        transition: { duration: 0.35, delay, ease: [0.34, 1.56, 0.64, 1] as any },
+        transition: { duration: 0.45, delay, ease: [0.22, 1, 0.36, 1] as any },
       }
     : {};
 
   const toneClass = {
-    default: "bg-white/85 border-ink/15",
-    yellow: "bg-pop-yellow border-ink/20",
-    mint: "bg-pop-mint border-ink/20",
-    coral: "bg-pop-coral text-white border-ink/30",
-    ink: "bg-ink text-white border-ink",
+    default: "bg-gradient-card-light border-ink-black/8 text-ink shadow-soft",
+    yellow: "bg-gradient-gold border-ink-black/15 text-ink shadow-soft",
+    mint: "bg-pop-mint border-ink-black/15 text-ink shadow-soft",
+    coral: "bg-pop-coral text-white border-ink-black/20 shadow-soft",
+    ink: "bg-ink-black text-porcelain border-jungle/20 shadow-deep",
+    dark: "bg-gradient-card-dark text-porcelain border-porcelain/8 shadow-deep",
+    forest: "bg-gradient-forest text-porcelain border-ink-black/30 shadow-coral-glow",
   }[tone];
 
   return (
     <Comp
       {...motionProps}
       className={cn(
-        "rounded-[24px] p-5 border-2 backdrop-blur",
-        "shadow-[0_5px_0_rgba(31,34,54,0.15),0_18px_36px_-18px_rgba(31,34,54,0.4)]",
+        "rounded-[24px] p-5 border backdrop-blur-sm relative overflow-hidden",
         toneClass,
-        highlight && "ring-4 ring-sky/50",
+        highlight && "ring-2 ring-jungle/60",
         className,
       )}
       {...rest}
@@ -64,18 +65,19 @@ export function ProgressBar({
   value: number;
   max?: number;
   className?: string;
-  tone?: "sky" | "yellow" | "mint";
+  tone?: "sky" | "yellow" | "mint" | "dark";
 }) {
   const pct = Math.min(100, Math.max(0, (value / max) * 100));
   const fillColor = {
-    sky: "bg-sky",
-    yellow: "bg-pop-yellow",
-    mint: "bg-pop-mint",
+    sky: "bg-gradient-to-r from-jungle to-forest",
+    yellow: "bg-gradient-to-r from-[#FFD86B] to-[#E5A82E]",
+    mint: "bg-jungle",
+    dark: "bg-ink-black",
   }[tone];
   return (
     <div
       className={cn(
-        "w-full h-3 rounded-full bg-ink/15 overflow-hidden border border-ink/10",
+        "w-full h-2.5 rounded-full bg-ink-black/10 overflow-hidden",
         className,
       )}
     >
@@ -83,9 +85,9 @@ export function ProgressBar({
         className={cn("h-full rounded-full relative overflow-hidden", fillColor)}
         initial={{ width: 0 }}
         animate={{ width: `${pct}%` }}
-        transition={{ duration: 0.7, ease: "easeOut" }}
+        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
       >
-        <span className="absolute inset-x-0 top-0 h-1/2 bg-white/40 rounded-t-full" />
+        <span className="absolute inset-x-0 top-0 h-1/2 bg-white/30 rounded-t-full" />
       </motion.div>
     </div>
   );
@@ -97,21 +99,23 @@ export function Pill({
   className,
 }: {
   children: React.ReactNode;
-  variant?: "coral" | "silver" | "outline" | "yellow" | "mint" | "ink";
+  variant?: "coral" | "silver" | "outline" | "yellow" | "mint" | "ink" | "forest" | "ghost";
   className?: string;
 }) {
   const styles = {
-    coral: "bg-sky/40 text-ink border-ink/15",
-    silver: "bg-white/60 text-ink border-ink/10",
-    outline: "bg-transparent text-ink border-ink/40",
-    yellow: "bg-pop-yellow text-ink border-ink/25",
-    mint: "bg-pop-mint text-ink border-ink/25",
-    ink: "bg-ink text-white border-ink",
+    coral: "bg-jungle/15 text-forest border-jungle/30",
+    silver: "bg-moss-soft text-ink border-ink/10",
+    outline: "bg-transparent text-ink border-ink/30",
+    yellow: "bg-gold/20 text-ink border-gold/40",
+    mint: "bg-pop-mint text-ink border-ink/15",
+    ink: "bg-ink-black text-porcelain border-ink-black",
+    forest: "bg-forest text-porcelain border-forest",
+    ghost: "bg-porcelain/10 text-porcelain border-porcelain/20",
   } as const;
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-1 px-3 py-1 rounded-full text-[12px] font-extrabold border-2",
+        "inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold tracking-wide border",
         styles[variant],
         className,
       )}
