@@ -243,7 +243,7 @@ function IntroStep({ onNext }: { onNext: () => void }) {
   );
 }
 
-function CardHeader({ icon, title }: { icon: React.ReactNode; title: string }) {
+function CardHeader({ icon, title }: { icon: React.ReactNode; title: React.ReactNode }) {
   return (
     <div className="flex items-center gap-2 mb-2">
       <span className="h-10 w-10 rounded-full bg-ink text-pop-yellow flex items-center justify-center border-2 border-ink">
