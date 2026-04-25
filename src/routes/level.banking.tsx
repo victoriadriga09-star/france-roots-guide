@@ -137,7 +137,7 @@ function BankingLevel() {
 function IntroStep({ onNext }: { onNext: () => void }) {
   return (
     <>
-      <TopBar title="Banking · Level 1" />
+      <TopBar title={<span className="font-sans font-bold border-none text-gray-200">Banking · Level 1</span>} />
       <div className="px-5 pt-2 pb-4 space-y-4">
         {/* Hero */}
         <div
@@ -157,10 +157,10 @@ function IntroStep({ onNext }: { onNext: () => void }) {
             <rect x="131" y="55" width="14" height="22" fill="none" stroke="#FCFFFC" strokeWidth="1.5" />
           </svg>
           <div className="absolute top-4 left-4">
-            <Pill variant="yellow">+50 XP for finishing</Pill>
+            <Pill variant="yellow" className="text-lg text-orange-300">+50 XP FOR FINISHING</Pill>
           </div>
           <div className="relative z-10 flex-1">
-            <p className="text-jungle text-[10px] font-bold uppercase tracking-[2px] mb-1">Chapter 1</p>
+            <p className="text-jungle text-[10px] font-bold uppercase tracking-[2px] mb-1">CHAPTER 1</p>
             <h2 className="text-porcelain text-[24px] font-display font-bold leading-tight">Banking, decoded.</h2>
           </div>
           <div className="absolute -bottom-2 right-2">
@@ -168,8 +168,8 @@ function IntroStep({ onNext }: { onNext: () => void }) {
           </div>
         </div>
 
-        <h2 className="text-ink text-[26px] font-extrabold leading-tight tracking-tight">French banking, decoded ✨</h2>
-        <p className="text-ink/70 text-[14px] font-semibold leading-snug">
+        <h2 className="text-ink font-extrabold text-lg tracking-tight">French banking, decoded ✨</h2>
+        <p className="text-ink/85 text-[14px] leading-relaxed font-medium text-slate-100">
           4 quick lessons. By the end, you'll have a French account opened — and bragging rights.
         </p>
 
@@ -180,48 +180,52 @@ function IntroStep({ onNext }: { onNext: () => void }) {
           text={
             <>
               First lesson: French banks come in <b>two flavors</b>. Let me break it down 👇
+              <br />
+              Two types of banks
             </>
           }
         />
 
         <CCard delay={0.05}>
-          <CardHeader icon={<Building2 size={20} />} title="Two types of banks" />
-          <p className="text-ink/85 text-[14px] leading-relaxed font-medium">
-            <b> Traditional banks</b> (BNP, SocGen, Crédit Agricole) — physical branches, real-life advisors, sometimes
-            Saturday hours.
-            <br />
-            <br />
-            <b>📱 Neobanks</b> (Revolut, N26, Nickel) — fully online, often free, and you can sign up in your pajamas.
-            🛋️
+          <CardHeader icon={<Building2 size={20} />} title="Traditional banks" />
+          <p className="text-ink/85 text-[14px] leading-relaxed font-medium font-sans text-slate-50">
+            (BNP, SocGen, Crédit Agricole) — physical branches, real-life advisors, sometimes Saturday hours.
+          </p>
+        </CCard>
+
+        <CCard delay={0.06}>
+          <CardHeader icon={<Building2 size={20} />} title="Neobanks" />
+          <p className="text-ink/85 text-[14px] leading-relaxed font-medium text-gray-50">
+            (Revolut, N26, Nickel) — fully online, often free, and you can sign up in your pajamas. 🛋️
           </p>
         </CCard>
 
         <CCard delay={0.1} tone="yellow">
-          <CardHeader icon={<FileText size={20} />} title="Paperwork starter pack" />
-          <p className="text-ink text-[14px] leading-relaxed font-semibold">
+          <CardHeader icon={<FileText size={20} />} title={<span className="text-lg text-orange-400">Paperwork starter pack</span>} />
+          <p className="text-ink text-[14px] leading-relaxed font-semibold text-gray-900">
             Almost every bank wants:
             <br />
-            ✓ Passport or ID 🛂
+            ✓ Passport or ID 
             <br />
-            ✓ Proof of address in France 📄
-            <br />✓ Sometimes proof of income or enrollment 💼
+            ✓ Proof of address in France 
+            <br />
+            ✓ Sometimes proof of income or enrollment 
           </p>
         </CCard>
 
         <CCard delay={0.15}>
-          <CardHeader icon={<Snail size={20} />} title="Patience required 🐢" />
-          <p className="text-ink/85 text-[14px] leading-relaxed font-medium">
-            Traditional banks move at their own pace — <b>5 to 15 business days</b>. Neobanks? Sometimes{" "}
-            <b>10 minutes</b>. Plan accordingly, especially for that first paycheck.
+          <CardHeader icon={<Snail size={20} />} title={<span className="text-lg text-orange-500">Patience required </span>} />
+          <p className="text-ink/85 text-[14px] leading-relaxed font-medium text-slate-100">
+            Traditional banks move at their own pace — 5 to 15 business days. Neobanks? Sometimes 10 minutes. Plan accordingly, especially for that first paycheck.
           </p>
         </CCard>
 
         <CCard delay={0.2}>
           <CardHeader icon={<Euro size={20} />} title="What's it gonna cost?" />
-          <p className="text-ink/85 text-[14px] leading-relaxed font-medium">
-            Traditional: <b>€2–10/month</b>. Neobanks: often <b>€0</b> for basic.{" "}
-            <span className="text-ink font-extrabold bg-pop-yellow px-1.5 py-0.5 rounded">
-              💡 Pro tip: many waive the fee if your salary lands there.
+          <p className="text-ink/85 text-[14px] leading-relaxed font-medium text-slate-100">
+            Traditional: €2–10/month. Neobanks: often €0 for basic.{" "}
+            <span className="text-ink font-extrabold bg-pop-yellow px-1.5 py-0.5 rounded text-slate-950">
+              💡 Pro tip: many waive the fee if your salary  lands there.
             </span>
           </p>
         </CCard>
@@ -230,13 +234,16 @@ function IntroStep({ onNext }: { onNext: () => void }) {
           <CButton onClick={onNext} size="lg">
             Show me my matches! <ArrowRight size={18} />
           </CButton>
+          <p className="mt-4 text-center text-ink/85 text-[14px] leading-relaxed font-medium text-slate-100">
+            Neobanks open in 10 minutes — perfect first move.
+          </p>
         </div>
       </div>
     </>
   );
 }
 
-function CardHeader({ icon, title }: { icon: React.ReactNode; title: string }) {
+function CardHeader({ icon, title }: { icon: React.ReactNode; title: React.ReactNode }) {
   return (
     <div className="flex items-center gap-2 mb-2">
       <span className="h-10 w-10 rounded-full bg-ink text-pop-yellow flex items-center justify-center border-2 border-ink">

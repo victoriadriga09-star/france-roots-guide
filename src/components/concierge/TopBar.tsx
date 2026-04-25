@@ -2,7 +2,7 @@ import { useRouter } from "@tanstack/react-router";
 import { IconArrowLeft } from "./Icons";
 
 interface TopBarProps {
-  title?: string;
+  title?: React.ReactNode;
   right?: React.ReactNode;
   onBack?: () => void;
   showBack?: boolean;
