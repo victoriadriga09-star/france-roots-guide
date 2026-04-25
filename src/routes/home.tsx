@@ -19,7 +19,7 @@ import {
   Check,
 } from "lucide-react";
 import { CCard, ProgressBar, Pill } from "@/components/concierge/CCard";
-import { Cleo } from "@/components/concierge/Cleo";
+import { Cleo, CleoBubble } from "@/components/concierge/Cleo";
 import { BottomNav } from "@/components/concierge/BottomNav";
 import { useApp } from "@/lib/store";
 import type { LucideIcon } from "lucide-react";
@@ -27,11 +27,6 @@ import type { LucideIcon } from "lucide-react";
 export const Route = createFileRoute("/home")({
   component: QuestMap,
 });
-
-/* ============================================================
-   Premium scrollable Journey Map.
-   Multiple unlocked + locked sections, Duolingo-style.
-   ============================================================ */
 
 interface QuestNode {
   id: string;
@@ -60,6 +55,7 @@ function QuestMap() {
   const bankSelected = !!quest.bankSelected;
   const bankApplied = !!quest.bankApplied;
   const bankActive = !!quest.bankActive;
+  const taxesFiled = !!quest.taxesFiled;
 
   const sections: Section[] = [
     {
@@ -70,7 +66,7 @@ function QuestMap() {
       Icon: Building2,
       status: "active",
       nodes: [
-        { id: "n1", type: "checkpoint", title: "Welcome to France", Icon: Star, href: "/level/banking", status: "done" },
+        { id: "n1", type: "checkpoint", title: "Welcome", Icon: Star, href: "/level/banking", status: "done" },
         { id: "n2", type: "lesson", title: "Pick your bank", Icon: Building2, href: "/level/banking", status: bankSelected ? "done" : "current" },
         { id: "n3", type: "lesson", title: "Apply online", Icon: FileText, href: "/level/banking", status: bankApplied ? "done" : bankSelected ? "current" : "locked" },
         { id: "n4", type: "boss", title: "Get your card", Icon: Crown, href: "/level/banking", status: bankActive ? "done" : bankApplied ? "current" : "locked" },
@@ -84,9 +80,9 @@ function QuestMap() {
       Icon: FileText,
       status: bankActive ? "active" : "locked",
       nodes: [
-        { id: "t1", type: "lesson", title: "Tax basics", Icon: FileText, href: "/level/taxes", status: bankActive ? "current" : "locked" },
-        { id: "t2", type: "lesson", title: "Find your bracket", Icon: Zap, href: "/level/taxes", status: "locked" },
-        { id: "t3", type: "boss", title: "File your return", Icon: Crown, href: "/level/taxes", status: "locked" },
+        { id: "t1", type: "lesson", title: "Tax basics", Icon: FileText, href: "/level/taxes", status: bankActive ? (taxesFiled ? "done" : "current") : "locked" },
+        { id: "t2", type: "lesson", title: "Find your bracket", Icon: Zap, href: "/level/taxes", status: taxesFiled ? "done" : "locked" },
+        { id: "t3", type: "boss", title: "File your return", Icon: Crown, href: "/level/taxes", status: taxesFiled ? "done" : "locked" },
       ],
     },
     {
@@ -95,9 +91,9 @@ function QuestMap() {
       title: "Benefits",
       subtitle: "Money the state owes you",
       Icon: Gift,
-      status: "locked",
+      status: taxesFiled ? "active" : "locked",
       nodes: [
-        { id: "b1", type: "lesson", title: "Find your perks", Icon: Gift, href: "/level/benefits", status: "locked" },
+        { id: "b1", type: "lesson", title: "Find your perks", Icon: Gift, href: "/level/benefits", status: taxesFiled ? "current" : "locked" },
         { id: "b2", type: "boss", title: "Claim €1,200/yr", Icon: Crown, href: "/level/benefits", status: "locked" },
       ],
     },
@@ -138,7 +134,6 @@ function QuestMap() {
       comingSoon: true,
       nodes: [
         { id: "l1", type: "lesson", title: "Café phrases", Icon: Languages, href: "/home", status: "locked" },
-        { id: "l2", type: "lesson", title: "Admin vocab", Icon: FileText, href: "/home", status: "locked" },
       ],
     },
     {
@@ -151,7 +146,6 @@ function QuestMap() {
       comingSoon: true,
       nodes: [
         { id: "tr1", type: "lesson", title: "Navigo card", Icon: Train, href: "/home", status: "locked" },
-        { id: "tr2", type: "boss", title: "Drive in France", Icon: Crown, href: "/home", status: "locked" },
       ],
     },
     {
@@ -169,9 +163,9 @@ function QuestMap() {
   ];
 
   return (
-    <div className="mobile-shell pb-32 relative">
-      {/* Soft ambient glow */}
-      <div className="absolute inset-0 pointer-events-none opacity-60 bg-gradient-jungle-glow" />
+    <div className="mobile-shell pb-32 relative bg-black min-h-screen">
+      {/* Ambient lemon/lilac glow */}
+      <div className="absolute inset-0 pointer-events-none bg-gradient-jungle-glow opacity-90" />
 
       {/* Top bar */}
       <header
@@ -180,24 +174,24 @@ function QuestMap() {
       >
         <Link to="/profile" className="flex items-center gap-3 active:scale-95 transition-transform">
           <div className="relative">
-            <Cleo pose="waving" mood="happy" size={52} />
-            <span className="absolute -bottom-1 -right-1 h-4 w-4 bg-jungle rounded-full border-2 border-white" />
+            <Cleo pose="waving" mood="happy" size={48} />
+            <span className="absolute -bottom-0.5 -right-0.5 h-3.5 w-3.5 bg-lemon rounded-full border-2 border-black" />
           </div>
           <div>
-            <p className="text-ink/55 text-[10px] font-bold uppercase tracking-[2px]">
+            <p className="text-white-40 text-[10px] font-bold uppercase tracking-[2px] font-ui">
               Bonjour
             </p>
-            <h2 className="text-ink text-[18px] font-display font-bold leading-tight">
+            <h2 className="text-white text-[18px] font-display font-bold leading-tight">
               {onboarding.name}
             </h2>
           </div>
         </Link>
         <div className="flex items-center gap-2">
           <StatChip Icon={Flame} value={streak} accent="coral" />
-          <StatChip Icon={Zap} value={xp} accent="gold" />
+          <StatChip Icon={Zap} value={xp} accent="lemon" />
           <Link
             to="/profile"
-            className="h-9 w-9 rounded-full bg-white border border-ink-black/10 flex items-center justify-center text-ink/70 active:scale-95 shadow-soft"
+            className="h-9 w-9 rounded-full bg-navy border border-white/10 flex items-center justify-center text-white-60 active:scale-95"
           >
             <Settings size={16} />
           </Link>
@@ -205,26 +199,26 @@ function QuestMap() {
       </header>
 
       {/* Level summary card */}
-      <div className="px-5 mb-4 relative z-10">
-        <CCard tone="default" delay={0.1} className="!p-4">
+      <div className="px-5 mb-5 relative z-10">
+        <CCard tone="hero" delay={0.1} className="!p-4">
           <div className="flex items-center gap-3 mb-3">
-            <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-jungle to-forest flex items-center justify-center shadow-glow-jungle">
-              <Crown size={18} className="text-porcelain" />
+            <div className="h-11 w-11 rounded-2xl bg-gradient-lemon flex items-center justify-center shadow-lemon">
+              <Crown size={20} className="text-black" strokeWidth={2.6} />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-forest text-[10px] font-bold uppercase tracking-[2px]">
+              <p className="text-lemon text-[10px] font-bold uppercase tracking-[2px] font-ui">
                 Level 1 · Newcomer
               </p>
-              <p className="text-ink text-[15px] font-display font-bold">
-                {xp} <span className="text-ink/40">/ {xpToNext} XP</span>
+              <p className="text-white text-[15px] font-display font-bold">
+                {xp} <span className="text-white-40">/ {xpToNext} XP</span>
               </p>
             </div>
-            <Pill variant="ghost">
-              <Trophy size={11} className="text-gold-deep" />
+            <Pill variant="lemon">
+              <Trophy size={11} />
               {Math.round((xp / xpToNext) * 100)}%
             </Pill>
           </div>
-          <ProgressBar value={xp} max={xpToNext} tone="mint" />
+          <ProgressBar value={xp} max={xpToNext} tone="lemon" />
         </CCard>
       </div>
 
@@ -247,16 +241,16 @@ function QuestMap() {
         className="flex flex-col items-center mt-8 mb-12 relative z-10"
       >
         <div className="relative">
-          <div className="absolute inset-0 rounded-3xl bg-gold/40 blur-2xl animate-glow-pulse" />
-          <div className="relative h-24 w-24 rounded-[28px] bg-gradient-gold border border-gold/50 flex items-center justify-center shadow-deep">
-            <Trophy size={42} className="text-ink-black" strokeWidth={2.4} />
+          <div className="absolute inset-0 rounded-3xl bg-lemon/40 blur-2xl animate-glow-pulse" />
+          <div className="relative h-24 w-24 rounded-[28px] bg-gradient-lemon border border-black/20 flex items-center justify-center shadow-lemon-lg">
+            <Trophy size={42} className="text-black" strokeWidth={2.4} />
           </div>
         </div>
-        <p className="text-ink text-[12px] font-bold uppercase tracking-[2px] mt-3">
+        <p className="text-white text-[12px] font-display font-bold uppercase tracking-[2px] mt-3">
           Final Reward
         </p>
-        <p className="text-ink/55 text-[12px] font-medium">
-          Become a France Pro
+        <p className="text-white-60 text-[12px] font-medium">
+          Become a France Pro 🇫🇷
         </p>
       </motion.div>
 
@@ -269,7 +263,6 @@ function QuestMap() {
 
 function SectionBlock({ section, index }: { section: Section; index: number }) {
   const isLocked = section.status === "locked";
-  // Zigzag pattern for nodes
   const offsets = [0, 64, 88, 32, -48, -84, -56, 24, 60];
 
   return (
@@ -277,7 +270,6 @@ function SectionBlock({ section, index }: { section: Section; index: number }) {
       <SectionBanner section={section} index={index} />
 
       <div className="relative px-4 pt-2 pb-6">
-        {/* SVG dotted path connectors between nodes */}
         <svg
           className="absolute inset-0 w-full h-full pointer-events-none"
           preserveAspectRatio="none"
@@ -293,7 +285,7 @@ function SectionBlock({ section, index }: { section: Section; index: number }) {
               <path
                 key={i}
                 d={`M ${x1}% ${y1} Q ${(x1 + x2) / 2}% ${(y1 + y2) / 2 + 14} ${x2}% ${y2}`}
-                stroke={isLocked ? "rgba(4,15,15,0.12)" : "rgba(36,130,50,0.45)"}
+                stroke={isLocked ? "rgba(255,255,255,0.10)" : "rgba(248,255,161,0.55)"}
                 strokeWidth="3"
                 strokeDasharray="2 9"
                 strokeLinecap="round"
@@ -320,7 +312,7 @@ function SectionBlock({ section, index }: { section: Section; index: number }) {
   );
 }
 
-function SectionBanner({ section, index }: { section: Section; index: number }) {
+function SectionBanner({ section }: { section: Section; index: number }) {
   const isLocked = section.status === "locked";
   const isComingSoon = !!section.comingSoon;
   const Icon = section.Icon;
@@ -336,52 +328,52 @@ function SectionBanner({ section, index }: { section: Section; index: number }) 
       <div
         className={`relative rounded-[22px] p-4 border overflow-hidden ${
           isLocked
-            ? "bg-white/70 border-ink-black/8"
-            : "bg-white border-jungle/25"
-        } shadow-soft`}
+            ? "bg-navy/50 border-white/8"
+            : "bg-navy border-lemon/30"
+        } shadow-deep`}
       >
         {!isLocked && (
-          <div className="absolute -right-6 -top-6 h-24 w-24 rounded-full bg-jungle/15 blur-2xl pointer-events-none" />
+          <div className="absolute -right-6 -top-6 h-24 w-24 rounded-full bg-lemon/20 blur-2xl pointer-events-none" />
         )}
         <div className="flex items-center gap-3 relative">
           <div
             className={`h-12 w-12 rounded-2xl flex items-center justify-center border ${
               isLocked
-                ? "bg-mint-tint border-ink-black/10 text-ink/40"
-                : "bg-gradient-to-br from-jungle to-forest border-jungle/40 text-porcelain shadow-glow-jungle"
+                ? "bg-black/30 border-white/10 text-white-30"
+                : "bg-gradient-lemon border-black/20 text-black shadow-lemon"
             }`}
           >
-            {isLocked ? <Lock size={20} /> : <Icon size={22} strokeWidth={2.2} />}
+            {isLocked ? <Lock size={20} /> : <Icon size={22} strokeWidth={2.4} />}
           </div>
           <div className="flex-1 min-w-0">
             <p
-              className={`text-[10px] font-bold uppercase tracking-[2px] ${
-                isLocked ? "text-ink/40" : "text-forest"
+              className={`text-[10px] font-bold uppercase tracking-[2px] font-ui ${
+                isLocked ? "text-white-30" : "text-lemon"
               }`}
             >
               Section {section.level}
             </p>
             <p
               className={`text-[16px] font-display font-bold leading-tight truncate ${
-                isLocked ? "text-ink/55" : "text-ink"
+                isLocked ? "text-white-40" : "text-white"
               }`}
             >
               {section.title}
             </p>
-            <p className={`text-[11px] font-medium truncate ${isLocked ? "text-ink/40" : "text-ink/60"}`}>
+            <p className={`text-[11px] font-medium truncate ${isLocked ? "text-white-30" : "text-white-60"}`}>
               {section.subtitle}
             </p>
           </div>
           {isComingSoon ? (
-            <Pill variant="ghost">Coming soon</Pill>
+            <Pill variant="lilac">Soon</Pill>
           ) : isLocked ? (
             <Pill variant="ghost">
               <Lock size={10} />
               Locked
             </Pill>
           ) : (
-            <Pill variant="forest">
-              <span className="h-1.5 w-1.5 rounded-full bg-porcelain animate-pulse" />
+            <Pill variant="lemon">
+              <span className="h-1.5 w-1.5 rounded-full bg-lemon animate-pulse" />
               Active
             </Pill>
           )}
@@ -400,18 +392,18 @@ function StatChip({
 }: {
   Icon: LucideIcon;
   value: number;
-  accent: "coral" | "gold";
+  accent: "coral" | "lemon";
 }) {
   const tone =
     accent === "coral"
-      ? "bg-[#FFE6DC] text-coral border-coral/30"
-      : "bg-gold/25 text-[#7A5A12] border-gold/40";
+      ? "bg-coral-red/15 text-coral-red border-coral-red/40"
+      : "bg-lemon/15 text-lemon border-lemon/40";
   return (
     <motion.div
       initial={{ scale: 0 }}
       animate={{ scale: 1 }}
       transition={{ type: "spring", stiffness: 400, damping: 18 }}
-      className={`${tone} border px-2.5 py-1 rounded-full flex items-center gap-1 text-[12px] font-bold`}
+      className={`${tone} border px-2.5 py-1 rounded-full flex items-center gap-1 text-[12px] font-bold font-ui`}
     >
       <Icon size={13} strokeWidth={2.6} />
       {value}
@@ -422,13 +414,13 @@ function StatChip({
 function MapBackdrop() {
   return (
     <svg
-      className="absolute inset-0 w-full h-full pointer-events-none opacity-[0.35]"
+      className="absolute inset-0 w-full h-full pointer-events-none opacity-[0.18]"
       preserveAspectRatio="xMidYMid slice"
       viewBox="0 0 430 1800"
     >
       <defs>
         <pattern id="dotgrid" x="0" y="0" width="28" height="28" patternUnits="userSpaceOnUse">
-          <circle cx="2" cy="2" r="1.2" fill="#2BA84A" opacity="0.45" />
+          <circle cx="2" cy="2" r="1.2" fill="#F8FFA1" opacity="0.8" />
         </pattern>
       </defs>
       <rect width="100%" height="100%" fill="url(#dotgrid)" />
@@ -452,28 +444,26 @@ function PathNode({
   const isBoss = node.type === "boss";
   const Icon = node.Icon;
 
-  let bgClass = "bg-white";
-  let borderClass = "border-ink-black/10";
-  let iconColor = "text-ink/30";
-  let shadowStyle = "0 4px 0 rgba(4,15,15,0.10)";
+  let bgClass = "bg-navy";
+  let borderClass = "border-white/10";
+  let iconColor = "text-white-30";
+  let shadowStyle = "0 4px 0 rgba(0,0,0,0.4)";
 
   if (locked) {
-    bgClass = "bg-white/70";
-    borderClass = "border-ink-black/8";
-    iconColor = "text-ink/30";
-    shadowStyle = "0 4px 0 rgba(4,15,15,0.08)";
+    bgClass = "bg-navy/60";
+    borderClass = "border-white/8";
+    iconColor = "text-white-30";
+    shadowStyle = "0 4px 0 rgba(0,0,0,0.3)";
   } else if (done) {
-    bgClass = "bg-gradient-to-br from-jungle to-forest";
-    borderClass = "border-forest";
-    iconColor = "text-porcelain";
-    shadowStyle = "0 5px 0 #1a5f24, 0 12px 24px -8px rgba(43,168,74,0.5)";
+    bgClass = "bg-gradient-lemon";
+    borderClass = "border-black/20";
+    iconColor = "text-black";
+    shadowStyle = "0 5px 0 #B8C144, 0 14px 28px -8px rgba(248,255,161,0.5)";
   } else if (isCurrent) {
-    bgClass = isBoss ? "bg-gradient-gold" : "bg-gradient-to-br from-[#5DE48A] to-jungle";
-    borderClass = isBoss ? "border-gold/60" : "border-jungle/60";
-    iconColor = "text-ink-black";
-    shadowStyle = isBoss
-      ? "0 6px 0 #B7861F, 0 14px 28px -8px rgba(229,168,46,0.55)"
-      : "0 6px 0 #1a5f24, 0 14px 28px -8px rgba(43,168,74,0.55)";
+    bgClass = isBoss ? "bg-gradient-lemon" : "bg-gradient-lemon";
+    borderClass = "border-black/20";
+    iconColor = "text-black";
+    shadowStyle = "0 6px 0 #B8C144, 0 16px 32px -8px rgba(248,255,161,0.6)";
   }
 
   const size = isBoss ? 88 : 76;
@@ -490,62 +480,60 @@ function PathNode({
       {/* Pulse ring on current */}
       {isCurrent && (
         <span
-          className="absolute rounded-full animate-pulse-ring"
-          style={{ width: size, height: size, top: 0, left: "50%", transform: "translateX(-50%)" }}
+          className="absolute rounded-full"
+          style={{
+            width: size + 12,
+            height: size + 12,
+            top: -6,
+            left: "50%",
+            transform: "translateX(-50%)",
+            border: "3px solid rgba(248,255,161,0.5)",
+            animation: "pulse-ring 2s cubic-bezier(0.4,0,0.6,1) infinite",
+          }}
         />
       )}
 
       {/* Cleo START tag */}
       {isCurrent && (
         <motion.div
-          initial={{ opacity: 0, scale: 0.6, y: -10 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          transition={{ delay: delay + 0.3, type: "spring" }}
-          className="absolute -top-12 z-10 pointer-events-none"
+          initial={{ opacity: 0, y: -6 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: delay + 0.2 }}
+          className="absolute -top-9 bg-lemon text-black text-[10px] font-display font-bold tracking-[1.5px] px-3 py-1 rounded-full border-2 border-black shadow-lemon"
         >
-          <div className="bg-ink-black text-porcelain rounded-full px-3 py-1 text-[10px] font-bold tracking-wide shadow-soft border border-ink-black/10 relative">
-            START
-            <span className="absolute left-1/2 -translate-x-1/2 -bottom-1 w-2 h-2 bg-ink-black rotate-45" />
-          </div>
+          START
         </motion.div>
       )}
 
-      <button
-        disabled={locked}
-        className={`relative ${bgClass} ${borderClass} border-2 rounded-full flex items-center justify-center transition-transform active:translate-y-1 disabled:cursor-not-allowed`}
-        style={{
-          width: size,
-          height: size,
-          boxShadow: shadowStyle,
-        }}
-      >
-        {/* top sheen */}
-        {!locked && (
-          <span
-            className="absolute top-1.5 left-1/2 -translate-x-1/2 w-[55%] h-[28%] rounded-full bg-white/40 blur-[1px] pointer-events-none"
-          />
-        )}
-        {locked ? (
-          <Lock size={isBoss ? 26 : 22} className={iconColor} strokeWidth={2.2} />
-        ) : (
-          <Icon size={isBoss ? 32 : 28} className={iconColor} strokeWidth={2.4} />
-        )}
+      <Link to={node.href}>
+        <motion.div
+          whileTap={!locked ? { scale: 0.92, y: 3 } : undefined}
+          className={`relative rounded-full ${bgClass} border-2 ${borderClass} flex items-center justify-center transition-all`}
+          style={{
+            width: size,
+            height: size,
+            boxShadow: shadowStyle,
+          }}
+        >
+          {locked ? (
+            <Lock size={isBoss ? 30 : 26} className={iconColor} strokeWidth={2.4} />
+          ) : done ? (
+            <Check size={isBoss ? 36 : 30} className={iconColor} strokeWidth={3.2} />
+          ) : (
+            <Icon size={isBoss ? 36 : 30} className={iconColor} strokeWidth={2.4} />
+          )}
 
-        {isBoss && !locked && (
-          <span className="absolute -top-2 left-1/2 -translate-x-1/2 bg-ink-black text-gold rounded-full px-2 py-0.5 text-[8px] font-bold border border-gold/40 uppercase tracking-[1.5px]">
-            Boss
-          </span>
-        )}
-        {done && (
-          <span className="absolute -bottom-1 -right-1 bg-white rounded-full h-7 w-7 flex items-center justify-center border-2 border-jungle shadow-soft">
-            <Check size={14} strokeWidth={3} className="text-jungle" />
-          </span>
-        )}
-      </button>
+          {isBoss && !locked && (
+            <span className="absolute -top-2 -right-2 h-7 w-7 bg-black rounded-full border-2 border-lemon flex items-center justify-center">
+              <Crown size={13} className="text-lemon" strokeWidth={2.6} />
+            </span>
+          )}
+        </motion.div>
+      </Link>
 
       <p
-        className={`mt-2 text-[12px] font-bold text-center max-w-[120px] leading-tight ${
-          locked ? "text-ink/35" : "text-ink"
+        className={`mt-2 text-[11px] font-display font-bold text-center max-w-[110px] leading-tight ${
+          locked ? "text-white-30" : done ? "text-lemon" : "text-white"
         }`}
       >
         {node.title}
@@ -553,10 +541,5 @@ function PathNode({
     </motion.div>
   );
 
-  if (locked) return Inner;
-  return (
-    <Link to={node.href} className="block">
-      {Inner}
-    </Link>
-  );
+  return Inner;
 }
