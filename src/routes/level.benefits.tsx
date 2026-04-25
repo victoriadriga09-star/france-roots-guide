@@ -1,11 +1,22 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
-import { ArrowRight, ExternalLink, Check, Sparkles } from "lucide-react";
+import { useEffect, useState } from "react";
+import {
+  ArrowRight,
+  Check,
+  Sparkles,
+  Home as HomeIcon,
+  Train,
+  ShoppingBag,
+  HeartPulse,
+  type LucideIcon,
+} from "lucide-react";
 import { TopBar } from "@/components/concierge/TopBar";
-import { CCard, Pill } from "@/components/concierge/CCard";
+import { CCard, Pill, ProgressBar } from "@/components/concierge/CCard";
 import { CButton } from "@/components/concierge/CButton";
 import { Cleo, CleoBubble } from "@/components/concierge/Cleo";
+import { useApp } from "@/lib/store";
+import { celebrate } from "@/lib/celebrate";
 
 export const Route = createFileRoute("/level/benefits")({
   component: BenefitsLevel,
@@ -13,7 +24,7 @@ export const Route = createFileRoute("/level/benefits")({
 
 interface Benefit {
   id: string;
-  emoji: string;
+  Icon: LucideIcon;
   name: string;
   value: string;
   monthly: string;
@@ -27,9 +38,9 @@ interface Benefit {
 const BENEFITS: Benefit[] = [
   {
     id: "caf",
-    emoji: "🏠",
-    name: "CAF — Housing Allowance",
-    value: "~€200/month",
+    Icon: HomeIcon,
+    name: "CAF Housing aid",
+    value: "~€200/mo",
     monthly: "€200",
     eligible: true,
     desc: "Monthly housing aid from the state. 4 months in = up to €800 may already be unclaimed.",
@@ -44,7 +55,7 @@ const BENEFITS: Benefit[] = [
   },
   {
     id: "navigo",
-    emoji: "🚇",
+    Icon: Train,
     name: "Navigo Solidarity",
     value: "Up to 50% off",
     monthly: "€42 saved",
@@ -60,9 +71,9 @@ const BENEFITS: Benefit[] = [
   },
   {
     id: "prime",
-    emoji: "🛒",
+    Icon: ShoppingBag,
     name: "Prime d'Activité",
-    value: "~€150/month",
+    value: "~€150/mo",
     monthly: "€150",
     eligible: true,
     desc: "Monthly bonus from CAF if you work and earn under €1,800 net.",
@@ -76,9 +87,9 @@ const BENEFITS: Benefit[] = [
   },
   {
     id: "css",
-    emoji: "💊",
-    name: "Complémentaire Santé Solidaire",
-    value: "Free top-up",
+    Icon: HeartPulse,
+    name: "Health top-up",
+    value: "Free",
     monthly: "€60 saved",
     eligible: false,
     desc: "Free health insurance top-up for lower incomes.",
@@ -93,13 +104,25 @@ const BENEFITS: Benefit[] = [
 
 function BenefitsLevel() {
   const [open, setOpen] = useState<Benefit | null>(null);
+  const [success, setSuccess] = useState(false);
+  const { setQuest, addXp } = useApp();
+  const navigate = useNavigate();
+
+  const handleApply = () => {
+    setOpen(null);
+    setQuest({ benefitsClaimed: true });
+    addXp(200);
+    celebrate();
+    setSuccess(true);
+  };
+
   return (
     <div className="mobile-shell pb-32 bg-black min-h-screen">
       <TopBar
         title={<span className="font-display font-bold text-white">Benefits · Level 3</span>}
       />
       <div className="px-5 pt-2 pb-4 space-y-5">
-        {/* Hero with money rain */}
+        {/* Hero */}
         <div className="h-[200px] rounded-[28px] relative overflow-hidden p-5 border border-lemon/30 shadow-deep card-hero">
           <div className="absolute inset-0 bg-gradient-jungle-glow opacity-80 pointer-events-none" />
           <svg viewBox="0 0 200 130" className="absolute inset-0 w-full h-full opacity-50">
@@ -139,7 +162,7 @@ function BenefitsLevel() {
               Chapter 3
             </p>
             <h2 className="text-white text-[24px] font-display font-bold leading-tight">
-              Free money 💸
+              Free money.
             </h2>
           </div>
           <div className="absolute -bottom-2 right-2">
@@ -147,19 +170,11 @@ function BenefitsLevel() {
           </div>
         </div>
 
-        <h2 className="text-white text-[22px] font-display font-bold tracking-tight">
-          France loves to give. Let's make sure you receive. 🇫🇷
-        </h2>
-
         <CleoBubble
           side="left"
           pose="guiding"
           tone="dark"
-          text={
-            <>
-              Most newcomers miss <b>at least one</b> of these. Not on my watch 😎
-            </>
-          }
+          text={<>Most newcomers miss <b>at least one</b> of these. Not on my watch.</>}
         />
 
         {/* Big number callout */}
@@ -183,7 +198,11 @@ function BenefitsLevel() {
       </div>
 
       <AnimatePresence>
-        {open && <BenefitDetail b={open} onClose={() => setOpen(null)} />}
+        {open && <BenefitDetail b={open} onClose={() => setOpen(null)} onApply={handleApply} />}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {success && <SuccessOverlay onContinue={() => navigate({ to: "/home" })} />}
       </AnimatePresence>
     </div>
   );
@@ -198,6 +217,7 @@ function BenefitCard({
   delay: number;
   onOpen: () => void;
 }) {
+  const Icon = b.Icon;
   return (
     <motion.button
       onClick={onOpen}
@@ -205,32 +225,53 @@ function BenefitCard({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3, delay }}
       whileTap={{ scale: 0.98 }}
-      className={`w-full text-left card-navy p-5 border-l-4 ${
+      className={`w-full text-left card-navy p-4 border-l-4 ${
         b.eligible ? "!border-l-lemon" : "!border-l-white/15"
       }`}
     >
       <div className="flex items-start gap-3">
-        <span className="text-3xl">{b.emoji}</span>
-        <div className="flex-1">
+        <div
+          className={`h-12 w-12 rounded-2xl flex items-center justify-center flex-shrink-0 ${
+            b.eligible
+              ? "bg-gradient-lemon shadow-lemon"
+              : "bg-white/8 border border-white/15"
+          }`}
+        >
+          <Icon
+            size={22}
+            className={b.eligible ? "text-black" : "text-white-60"}
+            strokeWidth={2.4}
+          />
+        </div>
+        <div className="flex-1 min-w-0">
           <p className="text-white text-[15px] font-display font-bold">{b.name}</p>
-          <p className="text-lemon text-[20px] font-display font-extrabold mt-1">{b.value}</p>
-          <p className="text-white-60 text-[12px] mt-1 leading-snug font-ui">{b.desc}</p>
+          <p className="text-lemon text-[20px] font-display font-extrabold mt-0.5">{b.value}</p>
+          <p className="text-white-60 text-[11px] mt-1 leading-snug font-ui">{b.desc}</p>
         </div>
         <Pill variant={b.eligible ? "lemon" : "ghost"}>
-          {b.eligible ? "✓ Eligible" : "Check"}
+          {b.eligible ? "Eligible" : "Check"}
         </Pill>
       </div>
       <div className="mt-3 pt-3 border-t border-white/10 flex items-center justify-between">
-        <span className="text-white-60 text-[11px] font-ui font-semibold">○ Not applied yet</span>
+        <span className="text-white-60 text-[11px] font-ui font-semibold">Not applied yet</span>
         <span className="text-lemon text-[12px] font-display font-bold flex items-center gap-1">
-          Start quest <ArrowRight size={13} />
+          Start <ArrowRight size={13} />
         </span>
       </div>
     </motion.button>
   );
 }
 
-function BenefitDetail({ b, onClose }: { b: Benefit; onClose: () => void }) {
+function BenefitDetail({
+  b,
+  onClose,
+  onApply,
+}: {
+  b: Benefit;
+  onClose: () => void;
+  onApply: () => void;
+}) {
+  const Icon = b.Icon;
   return (
     <motion.div
       initial={{ x: "100%" }}
@@ -245,33 +286,33 @@ function BenefitDetail({ b, onClose }: { b: Benefit; onClose: () => void }) {
       />
       <div className="px-5 pt-2 pb-4 space-y-5">
         <CCard tone="lemon" className="!p-5">
-          <p className="text-black/70 text-[10px] uppercase tracking-[2px] font-ui font-bold">
-            Estimated value
-          </p>
-          <p className="text-black text-[36px] font-display font-extrabold tracking-tight">
-            {b.value}
-          </p>
-          <p className="text-black/80 text-[13px] font-ui font-semibold">
+          <div className="flex items-center gap-3 mb-2">
+            <div className="h-12 w-12 rounded-2xl bg-black flex items-center justify-center shadow-deep">
+              <Icon size={22} className="text-lemon" strokeWidth={2.4} />
+            </div>
+            <div>
+              <p className="text-black/70 text-[10px] uppercase tracking-[2px] font-ui font-bold">
+                Estimated value
+              </p>
+              <p className="text-black text-[28px] font-display font-extrabold tracking-tight leading-none mt-1">
+                {b.value}
+              </p>
+            </div>
+          </div>
+          <p className="text-black/80 text-[13px] font-ui font-semibold mt-2">
             Eligible based on your profile
           </p>
         </CCard>
 
-        <CCard>
-          <h3 className="text-white text-[16px] font-display font-bold mb-2">What is it?</h3>
-          <p className="text-white text-[14px] font-ui font-medium leading-relaxed">{b.desc}</p>
-        </CCard>
-
         <CCard className="border-l-4 !border-l-lemon">
-          <h3 className="text-white text-[16px] font-display font-bold mb-2">
-            Why this applies to you
-          </h3>
-          <p className="text-white text-[14px] font-ui font-medium leading-relaxed">{b.why}</p>
+          <h3 className="text-white text-[15px] font-display font-bold mb-2">Why this fits you</h3>
+          <p className="text-white text-[13px] font-ui font-medium leading-relaxed">{b.why}</p>
         </CCard>
 
         <div>
-          <h3 className="text-white text-[16px] font-display font-bold mb-3">How to apply</h3>
-          <div className="relative pl-3">
-            <div className="absolute left-[18px] top-3 bottom-3 w-px bg-lemon/30" />
+          <h3 className="text-white text-[15px] font-display font-bold mb-3">How to apply</h3>
+          <div className="relative pl-1">
+            <div className="absolute left-[14px] top-3 bottom-3 w-px bg-lemon/30" />
             {b.steps.map((s, i) => (
               <motion.div
                 key={i}
@@ -280,12 +321,12 @@ function BenefitDetail({ b, onClose }: { b: Benefit; onClose: () => void }) {
                 transition={{ delay: i * 0.07 }}
                 className="flex items-start gap-3 mb-3 relative"
               >
-                <div className="h-7 w-7 rounded-full bg-lemon text-black text-[12px] font-display font-extrabold flex items-center justify-center z-10 border-2 border-black">
+                <div className="h-7 w-7 rounded-full bg-gradient-lemon text-black text-[12px] font-display font-extrabold flex items-center justify-center z-10 border-2 border-black shadow-lemon">
                   {i + 1}
                 </div>
-                <div className="flex-1 card-navy p-4 !rounded-2xl">
-                  <p className="text-white text-[14px] font-display font-bold">{s.t}</p>
-                  <p className="text-white-60 text-[12px] mt-1 font-ui">{s.d}</p>
+                <div className="flex-1 card-navy p-3.5 !rounded-2xl">
+                  <p className="text-white text-[13px] font-display font-bold">{s.t}</p>
+                  <p className="text-white-60 text-[11px] mt-1 font-ui">{s.d}</p>
                 </div>
               </motion.div>
             ))}
@@ -293,51 +334,65 @@ function BenefitDetail({ b, onClose }: { b: Benefit; onClose: () => void }) {
         </div>
 
         <CCard>
-          <h3 className="text-white text-[15px] font-display font-bold mb-2">What you'll need</h3>
-          <ul className="space-y-2">
-            {["Proof of address", "Bank IBAN", "ID / passport"].map((d) => (
-              <li
+          <h3 className="text-white text-[14px] font-display font-bold mb-3">What you'll need</h3>
+          <div className="grid grid-cols-3 gap-2">
+            {["Address", "IBAN", "Passport"].map((d) => (
+              <div
                 key={d}
-                className="flex items-center justify-between bg-white/5 rounded-xl px-3 py-2.5 border border-white/10"
+                className="bg-lemon/10 border border-lemon/25 rounded-xl py-2 text-center"
               >
-                <span className="text-white text-[13px] font-ui font-semibold">{d}</span>
-                <span className="h-5 w-5 rounded-full bg-lemon flex items-center justify-center">
-                  <Check size={12} className="text-black" strokeWidth={3.4} />
-                </span>
-              </li>
-            ))}
-          </ul>
-        </CCard>
-
-        <CButton>
-          Apply on {b.applyOn} <ExternalLink size={16} />
-        </CButton>
-
-        <CCard>
-          <h3 className="text-white text-[15px] font-display font-bold mb-3">Tracking</h3>
-          <div className="flex items-center justify-between relative">
-            <div className="absolute left-2 right-2 top-3 h-0.5 bg-white/10" />
-            {["Applied", "Processing", "Approved", "Paid"].map((s, i) => (
-              <div key={s} className="flex-1 flex flex-col items-center relative z-10">
-                <div
-                  className={`h-6 w-6 rounded-full border-2 ${
-                    i === 0 ? "bg-lemon border-black shadow-lemon" : "border-white/20 bg-navy"
-                  }`}
-                />
-                <p
-                  className={`mt-2 text-[10px] text-center font-ui font-bold ${
-                    i === 0 ? "text-lemon" : "text-white-40"
-                  }`}
-                >
-                  {s}
-                </p>
+                <Check size={14} className="text-lemon mx-auto" strokeWidth={3} />
+                <p className="text-white text-[11px] font-ui font-bold mt-1">{d}</p>
               </div>
             ))}
           </div>
-          <p className="text-white-60 text-[12px] mt-3 font-ui italic">
-            CAF usually takes 2–4 weeks. I'll ping you the moment it moves ⚡
-          </p>
         </CCard>
+
+        <CButton onClick={onApply}>
+          Start application <ArrowRight size={16} />
+        </CButton>
+      </div>
+    </motion.div>
+  );
+}
+
+function SuccessOverlay({ onContinue }: { onContinue: () => void }) {
+  useEffect(() => {
+    const t = setTimeout(onContinue, 3500);
+    return () => clearTimeout(t);
+  }, [onContinue]);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-[60] bg-black flex flex-col items-center justify-center px-6 text-center"
+    >
+      <Cleo pose="celebrating" size={120} />
+      <h1 className="mt-6 text-white text-[28px] font-display font-extrabold">All set</h1>
+      <p className="mt-2 text-white-60 text-[14px] font-ui">Your application is on its way.</p>
+
+      <CCard tone="lemon" className="mt-6 w-full text-center !p-6">
+        <p className="text-black text-[16px] font-display font-bold">All 3 levels complete</p>
+        <motion.p
+          initial={{ scale: 0.9, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ delay: 0.2 }}
+          className="text-black text-[40px] font-display font-extrabold mt-1"
+        >
+          +200 XP
+        </motion.p>
+        <div className="mt-4">
+          <ProgressBar value={3} max={3} />
+          <p className="text-black/70 text-[12px] mt-2 font-ui font-bold">Chapter 1 — done</p>
+        </div>
+      </CCard>
+
+      <div className="mt-8 w-full">
+        <CButton onClick={onContinue}>
+          Back to your quest map <ArrowRight size={18} />
+        </CButton>
       </div>
     </motion.div>
   );
