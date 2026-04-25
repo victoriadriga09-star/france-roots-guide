@@ -85,5 +85,105 @@ function RootShell({ children }: { children: React.ReactNode }) {
 }
 
 function RootComponent() {
-  return <Outlet />;
+  const { pathname } = useLocation();
+  const [showSplash, setShowSplash] = useState(false);
+
+  // Show the brand loading animation on every fresh open of the app
+  // (once per browser tab session), unless we're already on splash/onboarding/loading.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const seen = sessionStorage.getItem("concierge:openSplash");
+    const skipRoutes = ["/", "/onboarding", "/loading"];
+    if (!seen && !skipRoutes.includes(pathname)) {
+      setShowSplash(true);
+      sessionStorage.setItem("concierge:openSplash", "1");
+      const t = setTimeout(() => setShowSplash(false), 2200);
+      return () => clearTimeout(t);
+    }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  return (
+    <>
+      <Outlet />
+      <CleoCompanion />
+      <AnimatePresence>
+        {showSplash && <AppOpenSplash key="splash" />}
+      </AnimatePresence>
+    </>
+  );
+}
+
+function AppOpenSplash() {
+  return (
+    <motion.div
+      initial={{ opacity: 1 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0, scale: 1.04 }}
+      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+      className="fixed inset-0 z-[100] flex items-center justify-center overflow-hidden"
+      style={{
+        background:
+          "radial-gradient(120% 80% at 50% 0%, #DDF1D6 0%, #EAF6E1 60%, #D5EEC7 100%)",
+      }}
+    >
+      {[0, 1, 2].map((i) => (
+        <motion.span
+          key={i}
+          className="absolute rounded-full border-2 border-jungle/30"
+          initial={{ scale: 0, opacity: 0 }}
+          animate={{ scale: [0, 2.4], opacity: [0.45, 0] }}
+          transition={{
+            duration: 2.2,
+            repeat: Infinity,
+            delay: i * 0.5,
+            ease: "easeOut",
+          }}
+          style={{ width: 140, height: 140 }}
+        />
+      ))}
+
+      {[...Array(8)].map((_, i) => (
+        <motion.span
+          key={`p-${i}`}
+          className="absolute h-1.5 w-1.5 rounded-full bg-jungle/60"
+          initial={{
+            x: Math.cos((i / 8) * Math.PI * 2) * 100,
+            y: Math.sin((i / 8) * Math.PI * 2) * 100,
+            opacity: 0,
+            scale: 0.4,
+          }}
+          animate={{
+            x: Math.cos((i / 8) * Math.PI * 2) * 160,
+            y: Math.sin((i / 8) * Math.PI * 2) * 160,
+            opacity: [0, 1, 0],
+            scale: [0.4, 1.2, 0.4],
+          }}
+          transition={{ duration: 1.6, repeat: Infinity, delay: i * 0.08 }}
+        />
+      ))}
+
+      <motion.div
+        initial={{ scale: 0.6, opacity: 0, y: 8 }}
+        animate={{ scale: 1, opacity: 1, y: 0 }}
+        exit={{ scale: 0.85, opacity: 0 }}
+        transition={{ type: "spring", stiffness: 220, damping: 16 }}
+        className="relative flex flex-col items-center gap-4"
+      >
+        <div className="relative">
+          <div className="absolute inset-0 rounded-full bg-jungle/30 blur-2xl scale-110" />
+          <Cleo pose="waving" mood="happy" size={120} />
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="h-1.5 w-1.5 rounded-full bg-forest animate-pulse" />
+          <p className="font-display font-bold tracking-[3px] text-[11px] uppercase text-forest">
+            Concierge
+          </p>
+          <span
+            className="h-1.5 w-1.5 rounded-full bg-forest animate-pulse"
+            style={{ animationDelay: "0.3s" }}
+          />
+        </div>
+      </motion.div>
+    </motion.div>
+  );
 }
