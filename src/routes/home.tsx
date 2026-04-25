@@ -169,9 +169,9 @@ function QuestMap() {
   ];
 
   return (
-    <div className="mobile-shell-dark pb-32 relative">
-      {/* Ambient glow */}
-      <div className="absolute inset-0 bg-gradient-jungle-glow pointer-events-none opacity-60" />
+    <div className="mobile-shell pb-32 relative">
+      {/* Soft ambient glow */}
+      <div className="absolute inset-0 pointer-events-none opacity-60 bg-gradient-jungle-glow" />
 
       {/* Top bar */}
       <header
@@ -181,13 +181,13 @@ function QuestMap() {
         <Link to="/profile" className="flex items-center gap-3 active:scale-95 transition-transform">
           <div className="relative">
             <Cleo pose="waving" mood="happy" size={52} />
-            <span className="absolute -bottom-1 -right-1 h-4 w-4 bg-jungle rounded-full border-2 border-ink-black" />
+            <span className="absolute -bottom-1 -right-1 h-4 w-4 bg-jungle rounded-full border-2 border-white" />
           </div>
           <div>
-            <p className="text-porcelain/60 text-[10px] font-bold uppercase tracking-[2px]">
+            <p className="text-ink/55 text-[10px] font-bold uppercase tracking-[2px]">
               Bonjour
             </p>
-            <h2 className="text-porcelain text-[18px] font-display font-bold leading-tight">
+            <h2 className="text-ink text-[18px] font-display font-bold leading-tight">
               {onboarding.name}
             </h2>
           </div>
@@ -197,7 +197,7 @@ function QuestMap() {
           <StatChip Icon={Zap} value={xp} accent="gold" />
           <Link
             to="/profile"
-            className="h-9 w-9 rounded-full bg-jet-black border border-porcelain/10 flex items-center justify-center text-porcelain/70 active:scale-95"
+            className="h-9 w-9 rounded-full bg-white border border-ink-black/10 flex items-center justify-center text-ink/70 active:scale-95 shadow-soft"
           >
             <Settings size={16} />
           </Link>
@@ -206,21 +206,21 @@ function QuestMap() {
 
       {/* Level summary card */}
       <div className="px-5 mb-4 relative z-10">
-        <CCard tone="dark" delay={0.1} className="!p-4">
+        <CCard tone="default" delay={0.1} className="!p-4">
           <div className="flex items-center gap-3 mb-3">
             <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-jungle to-forest flex items-center justify-center shadow-glow-jungle">
               <Crown size={18} className="text-porcelain" />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-jungle text-[10px] font-bold uppercase tracking-[2px]">
+              <p className="text-forest text-[10px] font-bold uppercase tracking-[2px]">
                 Level 1 · Newcomer
               </p>
-              <p className="text-porcelain text-[15px] font-display font-bold">
-                {xp} <span className="text-porcelain/50">/ {xpToNext} XP</span>
+              <p className="text-ink text-[15px] font-display font-bold">
+                {xp} <span className="text-ink/40">/ {xpToNext} XP</span>
               </p>
             </div>
             <Pill variant="ghost">
-              <Trophy size={11} className="text-gold" />
+              <Trophy size={11} className="text-gold-deep" />
               {Math.round((xp / xpToNext) * 100)}%
             </Pill>
           </div>
@@ -228,7 +228,7 @@ function QuestMap() {
         </CCard>
       </div>
 
-      {/* Map background — abstract mountains/contour */}
+      {/* Map background — abstract dot grid */}
       <MapBackdrop />
 
       {/* Sections */}
@@ -247,15 +247,15 @@ function QuestMap() {
         className="flex flex-col items-center mt-8 mb-12 relative z-10"
       >
         <div className="relative">
-          <div className="absolute inset-0 rounded-3xl bg-gold/30 blur-2xl animate-glow-pulse" />
+          <div className="absolute inset-0 rounded-3xl bg-gold/40 blur-2xl animate-glow-pulse" />
           <div className="relative h-24 w-24 rounded-[28px] bg-gradient-gold border border-gold/50 flex items-center justify-center shadow-deep">
             <Trophy size={42} className="text-ink-black" strokeWidth={2.4} />
           </div>
         </div>
-        <p className="text-porcelain text-[12px] font-bold uppercase tracking-[2px] mt-3">
+        <p className="text-ink text-[12px] font-bold uppercase tracking-[2px] mt-3">
           Final Reward
         </p>
-        <p className="text-porcelain/55 text-[12px] font-medium">
+        <p className="text-ink/55 text-[12px] font-medium">
           Become a France Pro
         </p>
       </motion.div>
