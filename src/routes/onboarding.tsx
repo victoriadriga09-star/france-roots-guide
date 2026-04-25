@@ -180,20 +180,26 @@ function StepHeader({ title, subtitle }: { title: string; subtitle?: string }) {
 function Step1({ value, onChange }: { value: string; onChange: (v: string) => void }) {
   return (
     <div>
-      <div className="flex justify-center mb-4">
-        <Cleo pose="thinking" size={72} />
-      </div>
-      <StepHeader
-        title="Let's get you settled 🗝️"
-        subtitle="Answer a few quick questions and we'll build your personal France guide."
+      <CleoBubble
+        side="left"
+        pose="waving"
+        mood="happy"
+        text={
+          <>
+            Hey! I'm <b>Cleo</b> 🗝️ Let's start with the easy stuff — what should I call you?
+          </>
+        }
+        className="mb-6"
       />
-      <label className="text-white text-[14px] font-semibold mb-2 block">What's your name?</label>
+      <label className="text-ink text-[14px] font-extrabold mb-2 block uppercase tracking-wider">
+        Your first name
+      </label>
       <input
         autoFocus
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder="Viktoria"
-        className="w-full h-[52px] px-4 bg-slate-blue rounded-[12px] text-white placeholder:text-silver/60 outline-none border-b-2 border-transparent focus:border-coral transition-colors"
+        className="w-full h-[58px] px-4 bg-white border-2 border-ink rounded-[16px] text-ink placeholder:text-ink/30 outline-none font-bold text-[16px] focus:ring-4 focus:ring-sky/40 transition-all shadow-[0_4px_0_rgba(31,34,54,0.85)]"
       />
     </div>
   );
