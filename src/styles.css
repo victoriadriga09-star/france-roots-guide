@@ -224,6 +224,21 @@
   .text-warn-yellow { color: var(--warn-yellow); }
   .text-navy { color: var(--navy); }
 
+  /* Vivid editorial palette */
+  .bg-vivid-purple { background-color: var(--vivid-purple); }
+  .bg-vivid-orange { background-color: var(--vivid-orange); }
+  .bg-vivid-green  { background-color: var(--vivid-green); }
+  .bg-vivid-red    { background-color: var(--vivid-red); }
+  .bg-vivid-yellow { background-color: var(--vivid-yellow); }
+  .text-vivid-purple { color: var(--vivid-purple); }
+  .text-vivid-orange { color: var(--vivid-orange); }
+  .text-vivid-green  { color: var(--vivid-green); }
+  .text-vivid-red    { color: var(--vivid-red); }
+  .text-vivid-yellow { color: var(--vivid-yellow); }
+  .bg-surface  { background-color: var(--bg-surface); }
+  .bg-elevated { background-color: var(--bg-elevated); }
+  .bg-primary-dark { background-color: var(--bg-primary); }
+
   .text-white-40 { color: var(--white-40); }
   .text-white-60 { color: var(--white-60); }
   .text-white-80 { color: var(--white-80); }
