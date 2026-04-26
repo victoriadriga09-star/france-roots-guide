@@ -1,6 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { AnimatePresence, motion } from "framer-motion";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { CButton } from "@/components/concierge/CButton";
 import { Cleo, CleoBubble } from "@/components/concierge/Cleo";
 import { Flag, type CountryCode } from "@/components/concierge/Flags";
@@ -10,7 +10,7 @@ import {
   IconGraduationCap, IconBriefcase, IconLightning, IconSearch as IconSearch2,
   IconCircles, IconMapPin, IconCard, IconPhone, IconHome, IconShield,
   IconHeartPulse, IconStamp, IconReceipt, IconPerson,
-  IconChevronDown,
+  IconChevronDown, IconClose, IconUpload,
 } from "@/components/concierge/Icons";
 import { useApp } from "@/lib/store";
 
@@ -18,7 +18,7 @@ export const Route = createFileRoute("/onboarding")({
   component: Onboarding,
 });
 
-const TOTAL = 8;
+const TOTAL = 9;
 
 function Onboarding() {
   const [step, setStep] = useState(1);
