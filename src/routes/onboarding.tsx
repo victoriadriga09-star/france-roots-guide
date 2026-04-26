@@ -701,6 +701,7 @@ function Step9Uploads({
       <StepHeader
         bubble="Drop in scans or photos — I'll keep them safe."
         h1="Upload your documents"
+        parts={[{ t: "Upload your", c: "white" }, { t: "documents", c: "lemon" }]}
         sub="Add the files for everything you ticked. PDF, JPG or PNG, max 10 MB."
       />
 
