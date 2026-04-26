@@ -609,3 +609,84 @@ function Step8Documents({ docs, onToggle }: { docs: Record<string, boolean>; onT
     </>
   );
 }
+
+function Step9Uploads({
+  docs,
+  uploads,
+  onUpload,
+  onRemove,
+}: {
+  docs: Record<string, boolean>;
+  uploads: Record<string, { name: string; size: number }>;
+  onUpload: (key: string, file: { name: string; size: number }) => void;
+  onRemove: (key: string) => void;
+}) {
+  const selected = DOCS.filter((d) => docs[d.key]);
+
+  if (selected.length === 0) {
+    return (
+      <>
+        <StepHeader
+          bubble="Nothing to upload yet — we'll guide you through getting these later."
+          h1="No documents to upload"
+          sub="You didn't tag any documents on the previous step. You can continue."
+        />
+      </>
+    );
+  }
+
+  return (
+    <>
+      <StepHeader
+        bubble="Drop in scans or photos — I'll keep them safe."
+        h1="Upload your documents"
+        sub="Add the files for everything you ticked. PDF, JPG or PNG."
+      />
+      <div className="space-y-2.5">
+        {selected.map((d) => {
+          const file = uploads[d.key];
+          return (
+            <div
+              key={d.key}
+              className="w-full px-4 py-3.5 flex items-center gap-3 rounded-[14px] bg-navy border border-white-10"
+            >
+              <d.Icon size={20} className={file ? "text-lemon" : "text-white-60"} />
+              <div className="flex-1 text-left min-w-0">
+                <p className="text-white text-[14px] font-body font-semibold truncate">{d.label}</p>
+                {file && (
+                  <p className="text-white-40 text-[11px] font-body truncate">
+                    {file.name} · {(file.size / 1024).toFixed(0)} KB
+                  </p>
+                )}
+              </div>
+              {file ? (
+                <button
+                  onClick={() => onRemove(d.key)}
+                  className="h-9 w-9 rounded-full flex items-center justify-center bg-white-10 text-white active:scale-95"
+                  aria-label="Remove file"
+                >
+                  <IconClose size={16} />
+                </button>
+              ) : (
+                <label className="h-9 px-3 rounded-full flex items-center gap-1.5 bg-lemon text-black text-[12px] font-bold font-ui active:scale-95 cursor-pointer">
+                  <IconUpload size={14} />
+                  Upload
+                  <input
+                    type="file"
+                    accept=".pdf,.jpg,.jpeg,.png"
+                    className="hidden"
+                    onChange={(e) => {
+                      const f = e.target.files?.[0];
+                      if (f) onUpload(d.key, { name: f.name, size: f.size });
+                      e.target.value = "";
+                    }}
+                  />
+                </label>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </>
+  );
+}
