@@ -25,6 +25,7 @@ import { BankLogo } from "@/components/concierge/BankLogo";
 import { BankSearchAnimation } from "@/components/concierge/BankSearchAnimation";
 import { useApp } from "@/lib/store";
 import { celebrate } from "@/lib/celebrate";
+import { Editorial } from "@/components/concierge/Editorial";
 
 export const Route = createFileRoute("/level/banking")({
   component: BankingLevel,
@@ -163,6 +164,21 @@ function BankingLevel() {
 function IntroStep({ onNext }: { onNext: () => void }) {
   return (
     <div className="px-5 pt-2 pb-6 space-y-5">
+      {/* Editorial hero — magazine-style mixed colors */}
+      <Editorial
+        size="hero"
+        parts={[
+          { t: "Build", c: "lemon" },
+          { t: "your", c: "white" },
+          { t: "financial", c: "lilac" },
+          { t: "life.", c: "white" },
+        ]}
+        className="mt-2"
+      />
+      <p className="text-white-60 text-[15px] font-body italic leading-relaxed -mt-2">
+        Here's how banking works in France — no jargon, just what you need to know.
+      </p>
+
       {/* Hero */}
       <div className="h-[200px] rounded-[28px] relative overflow-hidden p-5 border border-lemon/30 shadow-deep card-hero">
         <div className="absolute inset-0 bg-gradient-jungle-glow opacity-80 pointer-events-none" />
