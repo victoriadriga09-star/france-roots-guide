@@ -1,203 +1,262 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "framer-motion";
-import { ArrowRight, Wallet, TrendingUp, Sparkles, CalendarClock, Compass } from "lucide-react";
-import { CCard, Pill, ProgressBar } from "@/components/concierge/CCard";
-import { BottomNav } from "@/components/concierge/BottomNav";
-import { Cleo } from "@/components/concierge/Cleo";
+import { Shell } from "@/components/Shell";
+import { Cleo } from "@/components/Cleo";
+import { Icon } from "@/components/Icon";
+import { BottomNav } from "@/components/BottomNav";
+import { CountUp } from "@/components/CountUp";
 import { useApp } from "@/lib/store";
 
 export const Route = createFileRoute("/dashboard")({
   component: Dashboard,
+  head: () => ({
+    meta: [{ title: "Dashboard — Concierge" }, { name: "description", content: "Your financial picture in France." }],
+  }),
 });
 
 function Dashboard() {
-  const { quest, questsDone, onboarding } = useApp();
-  const hasBank = quest.bankActive;
-  const total = hasBank ? "4,280" : "1,800";
-
+  const { user, xp } = useApp();
   return (
-    <div className="mobile-shell pb-32 bg-black min-h-screen relative">
-      <div className="absolute inset-0 pointer-events-none bg-gradient-jungle-glow opacity-70" />
-
-      {/* Header */}
-      <header
-        className="px-5 pt-4 pb-3 relative z-10 flex items-center justify-between"
-        style={{ paddingTop: "max(18px, env(safe-area-inset-top))" }}
-      >
-        <div>
-          <p className="text-white-40 text-[10px] font-bold uppercase tracking-[2px] font-ui">
-            Today · {new Date().toLocaleDateString("en-GB", { day: "numeric", month: "short" })}
-          </p>
-          <h1 className="text-white text-[24px] font-display font-bold leading-tight">
-            Your money picture 📊
-          </h1>
+    <div className="relative min-h-screen bg-[#0A0A0A]">
+      <Shell withNav>
+        {/* Header */}
+        <div className="mb-5 flex items-center justify-between">
+          <div className="flex gap-3" style={{ color: "rgba(255,255,255,0.6)" }}>
+            <button>
+              <Icon.Search size={22} />
+            </button>
+            <button>
+              <Icon.Help size={22} />
+            </button>
+          </div>
+          <div className="flex items-center gap-3">
+            <button className="relative" style={{ color: "rgba(255,255,255,0.6)" }}>
+              <Icon.Bell size={22} />
+              <span className="absolute right-0 top-0 h-2 w-2 rounded-full" style={{ background: "#FF3B30" }} />
+            </button>
+            <div
+              className="flex h-9 w-9 items-center justify-center rounded-full font-display font-black text-black"
+              style={{ background: "linear-gradient(135deg, #B5F23D, #9AD62E)" }}
+            >
+              {user.name[0]}
+            </div>
+          </div>
         </div>
-        <Cleo pose="guiding" size={48} />
-      </header>
 
-      <div className="px-5 space-y-4 relative z-10">
-        {/* Hero balance */}
-        <CCard tone="hero" delay={0.05} className="!p-5 relative overflow-hidden">
-          <div className="absolute -top-10 -right-10 h-32 w-32 rounded-full bg-lemon/20 blur-3xl" />
-          <div className="flex items-center justify-between relative">
-            <p className="text-white-60 text-[10px] uppercase tracking-[2px] font-ui font-bold">
-              Total across accounts
-            </p>
-            <Pill variant="lemon">EUR / UAH</Pill>
-          </div>
-          <motion.p
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-white text-[44px] font-display font-extrabold mt-1 tracking-tight"
+        <h1 className="font-display font-black tracking-[-1.5px]" style={{ fontSize: 36, lineHeight: 1 }}>
+          <span>Your </span>
+          <span style={{ color: "#B5F23D" }}>picture</span>
+        </h1>
+
+        {/* Account selector */}
+        <div className="mt-4 flex items-center gap-2">
+          <button
+            className="flex h-10 items-center gap-2 rounded-full px-4 font-body text-sm text-white"
+            style={{ background: "#1A1A1A" }}
           >
-            €{total}
-          </motion.p>
-          <div className="mt-3 flex flex-wrap gap-2">
-            {hasBank && (
-              <span className="bg-lemon/15 border border-lemon/30 text-lemon text-[12px] rounded-full px-3 py-1.5 font-ui font-bold">
-                🇫🇷 N26 €2,480
-              </span>
-            )}
-            <span className="bg-white/10 border border-white/15 text-white text-[12px] rounded-full px-3 py-1.5 font-ui font-bold">
-              {onboarding.fromCountryFlag} Monobank €1,800
-            </span>
-          </div>
-          <p className="text-white-40 text-[11px] mt-3 font-ui">Last synced: just now</p>
-        </CCard>
+            Main Account <Icon.ChevronDown size={14} />
+          </button>
+          <button
+            className="flex h-10 w-10 items-center justify-center rounded-full text-white"
+            style={{ background: "#1A1A1A" }}
+          >
+            <Icon.Plus size={16} />
+          </button>
+          <button
+            className="flex h-10 w-10 items-center justify-center rounded-full text-white"
+            style={{ background: "#1A1A1A" }}
+          >
+            <Icon.External size={16} />
+          </button>
+        </div>
 
-        {/* Income / expenses */}
-        <CCard delay={0.1}>
-          <div className="flex items-center gap-2 mb-3">
-            <TrendingUp size={16} className="text-lemon" />
-            <p className="text-white-60 text-[10px] uppercase tracking-[2px] font-ui font-bold">
-              This month
-            </p>
-          </div>
-          <div className="grid grid-cols-2 gap-3">
-            <div>
-              <p className="text-white-60 text-[12px] font-ui">💰 Income</p>
-              <p className="text-lemon text-[22px] font-display font-extrabold">€2,200</p>
+        {/* Card grid */}
+        <div className="mt-5 grid grid-cols-2 gap-3">
+          {/* Net worth */}
+          <Card bg="#7B61FF" h={170}>
+            <div className="flex justify-between">
+              <div className="font-ui text-[12px]" style={{ color: "rgba(255,255,255,0.6)" }}>
+                Cash
+              </div>
+              <Icon.External size={14} style={{ color: "rgba(255,255,255,0.4)" }} />
             </div>
-            <div>
-              <p className="text-white-60 text-[12px] font-ui">💸 Expenses</p>
-              <p className="text-coral-red text-[22px] font-display font-extrabold">€1,620</p>
+            <div className="mt-1 font-ui text-[12px]" style={{ color: "rgba(255,255,255,0.7)" }}>
+              ▼ 24%
             </div>
-          </div>
-          <div className="mt-3 h-2 rounded-full overflow-hidden flex bg-white/5">
-            <motion.div
-              initial={{ width: 0 }}
-              animate={{ width: "58%" }}
-              transition={{ duration: 0.8 }}
-              className="h-full bg-lemon"
-            />
-            <motion.div
-              initial={{ width: 0 }}
-              animate={{ width: "42%" }}
-              transition={{ duration: 0.8, delay: 0.1 }}
-              className="h-full bg-coral-red"
-            />
-          </div>
-        </CCard>
+            <div className="mt-2 font-display font-black leading-none text-white">
+              <span className="text-[18px]">$</span>
+              <CountUp to={4280} className="text-[40px]" />
+              <span className="text-[20px]">k</span>
+            </div>
+            <div className="mt-2 font-ui text-[11px]" style={{ color: "rgba(255,255,255,0.6)" }}>
+              N26 · Monobank
+            </div>
+          </Card>
 
-        {/* Unclaimed benefits */}
-        <CCard delay={0.15}>
-          <div className="flex items-center justify-between mb-3">
-            <div className="flex items-center gap-2">
-              <Wallet size={16} className="text-lemon" />
-              <h3 className="text-white text-[15px] font-display font-bold">Unclaimed benefits</h3>
+          {/* Savings rate donut */}
+          <Card bg="#FFD60A" h={170} text="#000">
+            <div className="font-ui text-[12px]" style={{ color: "rgba(0,0,0,0.7)" }}>
+              Savings rate
             </div>
-            <Pill variant="lemon">€1,200/yr</Pill>
-          </div>
-          <div className="space-y-2">
-            {[
-              { n: "CAF — Housing", v: "€200/mo", emoji: "🏠" },
-              { n: "Prime d'Activité", v: "€150/mo", emoji: "🛒" },
-            ].map((b) => (
-              <Link
-                key={b.n}
-                to="/level/benefits"
-                className="flex items-center justify-between bg-white/5 hover:bg-white/10 transition rounded-xl px-3 py-2.5 border border-white/10"
-              >
-                <div className="flex items-center gap-2.5">
-                  <span className="text-xl">{b.emoji}</span>
-                  <div>
-                    <p className="text-white text-[13px] font-display font-bold">{b.n}</p>
-                    <p className="text-white-60 text-[11px] font-ui">{b.v}</p>
-                  </div>
-                </div>
-                <span className="text-lemon text-[12px] font-bold flex items-center gap-1">
-                  Claim <ArrowRight size={12} />
+            <div className="relative mt-1 flex items-center justify-center">
+              <svg viewBox="0 0 90 90" width={110} height={110}>
+                <circle cx="45" cy="45" r="36" fill="none" stroke="#000" strokeWidth="8" opacity="0.15" />
+                <circle
+                  cx="45"
+                  cy="45"
+                  r="36"
+                  fill="none"
+                  stroke="#000"
+                  strokeWidth="8"
+                  strokeDasharray={2 * Math.PI * 36}
+                  strokeDashoffset={(1 - 0.65) * 2 * Math.PI * 36}
+                  strokeLinecap="round"
+                  transform="rotate(-90 45 45)"
+                />
+                <circle
+                  cx="45"
+                  cy="45"
+                  r="36"
+                  fill="none"
+                  stroke="#FF3B30"
+                  strokeWidth="8"
+                  strokeDasharray={`${0.18 * 2 * Math.PI * 36} ${2 * Math.PI * 36}`}
+                  strokeLinecap="round"
+                  transform="rotate(-90 45 45)"
+                />
+              </svg>
+              <div className="absolute inset-0 flex items-center justify-center">
+                <span className="font-display text-[20px] font-black text-black">
+                  <CountUp to={28} suffix="k" />
                 </span>
-              </Link>
-            ))}
+              </div>
+            </div>
+          </Card>
+        </div>
+
+        {/* Monthly flow */}
+        <Card bg="#FF6B35" h={180} className="mt-3">
+          <div className="flex justify-between">
+            <div className="font-ui text-[12px]" style={{ color: "rgba(255,255,255,0.6)" }}>
+              Monthly Flow
+            </div>
+            <Icon.External size={14} style={{ color: "rgba(255,255,255,0.4)" }} />
           </div>
-        </CCard>
+          <div className="mt-1 font-display text-[22px] font-black text-white">$1.2k</div>
+          <div className="mt-3 flex h-[80px] items-end gap-[3px]">
+            {Array.from({ length: 18 }).map((_, i) => {
+              const heights = [40, 55, 30, 70, 45, 90, 60, 75, 40, 65, 80, 55, 95, 70, 85, 60, 50, 75];
+              return (
+                <motion.div
+                  key={i}
+                  initial={{ height: 0 }}
+                  animate={{ height: `${heights[i]}%` }}
+                  transition={{ delay: i * 0.03, type: "spring", stiffness: 220, damping: 24 }}
+                  className="flex-1 rounded-t"
+                  style={{ background: "rgba(255,255,255,0.85)" }}
+                />
+              );
+            })}
+          </div>
+        </Card>
+
+        <div className="mt-3 grid grid-cols-2 gap-3">
+          {/* XP hexagon */}
+          <div
+            className="hex-clip flex h-[180px] flex-col items-center justify-center"
+            style={{ background: "#4CD964" }}
+          >
+            <div className="font-ui text-[11px] font-bold uppercase tracking-[2px] text-white">Level</div>
+            <div className="font-display text-[40px] font-black text-white">
+              <CountUp to={xp} />
+            </div>
+            <div className="font-display text-[14px] text-white">XP</div>
+            <div className="mt-1 font-ui text-[11px]" style={{ color: "rgba(255,255,255,0.8)" }}>
+              ▲ 3%
+            </div>
+          </div>
+          {/* Unclaimed */}
+          <Card bg="#FF3B30" h={180}>
+            <div className="font-ui text-[12px]" style={{ color: "rgba(255,255,255,0.7)" }}>
+              Unclaimed
+            </div>
+            <div className="font-display text-[20px] font-bold text-white">Benefits</div>
+            <div className="mt-3 space-y-2">
+              <div>
+                <div className="h-2 w-1/3 rounded-full" style={{ background: "rgba(255,255,255,0.5)" }} />
+                <div className="mt-1 font-ui text-[10px]" style={{ color: "rgba(255,255,255,0.7)" }}>
+                  €200 claimed
+                </div>
+              </div>
+              <div>
+                <div className="h-2 w-full rounded-full bg-white" />
+                <div className="mt-1 font-ui text-[10px]" style={{ color: "rgba(255,255,255,0.7)" }}>
+                  €1,200 available
+                </div>
+              </div>
+            </div>
+            <div className="mt-2 font-ui text-[12px] text-white">Claim →</div>
+          </Card>
+        </div>
 
         {/* Deadlines */}
-        <CCard delay={0.2}>
-          <div className="flex items-center gap-2 mb-3">
-            <CalendarClock size={16} className="text-lemon" />
-            <h3 className="text-white text-[15px] font-display font-bold">Upcoming deadlines</h3>
-          </div>
-          <div className="space-y-2.5">
+        <div className="mt-3 rounded-3xl p-5" style={{ background: "#1A1A1A", borderLeft: "4px solid #B5F23D" }}>
+          <div className="font-display text-[15px] font-bold text-white">Coming up</div>
+          <div className="mt-3 space-y-3">
             {[
-              { c: "bg-coral-red", n: "Tax declaration", d: "May 31 · 36 days" },
-              { c: "bg-warn-yellow", n: "CAF renewal", d: "Jun 15 · 51 days" },
-              { c: "bg-lemon", n: "Carte de séjour", d: "Aug 12 · 109 days" },
+              { c: "#FF3B30", t: "Tax declaration", d: "May 31" },
+              { c: "#FF6B35", t: "CAF application", d: "June 15" },
+              { c: "#B5F23D", t: "N26 card arrives", d: "this week" },
             ].map((d) => (
-              <div key={d.n} className="flex items-center gap-3">
-                <span className={`h-2.5 w-2.5 rounded-full ${d.c} shadow-lemon`} />
-                <p className="text-white text-[13px] flex-1 font-ui font-semibold">{d.n}</p>
-                <p className="text-white-60 text-[11px] font-ui">{d.d}</p>
+              <div key={d.t} className="flex items-center gap-3">
+                <span className="h-2 w-2 rounded-full" style={{ background: d.c }} />
+                <div className="flex-1 font-body text-sm text-white">{d.t}</div>
+                <div className="font-ui text-[11px]" style={{ color: "rgba(255,255,255,0.5)" }}>
+                  {d.d}
+                </div>
               </div>
             ))}
           </div>
-        </CCard>
+        </div>
 
-        {/* Cleo suggests */}
-        <CCard delay={0.25} className="border-l-4 !border-l-lemon">
-          <div className="flex items-start gap-3">
-            <Cleo pose="guiding" size={48} animated={false} />
-            <div className="flex-1">
-              <div className="flex items-center gap-1.5 mb-1">
-                <Sparkles size={12} className="text-lemon" />
-                <p className="text-lemon text-[10px] uppercase tracking-[2px] font-ui font-bold">
-                  Cleo suggests
-                </p>
-              </div>
-              <p className="text-white text-[14px] leading-snug font-ui font-semibold italic">
-                You could be receiving <b className="text-lemon not-italic">€350/month</b> in
-                benefits already. Apply to CAF first — it unlocks 2 other aids automatically.
-              </p>
-              <Link
-                to="/level/benefits"
-                className="text-lemon text-[13px] font-display font-bold mt-2 inline-flex items-center gap-1"
-              >
-                Show me how <ArrowRight size={13} />
-              </Link>
+        {/* Cleo suggestion */}
+        <div
+          className="mt-3 flex items-start gap-3 rounded-3xl p-4"
+          style={{ background: "#1A1A1A", borderLeft: "4px solid #B5F23D" }}
+        >
+          <Cleo state="guiding" size={48} />
+          <div>
+            <div className="font-display text-[14px] font-bold text-white">Cleo's tip</div>
+            <div className="mt-1 font-body text-[13px]" style={{ color: "rgba(255,255,255,0.7)" }}>
+              You're €1,000+ in unclaimed benefits. Tap to start a CAF claim.
             </div>
           </div>
-        </CCard>
-
-        {/* Journey */}
-        <CCard delay={0.3}>
-          <div className="flex items-center gap-2 mb-2">
-            <Compass size={16} className="text-lemon" />
-            <p className="text-white text-[14px] font-display font-bold">
-              Your journey: {questsDone} of 12 quests
-            </p>
-          </div>
-          <ProgressBar value={questsDone} max={12} className="mt-2" tone="lemon" />
-          <Link
-            to="/home"
-            className="mt-3 inline-flex items-center gap-1 text-lemon font-display font-bold text-[13px]"
-          >
-            Continue your quest <ArrowRight size={14} />
-          </Link>
-        </CCard>
-      </div>
-
+        </div>
+      </Shell>
       <BottomNav />
+    </div>
+  );
+}
+
+function Card({
+  bg,
+  children,
+  h,
+  text = "#FFF",
+  className,
+}: {
+  bg: string;
+  children: React.ReactNode;
+  h: number;
+  text?: string;
+  className?: string;
+}) {
+  return (
+    <div
+      className={`rounded-3xl p-4 shadow-vivid ${className ?? ""}`}
+      style={{ background: bg, color: text, height: h }}
+    >
+      {children}
     </div>
   );
 }
