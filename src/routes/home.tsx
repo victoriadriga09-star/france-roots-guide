@@ -1,28 +1,35 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import {
-  Lock,
-  Star,
   Crown,
   Trophy,
   Flame,
   Zap,
-  Building2,
-  FileText,
-  Gift,
-  Home,
-  HeartPulse,
-  Languages,
-  Train,
-  PiggyBank,
   Settings,
+  Lock,
   Check,
 } from "lucide-react";
 import { CCard, ProgressBar, Pill } from "@/components/concierge/CCard";
-import { Cleo, CleoBubble } from "@/components/concierge/Cleo";
+import { Cleo } from "@/components/concierge/Cleo";
 import { BottomNav } from "@/components/concierge/BottomNav";
+import { CategoryShape, type CategoryKey, type StageStatus } from "@/components/concierge/CategoryShape";
 import { useApp } from "@/lib/store";
 import type { LucideIcon } from "lucide-react";
+
+export const Route = createFileRoute("/home")({
+  component: QuestMap,
+});
+
+interface Stage {
+  id: string;
+  level: number;
+  title: string;
+  subtitle: string;
+  category: CategoryKey;
+  href: string;
+  status: StageStatus;
+  comingSoon?: boolean;
+}
 
 export const Route = createFileRoute("/home")({
   component: QuestMap,
