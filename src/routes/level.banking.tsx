@@ -60,7 +60,13 @@ function BankingLevel() {
           exit={{ opacity: 0, x: -20 }}
           transition={{ duration: 0.35, ease: "easeInOut" }}
         >
-          {step === "intro" && <IntroStep onNext={() => goTo("recommend")} />}
+          {step === "intro" && (
+            <IntroStep
+              onNext={() => {
+                setShowSearchAnim(true);
+              }}
+            />
+          )}
           {step === "recommend" && (
             <RecommendStep
               comparing={comparing}
