@@ -622,6 +622,25 @@ function Step9Uploads({
   onRemove: (key: string) => void;
 }) {
   const selected = DOCS.filter((d) => docs[d.key]);
+  const [errors, setErrors] = useState<Record<string, string>>({});
+
+  const MAX_BYTES = 10 * 1024 * 1024; // 10 MB
+  const ACCEPTED_EXT = ["pdf", "jpg", "jpeg", "png"];
+  const ACCEPTED_MIME = ["application/pdf", "image/jpeg", "image/png"];
+
+  const validate = (file: File): string | null => {
+    const ext = file.name.split(".").pop()?.toLowerCase() ?? "";
+    if (!ACCEPTED_EXT.includes(ext) && !ACCEPTED_MIME.includes(file.type)) {
+      return "Only PDF, JPG or PNG files are accepted.";
+    }
+    if (file.size > MAX_BYTES) {
+      return `File is too large (max ${MAX_BYTES / 1024 / 1024} MB).`;
+    }
+    if (file.size === 0) {
+      return "This file appears to be empty.";
+    }
+    return null;
+  };
 
   if (selected.length === 0) {
     return (
@@ -635,53 +654,97 @@ function Step9Uploads({
     );
   }
 
+  const uploadedCount = selected.filter((d) => uploads[d.key]).length;
+
   return (
     <>
       <StepHeader
         bubble="Drop in scans or photos — I'll keep them safe."
         h1="Upload your documents"
-        sub="Add the files for everything you ticked. PDF, JPG or PNG."
+        sub="Add the files for everything you ticked. PDF, JPG or PNG, max 10 MB."
       />
+
+      {/* Progress bar */}
+      <div className="mb-4 flex items-center gap-3">
+        <div className="flex-1 h-1.5 rounded-full bg-white/10 overflow-hidden">
+          <motion.div
+            className="h-full bg-lemon"
+            initial={{ width: 0 }}
+            animate={{ width: `${(uploadedCount / selected.length) * 100}%` }}
+            transition={{ duration: 0.4 }}
+          />
+        </div>
+        <span className="text-white-60 text-[11px] font-ui font-bold tabular-nums">
+          {uploadedCount}/{selected.length}
+        </span>
+      </div>
+
       <div className="space-y-2.5">
         {selected.map((d) => {
           const file = uploads[d.key];
+          const err = errors[d.key];
           return (
-            <div
-              key={d.key}
-              className="w-full px-4 py-3.5 flex items-center gap-3 rounded-[14px] bg-navy border border-white-10"
-            >
-              <d.Icon size={20} className={file ? "text-lemon" : "text-white-60"} />
-              <div className="flex-1 text-left min-w-0">
-                <p className="text-white text-[14px] font-body font-semibold truncate">{d.label}</p>
-                {file && (
-                  <p className="text-white-40 text-[11px] font-body truncate">
-                    {file.name} · {(file.size / 1024).toFixed(0)} KB
-                  </p>
+            <div key={d.key}>
+              <div
+                className={`w-full px-4 py-3.5 flex items-center gap-3 rounded-[14px] bg-navy border transition-colors ${
+                  err ? "border-coral-red/60" : file ? "border-lemon/40" : "border-white-10"
+                }`}
+              >
+                <d.Icon size={20} className={file ? "text-lemon" : "text-white-60"} />
+                <div className="flex-1 text-left min-w-0">
+                  <p className="text-white text-[14px] font-body font-semibold truncate">{d.label}</p>
+                  {file && !err && (
+                    <p className="text-white-40 text-[11px] font-body truncate flex items-center gap-1">
+                      <IconCheck size={11} className="text-lemon" />
+                      {file.name} · {(file.size / 1024).toFixed(0)} KB
+                    </p>
+                  )}
+                </div>
+                {file ? (
+                  <button
+                    onClick={() => {
+                      onRemove(d.key);
+                      setErrors((e) => {
+                        const n = { ...e };
+                        delete n[d.key];
+                        return n;
+                      });
+                    }}
+                    className="h-9 w-9 rounded-full flex items-center justify-center bg-white-10 text-white active:scale-95"
+                    aria-label="Remove file"
+                  >
+                    <IconClose size={16} />
+                  </button>
+                ) : (
+                  <label className="h-9 px-3 rounded-full flex items-center gap-1.5 bg-lemon text-black text-[12px] font-bold font-ui active:scale-95 cursor-pointer">
+                    <IconUpload size={14} />
+                    Upload
+                    <input
+                      type="file"
+                      accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png"
+                      className="hidden"
+                      onChange={(e) => {
+                        const f = e.target.files?.[0];
+                        e.target.value = "";
+                        if (!f) return;
+                        const error = validate(f);
+                        if (error) {
+                          setErrors((s) => ({ ...s, [d.key]: error }));
+                          return;
+                        }
+                        setErrors((s) => {
+                          const n = { ...s };
+                          delete n[d.key];
+                          return n;
+                        });
+                        onUpload(d.key, { name: f.name, size: f.size });
+                      }}
+                    />
+                  </label>
                 )}
               </div>
-              {file ? (
-                <button
-                  onClick={() => onRemove(d.key)}
-                  className="h-9 w-9 rounded-full flex items-center justify-center bg-white-10 text-white active:scale-95"
-                  aria-label="Remove file"
-                >
-                  <IconClose size={16} />
-                </button>
-              ) : (
-                <label className="h-9 px-3 rounded-full flex items-center gap-1.5 bg-lemon text-black text-[12px] font-bold font-ui active:scale-95 cursor-pointer">
-                  <IconUpload size={14} />
-                  Upload
-                  <input
-                    type="file"
-                    accept=".pdf,.jpg,.jpeg,.png"
-                    className="hidden"
-                    onChange={(e) => {
-                      const f = e.target.files?.[0];
-                      if (f) onUpload(d.key, { name: f.name, size: f.size });
-                      e.target.value = "";
-                    }}
-                  />
-                </label>
+              {err && (
+                <p className="mt-1.5 ml-1 text-coral-red text-[11px] font-ui font-semibold">{err}</p>
               )}
             </div>
           );
