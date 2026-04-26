@@ -195,6 +195,7 @@ function Step1Name({ value, onChange }: { value: string; onChange: (v: string) =
       <StepHeader
         bubble="Hey! What should I call you?"
         h1="What's your name?"
+        parts={[{ t: "What's", c: "white" }, { t: "your", c: "lemon" }, { t: "name?", c: "white" }]}
         sub="Let's make this personal."
       />
       <div className="relative">
@@ -226,7 +227,11 @@ function Step2Origin({ value, onSelect }: { value: string; onSelect: (n: string,
   const filtered = COUNTRIES.filter((c) => c.name.toLowerCase().includes(q.toLowerCase()));
   return (
     <>
-      <StepHeader bubble="So, where's home? I need to know everything." h1="Where are you from?" />
+      <StepHeader
+        bubble="So, where's home? I need to know everything."
+        h1="Where are you from?"
+        parts={[{ t: "Where", c: "white" }, { t: "are you", c: "white" }, { t: "from?", c: "lemon" }]}
+      />
       <div className="relative mb-4">
         <IconSearch size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-lemon" />
         <input
@@ -275,7 +280,11 @@ function Step3Destination() {
 
   return (
     <>
-      <StepHeader bubble="France! Excellent choice. Croissants included." h1="And you're heading to..." />
+      <StepHeader
+        bubble="France! Excellent choice. Croissants included."
+        h1="And you're heading to..."
+        parts={[{ t: "And", c: "white" }, { t: "you're", c: "white" }, { t: "heading to...", c: "lilac" }]}
+      />
 
       {/* Search bar dropdown */}
       <div className="relative mb-6">
@@ -427,7 +436,11 @@ const GOALS = [
 function Step4Goals({ selected, onToggle }: { selected: string[]; onToggle: (k: string) => void }) {
   return (
     <>
-      <StepHeader bubble="What do you need most? Pick everything — I've seen it all." h1="What do you need help with?" />
+      <StepHeader
+        bubble="What do you need most? Pick everything — I've seen it all."
+        h1="What do you need help with?"
+        parts={[{ t: "What do you", c: "white" }, { t: "need help", c: "lilac" }, { t: "with?", c: "white" }]}
+      />
       <div className="grid grid-cols-2 gap-3">
         {GOALS.map((g) => {
           const active = selected.includes(g.key);
@@ -469,7 +482,11 @@ const STATUSES = [
 function Step5Status({ value, onSelect }: { value: string; onSelect: (v: string) => void }) {
   return (
     <>
-      <StepHeader bubble="And what's your situation? This changes everything." h1="Your status in France?" />
+      <StepHeader
+        bubble="And what's your situation? This changes everything."
+        h1="Your status in France?"
+        parts={[{ t: "Your", c: "white" }, { t: "status", c: "lemon" }, { t: "in France?", c: "white" }]}
+      />
       <div className="space-y-2.5">
         {STATUSES.map((s) => {
           const active = value === s.key;
@@ -503,7 +520,11 @@ const TIMES = [
 function Step6Time({ value, onSelect }: { value: string; onSelect: (v: string) => void }) {
   return (
     <>
-      <StepHeader bubble="How long navigating this beautiful chaos?" h1="How long in France?" />
+      <StepHeader
+        bubble="How long navigating this beautiful chaos?"
+        h1="How long in France?"
+        parts={[{ t: "How long", c: "white" }, { t: "in France?", c: "lemon" }]}
+      />
       <div className="space-y-3">
         {TIMES.map((t) => {
           const active = value === t.key;
@@ -529,7 +550,11 @@ function Step7HomeTies({ value, onSelect }: { value: boolean | null; onSelect: (
   const [open, setOpen] = useState(false);
   return (
     <>
-      <StepHeader bubble="Still got money stuff back home? Tell me — I keep secrets. (Mostly.)" h1="Financial ties back home?" />
+      <StepHeader
+        bubble="Still got money stuff back home? Tell me — I keep secrets. (Mostly.)"
+        h1="Financial ties back home?"
+        parts={[{ t: "Financial ties", c: "white" }, { t: "back home?", c: "lilac" }]}
+      />
       <div className="grid grid-cols-2 gap-3">
         <button
           onClick={() => onSelect(true)}
@@ -591,7 +616,11 @@ const DOCS = [
 function Step8Documents({ docs, onToggle }: { docs: Record<string, boolean>; onToggle: (k: string) => void }) {
   return (
     <>
-      <StepHeader bubble="What's already sorted? Toggle on what you have." h1="What do you already have?" />
+      <StepHeader
+        bubble="What's already sorted? Toggle on what you have."
+        h1="What do you already have?"
+        parts={[{ t: "What do you", c: "white" }, { t: "already", c: "lemon" }, { t: "have?", c: "white" }]}
+      />
       <div className="space-y-2.5">
         {DOCS.map((d) => {
           const on = !!docs[d.key];
