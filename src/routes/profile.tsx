@@ -18,6 +18,7 @@ import { CCard, Pill } from "@/components/concierge/CCard";
 import { BottomNav } from "@/components/concierge/BottomNav";
 import { CleoBubble } from "@/components/concierge/Cleo";
 import { CButton } from "@/components/concierge/CButton";
+import { Editorial } from "@/components/concierge/Editorial";
 import { useApp, type Language } from "@/lib/store";
 
 export const Route = createFileRoute("/profile")({
