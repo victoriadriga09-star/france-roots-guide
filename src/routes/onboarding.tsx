@@ -12,6 +12,7 @@ import {
   IconHeartPulse, IconStamp, IconReceipt, IconPerson,
   IconChevronDown, IconClose, IconUpload,
 } from "@/components/concierge/Icons";
+import { Editorial, type EditorialPart } from "@/components/concierge/Editorial";
 import { useApp } from "@/lib/store";
 
 export const Route = createFileRoute("/onboarding")({
@@ -164,16 +165,26 @@ function Onboarding() {
 
 /* ---------------- Steps ---------------- */
 
+/**
+ * Editorial step header — splits h1 into colored words for the magazine look.
+ * If `parts` is provided we use them; otherwise we auto-split `h1` and color
+ * the last word in lemon (sensible default).
+ */
 function StepHeader({
-  bubble, h1, sub,
-}: { bubble: string; h1: string; sub?: string }) {
+  bubble, h1, sub, parts,
+}: { bubble: string; h1: string; sub?: string; parts?: EditorialPart[] }) {
+  const editorialParts: EditorialPart[] =
+    parts ??
+    h1.split(" ").map((w, i, arr) => ({
+      t: w,
+      c: i === arr.length - 1 ? "lemon" : "white",
+    }));
+
   return (
     <div className="mb-5">
       <CleoBubble side="left" pose="talking" mood="happy" size={56} text={bubble} className="mb-4" />
-      <h1 className="font-display font-extrabold text-white text-[28px] leading-[1.05] tracking-[-0.8px]">
-        {h1}
-      </h1>
-      {sub && <p className="mt-2 text-white-60 text-[14px] font-body">{sub}</p>}
+      <Editorial parts={editorialParts} size="h1" />
+      {sub && <p className="mt-3 text-white-60 text-[14px] font-body italic">{sub}</p>}
     </div>
   );
 }
