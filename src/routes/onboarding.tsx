@@ -580,7 +580,7 @@ const DOCS = [
 function Step8Documents({ docs, onToggle }: { docs: Record<string, boolean>; onToggle: (k: string) => void }) {
   return (
     <>
-      <StepHeader bubble="Last one! What's already sorted? I'll skip what you don't need." h1="What do you already have?" />
+      <StepHeader bubble="What's already sorted? Toggle on what you have." h1="What do you already have?" />
       <div className="space-y-2.5">
         {DOCS.map((d) => {
           const on = !!docs[d.key];
