@@ -25,6 +25,7 @@ import { BankLogo } from "@/components/concierge/BankLogo";
 import { BankSearchAnimation } from "@/components/concierge/BankSearchAnimation";
 import { useApp } from "@/lib/store";
 import { celebrate } from "@/lib/celebrate";
+import { Editorial } from "@/components/concierge/Editorial";
 
 export const Route = createFileRoute("/level/banking")({
   component: BankingLevel,
