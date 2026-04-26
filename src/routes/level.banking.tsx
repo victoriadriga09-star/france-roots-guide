@@ -144,6 +144,17 @@ function BankingLevel() {
           </div>
         </motion.div>
       )}
+
+      <AnimatePresence>
+        {showSearchAnim && (
+          <BankSearchAnimation
+            onDone={() => {
+              setShowSearchAnim(false);
+              goTo("recommend");
+            }}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 }
