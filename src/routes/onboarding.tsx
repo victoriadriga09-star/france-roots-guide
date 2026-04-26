@@ -24,7 +24,7 @@ function Onboarding() {
   const [step, setStep] = useState(1);
   const [dir, setDir] = useState(1);
   const navigate = useNavigate();
-  const { onboarding, setOnboarding, toggleDocument, completeOnboarding } = useApp();
+  const { onboarding, setOnboarding, toggleDocument, setUpload, removeUpload, completeOnboarding } = useApp();
 
   const next = () => {
     if (step < TOTAL) {
@@ -50,6 +50,7 @@ function Onboarding() {
       case 6: return !!onboarding.timeInFrance;
       case 7: return onboarding.hasHomeTies !== null;
       case 8: return true;
+      case 9: return true;
       default: return false;
     }
   })();
@@ -128,6 +129,14 @@ function Onboarding() {
               <Step7HomeTies value={onboarding.hasHomeTies} onSelect={(v) => setOnboarding({ hasHomeTies: v })} />
             )}
             {step === 8 && <Step8Documents docs={onboarding.documents} onToggle={toggleDocument} />}
+            {step === 9 && (
+              <Step9Uploads
+                docs={onboarding.documents}
+                uploads={onboarding.uploads}
+                onUpload={setUpload}
+                onRemove={removeUpload}
+              />
+            )}
           </motion.div>
         </AnimatePresence>
       </div>
