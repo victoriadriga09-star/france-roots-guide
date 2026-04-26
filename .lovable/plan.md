@@ -1,127 +1,221 @@
 ## Goal
 
-Tighten the three level flows (Banking, Taxes, Benefits) into a cute, premium, visually-led mobile experience. Strip generic emojis, replace bank letter-circles with real logos, simplify each screen so visuals do more of the work, fix lingering color/contrast issues from the old coral/porcelain palette, and route every level's success state back to the quest map.
+Major UX/UI upgrade pass: gamified Duolingo-style quest map with category-shaped buttons, premium AI bank-search animation, document upload step, real bank links, full Profile feature build-out, dynamic loading animation, and ambient backgrounds throughout.
 
-## 1. Color & contrast cleanup (cross-cutting)
+---
 
-Audit and replace remaining legacy classes that look "off" against the black/navy/lemon system:
+## 1. Onboarding — new "Upload your documents" step (Step 9)
 
-- `level.banking.tsx` — many residues: `bg-white`, `text-ink/60`, `text-coral`, `border-coral`, `bg-white/30`, `bg-white/40`, `bg-coral/30`, hardcoded `linear-gradient(... #EF8354 ... #4F5D75 ...)` in ApplyStep + SuccessStep, `border-ink-black/10/60`.
-- Replace with system tokens: `card-navy`, `text-white`, `text-white-60`, `text-lemon`, `border-lemon`, `bg-gradient-hero-card`, `bg-gradient-lemon`, `card-hero`.
-- Compare modal: switch from white sheet to `bg-black` with `card-navy` rows, lemon highlight on the chosen bank.
-- Bottom sticky compare bar: replace white background with `glass-dark` (translucent black + lemon border).
+Extend the onboarding flow to **9 steps**. After Step 8 ("What do you already have?"), insert **Step 9 — Upload your documents** that asks the user to upload the files they just toggled ON in Step 8.
 
-## 2. Bank logos (replace letter circles)
+- File: `src/routes/onboarding.tsx`
+  - Bump `TOTAL = 9`.
+  - Add `Step9Uploads` component that reads `onboarding.documents`, filters to keys where value === `true`, and shows one upload tile per doc (using the same `IconCard / IconHome / IconShield…` mapping from `DOCS`).
+  - Each tile: drag/drop area + "Choose file" button. On select → store filename + size in zustand under a new `onboarding.uploads: Record<string, {name: string; size: number; dataUrl?: string}>`.
+  - Skip option: "I'll do this later" link at bottom (still allows continue).
+  - `canContinue` for step 9 = always true (uploads optional).
+- File: `src/lib/store.ts`
+  - Add `uploads: Record<string, { name: string; size: number }>` to `OnboardingData`.
+  - Add `setUpload(key, file)` and `removeUpload(key)` actions.
+- Step indicator pills updated automatically by the existing `Array.from({length: TOTAL})` loop.
 
-Add a small `BankLogo` component in `src/components/concierge/BankLogo.tsx` that returns a hand-tuned inline SVG per bank — no remote dependencies, no broken images.
+---
 
-- `Revolut` — black rounded square with white "R" mark approximation (signature angular R).
-- `N26` — minimal lowercase "n26" wordmark on lemon background.
-- `Société Générale` — red/black squared-half block (their iconic logo style).
-- Fallback: monogram chip, but only used if a bank we don't know is added later.
+## 2. Onboarding Step 3 — destination search with dropdown + globe animation
 
-Use the component everywhere the letter circle was used:
-- `BankCard` header
-- `CompareModal` selector tiles
-- Sticky compare bar avatar stack
+Rewrite `Step3Destination` to match the reference style:
 
-## 3. Banking level (`src/routes/level.banking.tsx`) — less text, more visuals
+- **Search bar** at top with dropdown menu listing destinations (currently France only enabled, others locked with "Soon" tag).
+- **Centerpiece**: animated globe (SVG sphere with rotating meridians, transparent/monochrome) with a **map pin icon** that animates dropping into the France region (top-right of globe).
+  - Use `framer-motion`: globe rotates slowly (continuous 30s linear); pin animates `y: -100 → 0` with bounce + lemon glow burst on land.
+- Below the globe: a lemon CCard saying "France · Paris · Lyon · Marseille" with the existing "Selected" pill.
+- File: `src/routes/onboarding.tsx` — replace `Step3Destination` fully.
 
-### Intro step — slim down
-- Keep hero, drop the duplicate "French banking, decoded ✨" headline (already on hero).
-- Collapse the 5 explainer cards into 3 visual tiles in a 1-column stack with iconography doing the heavy lifting:
-  1. "Two flavors" — split card visual (Traditional vs Neobank) with side-by-side icon tiles, one short line each.
-  2. "Paperwork" — 3 mini doc chips (Passport, Address, Income) on a lemon card.
-  3. "Speed" — clock illustration with "10 min vs 10 days" big-number contrast.
-- Single CTA at the bottom. Remove all generic emojis (🛂📄💼🛋️⏰💡✨🎉🎯📋🔔🏦) — keep purposeful iconography via lucide.
+---
 
-### Recommend step
-- Use `BankLogo` instead of `{bank.name[0]}` letter circle.
-- Tighten metric tiles: switch to 3 lemon-tinted chips with monospace numbers.
-- Replace coral stars with lemon-filled stars; rating text in lemon.
-- Move "Documents needed" out of the card (collapsed) into a one-line summary chip ("3 docs needed →") that opens the bottom-sheet modal — keeps the card clean.
-- Remove "Best match" coral pill in favor of a lemon corner ribbon.
+## 3. Loading screen — premium AI scanner animation
 
-### Apply step
-- Replace orange→navy gradient block with `card-hero` + lemon left border.
-- Remove `🎯 📋 🔔` emojis from headings.
-- Step list: keep numbered lemon dots, but collapse "what to have ready" into the same flow rather than a separate card.
+Replace `src/routes/loading.tsx` with a multi-phase animation matching the user's spec:
 
-### Track step
-- Remove `🎉 ⏳ ✓ 🔔` emojis.
-- Bell row: use lucide `<Bell>` with a lemon background tile (already mostly the case), short copy.
-- Tighten down: 3 cards instead of 5 (timeline + status + next-up). Drop "Mark account as ready (demo)" copy noise — just call the button "I got my card".
+- **Background**: deep gradient `#0a0e3d → #1a1147` (dark blue → indigo). Subtle moving radial spotlights.
+- **Phase 1 (0–2s) — Scanning**:
+  - Center: rounded-card icon + magnifying glass (compose `Search` over a card silhouette in a white circle).
+  - 5 concentric circular waves expanding outward in continuous loop, each fading from `opacity 0.6 → 0` over 2.5s with stagger (0.5s delay between each).
+  - Below: "Scanning your French journey..." + subtext "Analysing the best path for you".
+- **Phase 2 (2–4s) — Discovery**:
+  - 6 french-system icons fade in around the center in a circular orbit (banks, tax, CAF, sécu, navigo, housing). Soft scale-up `0.8 → 1` with blur-to-sharp filter transition. Subtle floating motion (`y: ±4` infinite).
+- **Phase 3 (4–6s) — Filtering**:
+  - 3 icons fade out, 3 move toward center with stagger.
+- **Phase 4 (6–7s) — Selection**:
+  - Top 3 quest categories highlighted with lemon glow → flash → navigate to `/home`.
+- Progress bar replaced with phase-aware text ("Scanning… → Discovering… → Filtering… → Building map…").
 
-### Success step → route back to map
-- Replace orange→navy gradient with `bg-gradient-lemon` on a black card.
-- Remove "View my dashboard first" secondary path.
-- Primary CTA "Back to your quest map →" → `navigate({ to: "/home" })`.
-- Auto-redirect to `/home` after 2.5 s if user doesn't tap (keeps confetti time visible).
-- Keep the +150 XP big-number animation.
+---
 
-## 4. Taxes level (`src/routes/level.taxes.tsx`)
+## 4. Quest Map — category-shaped buttons (Duolingo-style)
 
-### Intro
-- Drop emojis: 😮‍💨 ⏰ ✉️ from copy.
-- Consolidate 4 explainer cards into 3 visuals:
-  1. Calendar visual showing Jan→Dec timeline with "Declare in spring" callout.
-  2. Bracket bars (already nice — keep, lemon bars).
-  3. Other taxes — 3 chip tiles (CSG, Habitation, TVA) in one row, single sentence each.
-- Remove the "First year = paper" lemon card duplication; merge into a single line on the calendar visual.
+Rewrite `src/routes/home.tsx` path to use a **single button per stage** with shapes matching each category's symbolism:
 
-### Plan
-- Reduce text density: single recap card + one "estimated tax" big-number card with a lemon range bar.
-- Drop the 4-line `<br/>` block, replace with 3 lemon-numbered mini steps (Paper → Form 2042 → Mail → May 31).
+| Stage | Category | Shape | Status |
+|---|---|---|---|
+| 0 | Start (Plain) | Flat plinth/diamond | done |
+| 1 | Banking | Bank facade with columns | active |
+| 2 | Taxes | Government building (pediment + dome) | locked-by-progress |
+| 3 | Social Benefits | Gift box / heart-hands | locked-by-progress |
+| 4 | Housing | House with chimney | locked (Soon) |
+| 5 | Healthcare | Medical cross / pill capsule | locked (Soon) |
+| 6 | Transportation | Train front / metro arch | locked (Soon) |
+| 7 | Language | Speech bubble | locked (Soon) |
+| 8 | Retirement | Piggy bank / hourglass | locked (Final) |
 
-### Pack
-- Trim doc list from 5 to 4 items (combine payslips + IBAN under "Money proofs"). Each row: lemon icon tile + 2-word label.
-- Drop the `📄` emoji header.
-- Remove "Centre des Finances Publiques" mock map (visual noise) — replace with a single "Find your nearest tax office" lemon-outline button.
+- New file `src/components/concierge/CategoryShape.tsx`: renders an inline SVG shape per category (~110×110px), with state-dependent fill (lemon gradient for active/done, navy for locked) and a center icon.
+- Replace existing `SectionBlock` + `SectionBanner` + `PathNode` repeating per node. Instead: **one large stage button per section** spaced down a winding path with `offsetX` zig-zag like Duolingo.
+- Connecting dashed lemon paths between stages (existing SVG path code, simplified).
+- Tapping a stage → navigates to `/level/<id>`. Locked stages show toast "Complete previous level first" or "Coming soon".
+- `quest.benefitsClaimed` unlocks final reward; trophy stays at the bottom.
 
-### Completion
-- After `addXp(200)` and `celebrate()`, change redirect from `/level/benefits` to `/home` (back to map). Map will surface Benefits as the new "current" section.
+---
 
-## 5. Benefits level (`src/routes/level.benefits.tsx`)
+## 5. Bank step — Premium AI bank-search animation
 
-### Hero & list
-- Keep money-rain hero (already on-brand).
-- Strip emojis from card data: replace `emoji` field with a `lucide` icon per benefit (`Home`, `Train`, `ShoppingBag`, `Pill`/`HeartPulse`). Render as a lemon-tinted icon tile (h-12 w-12, gradient-lemon background, black icon) — premium, not generic.
-- Remove "✓ Eligible" / "Check" emoji from pills (use icon-less pills).
-- Big callout "~€2,100/yr" — keep, drop ✨ Sparkles eyebrow row's icon clutter, keep one line of text.
+Add a new sub-step `searching` between `intro` and `recommend` in `src/routes/level.banking.tsx`:
 
-### Detail drawer
-- Drop `Apply on caf.fr` external link generic feel: make it a primary lemon CTA "Start application →".
-- Remove the closing italic line with the ⚡ emoji on tracking card; keep timeline only.
-- Simplify "What you'll need" — 3 chips in a row instead of stacked rows with checks.
+- New component `BankSearchAnimation` (inline or `src/components/concierge/BankSearchAnimation.tsx`):
+  - **Phase 1 — Scan (1.5s)**: deep blue→indigo gradient bg, center rounded-card+magnifier icon, 4 concentric ripple waves, text "Recherche…" + "Nous analysons les meilleures options pour vous".
+  - **Phase 2 — Discovery (1.5s)**: 6 french bank logos (BNP, SocGen, Crédit Agricole, LCL, Boursorama, Revolut) appear in orbital layout around center, fade-in scale 0.8→1 with blur transition, gentle floating motion.
+  - **Phase 3 — Filtering (1.5s)**: 3 logos fade out, 3 (Revolut, N26, SocGen) scale up and move toward horizontal centered row.
+  - **Phase 4 — Lock-in (0.8s)**: Top 3 cards highlighted with lemon glow → auto-advance to `recommend` step.
+- Total ~5.3s. Skippable with tap.
+- Use the existing `BankLogo` component; extend it with `BNP`, `Crédit Agricole`, `LCL`, `Boursorama` SVG variants.
 
-### Quest completion
-- After tapping "Start application" on at least one eligible benefit, mark `setQuest({ benefitsClaimed: true })` and add a final success modal:
-  - Cleo celebrating, "+200 XP", "All 3 levels complete!" big number, single CTA "Back to map →" → `navigate({ to: "/home" })`.
-- Trigger `celebrate()`.
+---
 
-## 6. Quest map (`src/routes/home.tsx`) — minor
+## 6. Bank logos clickable → real bank sites
 
-- After Benefits completes, the next-current node should highlight the Final Reward trophy (scroll-to + pulse) so returning to the map feels rewarding. Use `requestAnimationFrame` + `scrollIntoView({ behavior: "smooth", block: "center" })` when `quest.benefitsClaimed` is true and a `?from=benefits` param is present.
-- No structural changes otherwise.
+In `src/components/concierge/BankLogo.tsx` (and where `BankCard` renders the logo in `level.banking.tsx`):
 
-## 7. CCard, CButton tone polish (cute & premium)
+- Add an optional `href` prop. When present, wrap the logo in `<a target="_blank" rel="noopener noreferrer">` so tapping opens the bank's real account-opening page in a new tab.
+- Map (real URLs):
+  - Revolut → `https://www.revolut.com/fr-FR/`
+  - N26 → `https://n26.com/fr-fr`
+  - Société Générale → `https://particuliers.sg.fr/ouvrir-compte-bancaire`
+  - BNP Paribas → `https://mabanque.bnpparibas/fr/ouvrir-un-compte`
+  - Crédit Agricole → `https://www.credit-agricole.fr/`
+  - LCL → `https://www.lcl.fr/`
+  - Boursorama → `https://www.boursorama-banque.com/`
+- In `BankCard` (recommend step) and the compare-modal tiles, pass `href` so users can tap the logo.
 
-- `CCard`: bump corner radius to 24 px on `tone="lemon"`, add subtle 1 px black inner stroke for tactile feel, soften shadow.
-- `CButton`:
-  - `primary`: keep lemon gradient, add subtle inset highlight (`box-shadow: inset 0 1px 0 rgba(255,255,255,0.5), 0 8px 30px rgba(248,255,161,0.3)`).
-  - `secondary`: switch to filled `bg-navy` with lemon text + lemon border (currently transparent — looks generic). Active state: lemon background flash.
-  - `white` variant retired internally — replace usages with `primary`.
+---
 
-## Technical notes
+## 7. Profile — full feature build-out
 
-- Files touched: `level.banking.tsx`, `level.taxes.tsx`, `level.benefits.tsx`, `home.tsx`, `CCard.tsx`, `CButton.tsx`, `styles.css` (button polish), new `BankLogo.tsx`.
-- Use `useNavigate` from `@tanstack/react-router` to route back to `/home` at level completion.
-- Persist `benefitsClaimed` in `useApp` (extend the `quest` slice with one boolean).
-- Verify with `bunx tsc --noEmit` after edits.
-- No new packages.
+Rewrite `src/routes/profile.tsx` so each row opens a real panel:
+
+### 7a. Language switcher
+- Bottom-sheet drawer listing: English (default), Français, Українська, Español, العربية, हिन्दी.
+- Persists `onboarding.language` in zustand. Currently only labels swap in profile UI (real i18n out of scope) — selected language shown in row label.
+
+### 7b. Privacy & data tab
+- Bottom-sheet panel with toggles (active state, persisted in zustand under new `settings`):
+  - Allow personalised recommendations
+  - Share anonymous analytics
+  - Receive marketing emails
+- Buttons: "Download my data" (mock toast) and "Delete my account" (red destructive button with confirm).
+
+### 7c. Help & support
+- Bottom-sheet panel showing:
+  - Email: `support@concierge.fr` (tap to mailto)
+  - WhatsApp: tap to open `https://wa.me/33...`
+  - FAQ link
+  - **Contact form**: name (prefilled), email, subject dropdown (Bug / Feature / Question), message textarea, "Send" button → toast "Message sent — we reply within 24h".
+
+### 7d. Update my profile
+- Bottom-sheet panel with editable fields based on onboarding answers:
+  - Name (text)
+  - Email (text — new field)
+  - Country of origin (dropdown using same COUNTRIES list)
+  - Status (Student/Salaried/Freelance/Job-seeking — same chips as Step 5)
+  - Time in France (chips from Step 6)
+  - Goals (multi-select chips)
+  - Documents I have (toggles list — same as Step 8)
+- "Save changes" button persists to `onboarding`.
+
+### 7e. Sign-out fix
+- Replace `text-coral-red border-coral-red/30 bg-coral-red/5` with `text-red-400 border-red-400/30 bg-red-400/5` (the `coral-red` token is missing/legacy).
+
+### 7f. Country card emoji bug
+- Replace literal `🇫🇷` and `onboarding.fromCountryFlag` (string) with the `<Flag code="FR" />` component for consistent rendering.
+
+---
+
+## 8. Ambient background animation (cross-cutting)
+
+Add a shared `<AmbientGlobe />` component (`src/components/concierge/AmbientGlobe.tsx`):
+
+- Position: `fixed inset-0 -z-0 pointer-events-none`.
+- Render a large semi-transparent SVG globe (single lemon tone, opacity 0.06) slowly rotating (60s linear loop).
+- Subtle drifting radial-gradient blobs (lemon and lilac) animated with `motion.div` over 20s.
+- Only renders on dark screens (home, profile, dashboard, level pages).
+
+Mount in `__root.tsx` or per-route. Will sit behind all content so existing layouts remain readable.
+
+---
+
+## 9. Store extensions
+
+`src/lib/store.ts`:
+
+```ts
+interface Settings {
+  language: "en" | "fr" | "uk" | "es" | "ar" | "hi";
+  personalised: boolean;
+  analytics: boolean;
+  marketing: boolean;
+}
+
+interface OnboardingData {
+  // ...existing fields
+  email: string;            // new
+  uploads: Record<string, { name: string; size: number }>; // new
+}
+
+interface AppState {
+  // ...existing
+  settings: Settings;
+  setSettings: (patch: Partial<Settings>) => void;
+  setUpload: (key: string, file: { name: string; size: number }) => void;
+  removeUpload: (key: string) => void;
+}
+```
+
+Defaults: language `en`, all toggles `true`.
+
+---
+
+## Files touched
+
+**New**
+- `src/components/concierge/AmbientGlobe.tsx`
+- `src/components/concierge/CategoryShape.tsx`
+- `src/components/concierge/BankSearchAnimation.tsx`
+- `src/components/concierge/profile/LanguageSheet.tsx`
+- `src/components/concierge/profile/PrivacySheet.tsx`
+- `src/components/concierge/profile/SupportSheet.tsx`
+- `src/components/concierge/profile/EditProfileSheet.tsx`
+
+**Edited**
+- `src/lib/store.ts` (uploads, settings, email)
+- `src/routes/onboarding.tsx` (Step 9 uploads, new Step3 globe + search)
+- `src/routes/loading.tsx` (premium AI animation)
+- `src/routes/home.tsx` (single category-shape buttons per stage)
+- `src/routes/level.banking.tsx` (insert searching step + bank logo links)
+- `src/routes/profile.tsx` (functional rows + sheets, fix sign-out color, flag fix)
+- `src/components/concierge/BankLogo.tsx` (href prop, more banks)
+- `src/routes/__root.tsx` (mount `<AmbientGlobe />`)
 
 ## Out of scope
 
-- Real bank API logos as remote SVGs (we draw them inline to avoid CDN/asset failures).
-- Dashboard, Deadlines, Profile (already in spec from prior pass; not part of this user-friendliness pass).
-- Locked levels (Housing, Healthcare, etc.) keep their "Coming soon" treatment.
+- Real i18n translations (only language label switch).
+- Real file upload to a backend (uploads stored client-side in zustand only).
+- Real auth / account deletion (mock toasts).
+- Unlocking Housing/Healthcare/Transport/Language/Retirement levels (kept locked with shape preview).
