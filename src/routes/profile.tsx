@@ -47,9 +47,16 @@ function Profile() {
       <div className="absolute inset-0 pointer-events-none bg-gradient-jungle-glow opacity-70" />
 
       <div
-        className="px-5 pt-6 pb-2 flex flex-col items-center relative z-10"
-        style={{ paddingTop: "max(28px, env(safe-area-inset-top))" }}
+        className="px-5 pt-6 pb-1 relative z-10"
+        style={{ paddingTop: "max(20px, env(safe-area-inset-top))" }}
       >
+        <Editorial
+          parts={[{ t: "Your", c: "white" }, { t: "profile", c: "lemon" }]}
+          size="h1"
+        />
+      </div>
+
+      <div className="px-5 pt-3 pb-2 flex flex-col items-center relative z-10">
         <motion.div
           initial={{ scale: 0.6, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
