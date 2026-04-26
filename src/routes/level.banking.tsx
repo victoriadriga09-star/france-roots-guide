@@ -22,6 +22,7 @@ import { CCard, Pill, ProgressBar } from "@/components/concierge/CCard";
 import { CButton } from "@/components/concierge/CButton";
 import { Cleo, CleoBubble } from "@/components/concierge/Cleo";
 import { BankLogo } from "@/components/concierge/BankLogo";
+import { BankSearchAnimation } from "@/components/concierge/BankSearchAnimation";
 import { useApp } from "@/lib/store";
 import { celebrate } from "@/lib/celebrate";
 
@@ -37,6 +38,7 @@ function BankingLevel() {
   const [step, setStep] = useState<Step>("intro");
   const [compareOpen, setCompareOpen] = useState(false);
   const [comparing, setComparing] = useState<string[]>([]);
+  const [showSearchAnim, setShowSearchAnim] = useState(false);
   const { quest, setQuest, addXp } = useApp();
   const navigate = useNavigate();
 
@@ -58,7 +60,13 @@ function BankingLevel() {
           exit={{ opacity: 0, x: -20 }}
           transition={{ duration: 0.35, ease: "easeInOut" }}
         >
-          {step === "intro" && <IntroStep onNext={() => goTo("recommend")} />}
+          {step === "intro" && (
+            <IntroStep
+              onNext={() => {
+                setShowSearchAnim(true);
+              }}
+            />
+          )}
           {step === "recommend" && (
             <RecommendStep
               comparing={comparing}
@@ -136,6 +144,17 @@ function BankingLevel() {
           </div>
         </motion.div>
       )}
+
+      <AnimatePresence>
+        {showSearchAnim && (
+          <BankSearchAnimation
+            onDone={() => {
+              setShowSearchAnim(false);
+              goTo("recommend");
+            }}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 }
