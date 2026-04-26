@@ -250,46 +250,158 @@ function Step2Origin({ value, onSelect }: { value: string; onSelect: (n: string,
   );
 }
 
+const DESTINATIONS: { name: string; code: CountryCode; locked?: boolean }[] = [
+  { name: "France", code: "FR" },
+  { name: "Germany", code: "DE", locked: true },
+  { name: "Netherlands", code: "NL", locked: true },
+  { name: "Belgium", code: "BE", locked: true },
+  { name: "Spain", code: "ES", locked: true },
+];
+
 function Step3Destination() {
+  const [open, setOpen] = useState(false);
+  const [selected, setSelected] = useState<(typeof DESTINATIONS)[number]>(DESTINATIONS[0]);
+
   return (
     <>
       <StepHeader bubble="France! Excellent choice. Croissants included." h1="And you're heading to..." />
+
+      {/* Search bar dropdown */}
+      <div className="relative mb-6">
+        <button
+          onClick={() => setOpen(!open)}
+          className="w-full h-14 pl-12 pr-12 flex items-center rounded-[16px] bg-navy border border-white-10 text-left active:scale-[0.99] transition"
+        >
+          <IconSearch size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-lemon" />
+          <Flag code={selected.code} size={28} />
+          <span className="ml-3 text-white text-[15px] font-bold font-body">{selected.name}</span>
+          <IconChevronDown
+            size={18}
+            className={`absolute right-4 top-1/2 -translate-y-1/2 text-white-60 transition-transform ${open ? "rotate-180" : ""}`}
+          />
+        </button>
+
+        <AnimatePresence>
+          {open && (
+            <motion.div
+              initial={{ opacity: 0, y: -6 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.18 }}
+              className="absolute top-full left-0 right-0 mt-2 z-30 rounded-[16px] bg-navy border border-white-10 shadow-deep overflow-hidden"
+            >
+              {DESTINATIONS.map((d) => (
+                <button
+                  key={d.code}
+                  disabled={d.locked}
+                  onClick={() => {
+                    if (d.locked) return;
+                    setSelected(d);
+                    setOpen(false);
+                  }}
+                  className={`w-full px-4 py-3 flex items-center gap-3 text-left transition ${
+                    d.locked ? "opacity-40 cursor-not-allowed" : "active:bg-white/5"
+                  }`}
+                >
+                  <Flag code={d.code} size={26} />
+                  <span className="flex-1 text-white text-[14px] font-bold font-body">{d.name}</span>
+                  {d.locked ? (
+                    <span className="text-[10px] text-white-40 uppercase tracking-[1.5px] font-ui font-bold">Soon</span>
+                  ) : selected.code === d.code ? (
+                    <IconCheck size={18} className="text-lemon" />
+                  ) : null}
+                </button>
+              ))}
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+
+      {/* Animated globe with map pin landing on France */}
+      <div className="relative h-[260px] flex items-center justify-center mb-5">
+        {/* Outer ambient glow */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{ background: "radial-gradient(circle at 50% 50%, rgba(248,255,161,0.18), transparent 60%)" }}
+        />
+        {/* Rotating wireframe globe */}
+        <motion.div
+          animate={{ rotate: 360 }}
+          transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+          className="absolute"
+        >
+          <svg width="220" height="220" viewBox="0 0 100 100">
+            <defs>
+              <radialGradient id="globe-onb" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stopColor="#A8A3F8" stopOpacity="0.18" />
+                <stop offset="100%" stopColor="#A8A3F8" stopOpacity="0" />
+              </radialGradient>
+            </defs>
+            <circle cx="50" cy="50" r="45" fill="url(#globe-onb)" />
+            <circle cx="50" cy="50" r="45" fill="none" stroke="#F8FFA1" strokeWidth="0.5" opacity="0.5" />
+            {[0, 30, 60, 90, 120, 150].map((deg) => (
+              <ellipse key={deg} cx="50" cy="50" rx="45" ry="20" fill="none" stroke="#F8FFA1" strokeWidth="0.4" opacity="0.4" transform={`rotate(${deg} 50 50)`} />
+            ))}
+            {[12, 25, 38].map((r) => (
+              <ellipse key={r} cx="50" cy="50" rx="45" ry={r} fill="none" stroke="#F8FFA1" strokeWidth="0.35" opacity="0.35" />
+            ))}
+          </svg>
+        </motion.div>
+
+        {/* Map pin dropping into France region (counter-rotating, fixed position) */}
+        <motion.div
+          initial={{ y: -120, opacity: 0, scale: 0.6 }}
+          animate={{ y: -28, opacity: 1, scale: 1 }}
+          transition={{ delay: 0.4, type: "spring", stiffness: 220, damping: 14 }}
+          className="absolute"
+          style={{ left: "calc(50% + 8px)", top: "50%" }}
+        >
+          <div className="relative">
+            {/* Lemon glow burst */}
+            <motion.span
+              initial={{ scale: 0, opacity: 0 }}
+              animate={{ scale: [0, 2.2], opacity: [0.7, 0] }}
+              transition={{ delay: 1.1, duration: 1.2, repeat: Infinity, repeatDelay: 0.8 }}
+              className="absolute -inset-3 rounded-full bg-lemon"
+              style={{ filter: "blur(6px)" }}
+            />
+            <div className="relative h-12 w-12 rounded-full bg-gradient-lemon border-2 border-black flex items-center justify-center shadow-lemon-lg">
+              <IconMapPin size={22} className="text-black" />
+            </div>
+            <span className="absolute left-1/2 -translate-x-1/2 -bottom-1 w-1.5 h-1.5 bg-black rounded-full" />
+          </div>
+        </motion.div>
+
+        {/* "Selected" pulse circle on France */}
+        <motion.span
+          initial={{ scale: 0.4, opacity: 0 }}
+          animate={{ scale: [0.6, 1.4], opacity: [0.5, 0] }}
+          transition={{ duration: 2, repeat: Infinity, ease: "easeOut" }}
+          className="absolute h-12 w-12 rounded-full border-2 border-lemon"
+          style={{ left: "calc(50% - 16px)", top: "calc(50% - 4px)" }}
+        />
+      </div>
+
+      {/* Destination card */}
       <motion.div
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ delay: 0.1 }}
-        className="relative bg-gradient-lemon rounded-[24px] p-6 shadow-lemon-lg border border-black/15"
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.6 }}
+        className="relative bg-gradient-lemon rounded-[24px] p-5 shadow-lemon-lg border border-black/15"
       >
         <div className="flex items-start justify-between">
           <div>
-            <h2 className="font-display font-black text-black text-[34px] leading-none tracking-[-1px]">France</h2>
-            <p className="mt-2 text-black/60 text-[13px] font-body font-semibold">
+            <h2 className="font-display font-black text-black text-[28px] leading-none tracking-[-1px]">{selected.name}</h2>
+            <p className="mt-2 text-black/60 text-[12px] font-body font-semibold">
               Paris · Lyon · Marseille · everywhere
             </p>
           </div>
-          <Flag code="FR" size={56} />
+          <Flag code={selected.code} size={48} />
         </div>
-        <div className="mt-5 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-black text-lemon text-[11px] font-ui font-bold uppercase tracking-[1.5px]">
-          <IconCheck size={12} /> Selected
+        <div className="mt-4 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-black text-lemon text-[10px] font-ui font-bold uppercase tracking-[1.5px]">
+          <IconCheck size={12} /> Destination locked
         </div>
       </motion.div>
-
-      <p className="mt-6 mb-3 text-white-40 text-[11px] font-ui font-bold uppercase tracking-[1.5px]">
-        Coming soon
-      </p>
-      <div className="flex gap-3 overflow-x-auto scrollbar-hide -mx-5 px-5">
-        {(["DE", "NL", "BE"] as CountryCode[]).map((code) => (
-          <div key={code} className="shrink-0 w-32 p-3 rounded-[14px] bg-navy border border-white-10 opacity-60">
-            <div className="flex items-center justify-between mb-2">
-              <Flag code={code} size={28} />
-              <IconLock size={14} className="text-white-40" />
-            </div>
-            <p className="text-white text-[12px] font-bold font-body">
-              {code === "DE" ? "Germany" : code === "NL" ? "Netherlands" : "Belgium"}
-            </p>
-          </div>
-        ))}
-      </div>
     </>
   );
 }
