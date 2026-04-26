@@ -301,6 +301,9 @@ export const IconSettings = ({ size = 24, className }: IconProps) =>
 export const IconDownload = ({ size = 24, className }: IconProps) =>
   wrap(size, <><path d="M12 3 V15" /><path d="M6 11 L12 17 L18 11" /><path d="M4 21 H20" /></>, className);
 
+export const IconUpload = ({ size = 24, className }: IconProps) =>
+  wrap(size, <><path d="M12 17 V5" /><path d="M6 9 L12 3 L18 9" /><path d="M4 21 H20" /></>, className);
+
 export const IconMap = ({ size = 24, className }: IconProps) =>
   wrap(size,
     <>
